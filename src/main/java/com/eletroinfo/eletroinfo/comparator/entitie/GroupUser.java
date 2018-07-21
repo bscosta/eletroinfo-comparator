@@ -8,21 +8,17 @@ import java.util.List;
  */
 
 @Entity
-public class User {
+public class GroupUser {
 
     private Long id;
 
     private String name;
 
-    private String email;
+    private String description;
 
-    private String login;
+    private List<User> listUsers;
 
-    private String password;
-
-    private List<GroupUser> listGroupUsers;
-
-
+    private boolean deleted;
 
 
 }
