@@ -2,6 +2,7 @@ package com.eletroinfo.eletroinfo.comparator.entitie;
 
 import com.eletroinfo.eletroinfo.comparator.converter.ZoneIdConverter;
 import com.eletroinfo.eletroinfo.comparator.enumeration.UserType;
+import org.springframework.security.web.util.matcher.IpAddressMatcher;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,7 +34,10 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_group",
+            joinColumns = { @JoinColumn(name = "user_id")},
+            inverseJoinColumns = { @JoinColumn(name = "group_id")})
     private List<GroupUser> listGroupUsers;
 
     @Column(name = "user_type", nullable = false)
@@ -63,7 +67,7 @@ public class User {
     private ZoneId zoneLastUpdate;
 
     @Column(name = "ip_register", nullable = false)
-    private String ipRegister;
+    private IpAddressMatcher ipRegister;
 
     @Column(name = "ip_last_update", nullable = false)
     private String ipLastUpdate;
@@ -180,11 +184,11 @@ public class User {
         this.zoneLastUpdate = zoneLastUpdate;
     }
 
-    public String getIpRegister() {
+    public IpAddressMatcher getIpRegister() {
         return ipRegister;
     }
 
-    public void setIpRegister(String ipRegister) {
+    public void setIpRegister(IpAddressMatcher ipRegister) {
         this.ipRegister = ipRegister;
     }
 
