@@ -14,6 +14,9 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/algaworks.min.css}"/>
 	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/application.css}"/>
 
+	<!-- Bootstrap toggle switch -->
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-toggle.min.css}"/>
+
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -160,7 +163,9 @@
 		<div class="row">
 			<div class="col-sm-2">
 				<label for="name">Status</label>
-				<input type="text" class="form-control" th:field="*{activated}"/>
+				<div class="col-sm-2">
+					<input type="checkbox" class="js-status" checked data-toggle="toggle" th:field="*{activated}">
+				</div>
 			</div>
 			<div class="col-sm-7">
 				<label for="name">Nome</label>
@@ -228,6 +233,8 @@
 
 <script th:src="@{/javascripts/vendors.min.js}"></script>
 <script th:src="@{/javascripts/algaworks.min.js}"></script>
+
+<script th:src="@{/javascripts/vendors/bootstrap-toggle.min.js}"></script>
 
 </body>
 </html>
