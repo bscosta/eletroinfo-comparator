@@ -36,7 +36,7 @@
 
 	    <div class="navbar-header">
 	      <a class="navbar-brand  hidden-xs" href="#">
-	        <img alt="AlgaWorks" src="assets/images/logo.png"/>
+	        <img alt="AlgaWorks" th:src="@{/images/logo.png}"/>
 	      </a>
 
 	      <ul class="nav  navbar-nav">
@@ -73,7 +73,7 @@
 	            <div class="aw-logged-user">
 	              <img src="https://api.adorable.io/avatars/80/joaodascouves" 
 	                width="80" height="80" alt="João das Couves" class="aw-logged-user__picture" />
-	              <span class="aw-logged-user__name">João das Couves</span>
+	              <span class="aw-logged-user__name">Bruno Costa</span>
 	            </div>
 	          </li>
 	          <li role="separator" class="divider"></li>
@@ -142,7 +142,7 @@
 <div class="page-header">
 	<div class="container-fluid">
 		<h1>
-			Cadastro de produto
+			Cadastro de usuário
 		</h1>
 	</div>
 </div>
@@ -154,30 +154,43 @@
 		<i class="fa  fa-exclamation-circle"></i> Já existe um produto com o nome informado.
 	</div>
 
-	<form method="get" class="form-vertical  js-form-loading">
-		
-		<div class="form-group">
-			<label for="input-produto-nome">Nome</label>
-			<input id="input-produto-nome" type="text" class="form-control"/>
-		</div>
-
-		<div class="form-group">
-			<label for="input-produto-descricao">Descrição</label>
-			<textarea id="input-produto-descricao" rows="3" class="form-control"></textarea>
+	<form method="post" th:object="${user}" th:action="${user.novo} ? @{/usuario/novo} :
+					@{/usuario/{id}(id=${user.id})}" class="form-vertical  js-form-loading">
+		<input type="hidden" th:field="*{id}" />
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="name">Status</label>
+				<input type="text" class="form-control" th:field="*{activated}"/>
+			</div>
+			<div class="col-sm-7">
+				<label for="name">Nome</label>
+				<input type="text" class="form-control" th:field="*{name}"/>
+			</div>
 		</div>
 
 		<div class="row">
-			<div class="col-sm-3">
+			<div class="col-sm-5">
+				<label for="email">Email</label>
+				<input type="email" class="form-control" th:field="*{email}"/>
+			</div>
+			<div class="col-sm-4">
+				<label for="userType" class="control-label">Tipo Usuário</label>
+				<input type="text" class="form-control" th:field="*{userType}"/>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-5">
 				<div class="form-group">
-					<label for="input-produto-preco">Preço unitário</label>
-					<input id="input-produto-preco" type="text" class="form-control" placeholder="R$"/>
+					<label for="login">Usuário</label>
+					<input type="text" class="form-control" th:field="*{login}"/>
 				</div>
 			</div>
 			
-			<div class="col-sm-3">
+			<div class="col-sm-4">
 				<div class="form-group">
-					<label for="input-produto-estoque">Estoque</label>
-					<input id="input-produto-estoque" type="text" class="form-control" placeholder="Unidades"/>
+					<label for="password">Senha</label>
+					<input type="password" class="form-control" th:field="*{password}"/>
 				</div>
 			</div>
 		</div>
@@ -185,36 +198,16 @@
 		<div class="form-group">
 			<button class="btn  btn-primary" type="submit">Salvar</button>
 			<a href="pesquisa-produtos.html" class="btn  btn-default">Cancelar</a>
-			<a href="#" class="btn  btn-link  aw-btn-link-danger" onclick="excluir()">Excluir este produto</a>
 		</div>
 
 	</form>
 </div>
 
-<script>
-function excluir() {
-	swal({
-		title: "Tem certeza?",
-		text: "Você não poderá recuperar o produto após a exclusão.",
-		type: "warning",
-		showCancelButton: true,
-		confirmButtonColor: "#DD6B55",
-		confirmButtonText: "Sim, exclua agora!",
-		closeOnConfirm: false,
-		showLoaderOnConfirm: true
-	}, function() {
-		setTimeout(function() {
-			swal("Excluído!", "O produto foi excluído com sucesso.", "success");
-		}, 2000);
-	});
-}
-</script>
-
 	</section>
 	
 	<footer class="aw-layout-footer  js-content">
 		<div class="container-fluid">
-			<span class="aw-footer-disclaimer">&copy; 2016 AlgaWorks. Todos os direitos reservados.</span>
+			<span class="aw-footer-disclaimer">&copy; 2018 Eletroinfo. Todos os direitos reservados.</span>
 		</div>
 	</footer>
 

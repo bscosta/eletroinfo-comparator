@@ -77,6 +77,10 @@ public class User implements Serializable {
     @Column(name = "ip_last_update", nullable = false)
     private String ipLastUpdate;
 
+    public Boolean isNovo() {
+        return id == null;
+    }
+
     public User() {
     }
 
