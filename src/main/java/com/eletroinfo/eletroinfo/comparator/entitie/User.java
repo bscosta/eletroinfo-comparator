@@ -5,6 +5,7 @@ import com.eletroinfo.eletroinfo.comparator.enumeration.UserType;
 import org.springframework.security.web.util.matcher.IpAddressMatcher;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -15,7 +16,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,10 +52,12 @@ public class User {
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
 
-    @Column(name = "user_registration", nullable = false)
+    @ManyToOne(optional = true, fetch=FetchType.LAZY)
+    @JoinColumn(name = "user_registration", nullable = false)
     private User userRegistration;
 
-    @Column(name = "user_last_update", nullable = false)
+    @ManyToOne(optional = true, fetch=FetchType.LAZY)
+    @JoinColumn(name = "user_last_update", nullable = false)
     private User userLastUpdate;
 
     @Column(name = "date_last_update", nullable = false)
@@ -67,10 +72,22 @@ public class User {
     private ZoneId zoneLastUpdate;
 
     @Column(name = "ip_register", nullable = false)
-    private IpAddressMatcher ipRegister;
+    private String ipRegister;
 
     @Column(name = "ip_last_update", nullable = false)
     private String ipLastUpdate;
+
+    public User() {
+    }
+
+    public User(String name, String email, String login, String password, UserType userType, boolean deleted) {
+        this.name = name;
+        this.email = email;
+        this.login = login;
+        this.password = password;
+        this.userType = userType;
+        this.deleted = deleted;
+    }
 
     public Long getId() {
         return id;
@@ -184,11 +201,11 @@ public class User {
         this.zoneLastUpdate = zoneLastUpdate;
     }
 
-    public IpAddressMatcher getIpRegister() {
+    public String getIpRegister() {
         return ipRegister;
     }
 
-    public void setIpRegister(IpAddressMatcher ipRegister) {
+    public void setIpRegister(String ipRegister) {
         this.ipRegister = ipRegister;
     }
 

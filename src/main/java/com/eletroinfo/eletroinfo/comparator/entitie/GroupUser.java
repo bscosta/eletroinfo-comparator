@@ -63,10 +63,10 @@ public class GroupUser implements Serializable {
     private ZoneId zoneLastUpdate;
 
     @Column(name = "ip_register", nullable = true)
-    private IpAddressMatcher ipRegister;
+    private String ipRegister;
 
     @Column(name = "ip_last_update", nullable = true)
-    private IpAddressMatcher ipLastUpdate;
+    private String ipLastUpdate;
 
     public Long getId() {
         return id;
@@ -156,19 +156,19 @@ public class GroupUser implements Serializable {
         this.zoneLastUpdate = zoneLastUpdate;
     }
 
-    public IpAddressMatcher getIpRegister() {
+    public String getIpRegister() {
         return ipRegister;
     }
 
-    public void setIpRegister(IpAddressMatcher ipRegister) {
+    public void setIpRegister(String ipRegister) {
         this.ipRegister = ipRegister;
     }
 
-    public IpAddressMatcher getIpLastUpdate() {
+    public String getIpLastUpdate() {
         return ipLastUpdate;
     }
 
-    public void setIpLastUpdate(IpAddressMatcher ipLastUpdate) {
+    public void setIpLastUpdate(String ipLastUpdate) {
         this.ipLastUpdate = ipLastUpdate;
     }
 }
