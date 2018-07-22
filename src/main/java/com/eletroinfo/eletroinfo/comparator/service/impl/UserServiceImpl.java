@@ -22,26 +22,19 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public User save(User user) {
-        Optional<User> userExist = userRepository.findByEmail(user.getEmail());
-
-        if(userExist.isPresent() && !userExist.get().equals(user)) {
-            return user;
-        /*
-        ** Melhorar isso aqui, criar uma exception para informar que o usuário é repetido,
-        ** ou criar um validator.
-        */
-        }
-
-        if (user.isNovo() && StringUtils.isEmpty(user.getPassword())) {
-            return user;
-        /*
-         ** Melhorar isso aqui, criar uma exception para informar que o usuário é repetido,
-         ** ou criar um validator.
-         */
-        } else if (StringUtils.isEmpty(user.getPassword())) {
-            user.setPassword(userExist.get().getPassword());
-        }
-
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public boolean existsByLoginAndDeletedFalse(String login) {
+        return this.userRepository.existsByLoginAndDeletedFalse(login);
+    }
+
+    public boolean existsByEmailAndDeletedFalse(String email) {
+        return this.userRepository.existsByEmailAndDeletedFalse(email);
     }
 }

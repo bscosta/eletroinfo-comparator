@@ -163,8 +163,8 @@
 		<div class="row">
 			<div class="col-sm-2">
 				<label for="name">Status</label>
-				<div class="col-sm-2">
-					<input type="checkbox" class="js-status" checked data-toggle="toggle" th:field="*{activated}">
+				<div>
+					<input type="checkbox" checked class="form-control" data-on="Ativado" data-off="Desativado" data-toggle="toggle" th:field="*{activated}">
 				</div>
 			</div>
 			<div class="col-sm-7">
@@ -180,7 +180,10 @@
 			</div>
 			<div class="col-sm-4">
 				<label for="userType" class="control-label">Tipo Usuário</label>
-				<input type="text" class="form-control" th:field="*{userType}"/>
+				<select id="status" class="form-control" th:field="*{userType}">
+					<option value="">Selecione</option>
+					<option th:each="userType : ${userType}" th:value="${userType}" th:text="${userType}"></option>
+				</select>
 			</div>
 		</div>
 

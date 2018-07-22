@@ -2,6 +2,8 @@ package com.eletroinfo.eletroinfo.comparator.service;
 
 import com.eletroinfo.eletroinfo.comparator.entitie.User;
 
+import java.util.Optional;
+
 public interface UserService {
 
     /**
@@ -11,4 +13,10 @@ public interface UserService {
      * @return User
      */
     User save(User user);
+
+    Optional<User> findById(Long id);
+
+    boolean existsByLoginAndDeletedFalse(String login);
+
+    boolean existsByEmailAndDeletedFalse(String email);
 }
