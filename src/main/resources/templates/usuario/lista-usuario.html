@@ -25,6 +25,71 @@
                     </div>
                 </div>
             </div>
+            <div class="container-fluid">
+                <form method="get" class="form-vertical  js-form-loading">
+                    <div class="row">
+                        <div class="form-group col-sm-3">
+                            <label for="input-produto-nome">Nome</label>
+                            <input id="input-produto-nome" type="text" class="form-control">
+                        </div>
+                        <div class="form-group  col-sm-3" >
+                            <label class="control-label" for="email">Email</label>
+                            <input type="email" class="form-control" id="email"/>
+                        </div>
+                        <div class="form-group  col-sm-2" >
+                            <label class="control-label" for="login">Login</label>
+                            <input type="text" class="form-control" id="login"/>
+                        </div>
+                        <div class="form-group  col-sm-2" >
+                            <label class="control-label" for="userType">Tipo</label>
+                            <input type="text" class="form-control" id="userType"/>
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="aw-page-header-controls">
+                                <a class="btn btn-primary" href="#">
+                                    <i class="fa  fa-search"></i> <span class="hidden-xs  hidden-sm">Pesquisar</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive pc-tabela-simples">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th class="table-projetos-col-nome">Nome</th>
+                            <th class="table-projetos-col-status">Email</th>
+                            <th class="table-projetos-col-dataInicio">Login</th>
+                            <th class="table-projetos-col-dataFim">Tipo</th>
+                            <th class="table-projetos-col-dataFim">Status</th>
+                            <th class="table-projetos-col-acoes"></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td >Teste</td>
+                            <td >Teste</td>
+                            <td >Teste</td>
+                            <td >Teste</td>
+                            <td >Teste</td>
+                            <td class="text-center">
+                                <a class="btn  btn-link  btn-xs js-tooltip" title="Editar">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                                <a class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn" title="Excluir"
+                                   href="#">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </a>
+                            </td>
+                        <!--</tr>
+                        <tr>
+                            <td colspan="4">Nenhum usuário encontrado</td>
+                        </tr>-->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </section>
     </body>
 </html>
