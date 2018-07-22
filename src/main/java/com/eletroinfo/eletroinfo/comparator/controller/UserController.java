@@ -31,6 +31,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping
+    public ModelAndView user(User user) {
+        return new ModelAndView("/usuario/lista-usuario");
+    }
+
     @GetMapping("/novo")
     public ModelAndView userNew(User user) {
         if (user.isNovo()) {

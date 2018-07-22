@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+    <body>
+
+        <section layout:fragment="conteudo">
+            <div class="page-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-10">
+                            <h1>
+                                Pesquisa de Usuários
+                            </h1>
+                        </div>
+
+                        <div class="col-xs-2">
+                            <div class="aw-page-header-controls">
+                                <a class="btn btn-primary" th:href="@{/usuario/novo}">
+                                    <i class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm">Novo Usuário</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
+
