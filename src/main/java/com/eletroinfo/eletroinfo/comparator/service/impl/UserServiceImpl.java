@@ -1,12 +1,14 @@
 package com.eletroinfo.eletroinfo.comparator.service.impl;
 
 import com.eletroinfo.eletroinfo.comparator.entitie.User;
+import com.eletroinfo.eletroinfo.comparator.filter.UserFilter;
 import com.eletroinfo.eletroinfo.comparator.repository.UserRepository;
 import com.eletroinfo.eletroinfo.comparator.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -28,6 +30,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    public Page<User> findByParameters(UserFilter userFilter, Pageable pageable) {
+        return this.userRepository.findByParameters(userFilter.getName(), userFilter.getEmail(), userFilter.getLogin(), pageable);
     }
 
     public boolean existsByLoginAndDeletedFalse(String login) {

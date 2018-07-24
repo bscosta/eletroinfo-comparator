@@ -26,19 +26,19 @@
                 </div>
             </div>
             <div class="container-fluid">
-                <form method="get" class="form-vertical  js-form-loading">
+                <form method="get" th:object="${userFilter}" th:action="@{/usuario/find}" class="form-vertical  js-form-loading">
                     <div class="row">
                         <div class="form-group col-sm-3">
                             <label for="input-produto-nome">Nome</label>
-                            <input id="input-produto-nome" type="text" class="form-control">
+                            <input id="input-produto-nome" type="text" class="form-control" th:field="*{name}" />
                         </div>
                         <div class="form-group  col-sm-3" >
                             <label class="control-label" for="email">Email</label>
-                            <input type="email" class="form-control" id="email"/>
+                            <input type="email" class="form-control" id="email" th:field="*{email}" />
                         </div>
                         <div class="form-group  col-sm-2" >
                             <label class="control-label" for="login">Login</label>
-                            <input type="text" class="form-control" id="login"/>
+                            <input type="text" class="form-control" id="login" th:field="*{login}" />
                         </div>
                         <div class="form-group  col-sm-2" >
                             <label class="control-label" for="userType">Tipo</label>
@@ -46,9 +46,9 @@
                         </div>
                         <div class="col-xs-2">
                             <div class="aw-page-header-controls">
-                                <a class="btn btn-primary" href="#">
+                                <button type="submit" class="btn btn-primary" href="#">
                                     <i class="fa  fa-search"></i> <span class="hidden-xs  hidden-sm">Pesquisar</span>
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -67,12 +67,12 @@
                         </thead>
 
                         <tbody>
-                        <tr>
-                            <td >Teste</td>
-                            <td >Teste</td>
-                            <td >Teste</td>
-                            <td >Teste</td>
-                            <td >Teste</td>
+                        <tr th:each="user : ${userData.content}">
+                            <td th:text="${user.name}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td th:text="${user.login}"></td>
+                            <td th:text="${user.userType}"></td>
+                            <td th:text="${user.activated}"></td>
                             <td class="text-center">
                                 <a class="btn  btn-link  btn-xs js-tooltip" title="Editar">
                                     <i class="glyphicon glyphicon-pencil"></i>

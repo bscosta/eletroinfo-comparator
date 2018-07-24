@@ -2,9 +2,13 @@ package com.eletroinfo.eletroinfo.comparator.controller;
 
 import com.eletroinfo.eletroinfo.comparator.entitie.User;
 import com.eletroinfo.eletroinfo.comparator.enumeration.UserType;
+import com.eletroinfo.eletroinfo.comparator.filter.UserFilter;
 import com.eletroinfo.eletroinfo.comparator.service.UserService;
 import com.eletroinfo.eletroinfo.comparator.validations.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 /**
  * @author Bruno Costa
@@ -32,8 +35,18 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ModelAndView user(User user) {
-        return new ModelAndView("/usuario/lista-usuario");
+    public ModelAndView user(UserFilter userFilter) {
+        ModelAndView mv = new ModelAndView("/usuario/lista-usuario");
+
+        return mv;
+    }
+
+    @GetMapping(value = "/find")
+    public ModelAndView findUser(UserFilter userFilter, @PageableDefault(size = 3) Pageable pageable) {
+        Page<User> userPage = this.userService.findByParameters(userFilter, pageable);
+        ModelAndView mv = new ModelAndView("/usuario/lista-usuario");
+        mv.addObject("userData", userPage);
+        return mv;
     }
 
     @GetMapping("/novo")
