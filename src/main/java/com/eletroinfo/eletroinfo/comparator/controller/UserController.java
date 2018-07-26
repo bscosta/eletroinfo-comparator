@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,14 +42,17 @@ public class UserController {
     public ModelAndView user(UserFilter userFilter) {
         ModelAndView mv = new ModelAndView("/usuario/lista-usuario");
         mv.addObject("userData", new PageImpl(new ArrayList()));
+        mv.addObject("userType", UserType.values());
         return mv;
     }
 
     @GetMapping(value = "/find")
-    public ModelAndView findUser(UserFilter userFilter, @PageableDefault(size = 3) Pageable pageable) {
+    public ModelAndView findUser(UserFilter userFilter, @PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
         Page<User> userPage = this.userService.findByParameters(userFilter, pageable);
         ModelAndView mv = new ModelAndView("/usuario/lista-usuario");
         mv.addObject("userData", userPage);
+        mv.addObject("request", httpServletRequest);
+        mv.addObject("userType", UserType.values());
         return mv;
     }
 

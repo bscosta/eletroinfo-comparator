@@ -11,7 +11,9 @@
                 </li>
                 <th:block th:each="p : ${#numbers.sequence(1, userData.totalPages)}" th:with="numeroPagina=${p - 1}">
                     <li th:class="${paginaAtual == numeroPagina} ? active">
-                        <a href="">[[${p}]]</a>
+                        <a th:href="${request.requestURL.append(
+				        request.getQueryString() != null ? '?' + request.getQueryString() : '')
+                        .toString().replaceAll('\\+', '%20')}">[[${p}]]</a>
                     </li>
                 </th:block>
 

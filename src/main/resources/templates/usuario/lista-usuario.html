@@ -42,7 +42,10 @@
                         </div>
                         <div class="form-group  col-sm-2" >
                             <label class="control-label" for="userType">Tipo</label>
-                            <input type="text" class="form-control" id="userType"/>
+                            <select class="form-control" th:field="*{userType}">
+                                <option value=" ">Selecione o tipo</option>
+                                <option th:each="typeUser : ${userType}" th:value="${typeUser}" th:text="${typeUser}"></option>
+                            </select>
                         </div>
                         <div class="col-xs-2">
                             <div class="aw-page-header-controls">

@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Page<User> findByParameters(UserFilter userFilter, Pageable pageable) {
-        return this.userRepository.findByParameters(userFilter.getName(), userFilter.getEmail(), userFilter.getLogin(), pageable);
+        return this.userRepository.findByParameters(userFilter.getName(), userFilter.getEmail(), userFilter.getLogin(), userFilter.getUserType(), pageable);
     }
 
     public boolean existsByLoginAndDeletedFalse(String login) {
