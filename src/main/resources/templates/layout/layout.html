@@ -15,6 +15,9 @@
         <!-- Bootstrap toggle switch -->
         <link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-toggle.min.css}"/>
 
+        <!-- Bootstrap SwetAlert -->
+        <link rel="stylesheet" type="text/css" th:href="@{/vendors/sweetalert/sweetalert.css}"/>
+
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -119,7 +122,9 @@
 
         <script th:src="@{/javascripts/vendors.min.js}"></script>
         <script th:src="@{/javascripts/algaworks.min.js}"></script>
+        <script th:src="@{/vendors/sweetalert/sweetalert-dev.js}"></script>
 
+        <body th:replace="layout/fragments/dialog-delete :: dialog-delete"></body>
         <th:block layout:fragment="javascript-extra"></th:block>
 
     </body>

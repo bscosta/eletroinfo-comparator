@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<body th:fragment="dialog-delete" th:remove="tag">
+<script>
+        window.onload = function() {
+            if((window.location.href).indexOf("deleted") > -1){
+                swal("[[#{delete.sucesso}]]", "[[#{delete.sucesso.mensagem}]]", "success");
+                window.location = window.location.href.replace('deleted', '');
+            }
+        };
+
+        /*<![CDATA[*/
+        var context = '[[@{/}]]';
+
+        function deleteRegister(id, deleteUrl) {
+            swal({
+                title: "[[#{delete.title}]]",
+                text: "[[#{delete.sub.titulo}]]",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "[[#{delete.botao.confirmar}]]",
+                closeOnConfirm: false
+            }, function () {
+                    $.ajax({
+                      url: context + deleteUrl + id,
+                      type : "DELETE",
+                      success:
+                          function() {
+                            var currentUrl = window.location.href;
+                            var spacer = currentUrl.indexOf('?') > -1 ? '&' : '?';
+                            var newUrl = currentUrl.indexOf('deleted') > -1 ? currentUrl : currentUrl + spacer + 'deleted';
+
+                            window.location = newUrl;
+                            window.location.reload();
+                          },
+                      error:
+                          function() {
+                            swal("[[#{delete.erro}]]", "[[#{delete.erro.mensagem}]]", "error");
+                          }
+                  });
+            });
+        }
+
+        /*]]>*/
+    </script>
+</body>
+</html>
