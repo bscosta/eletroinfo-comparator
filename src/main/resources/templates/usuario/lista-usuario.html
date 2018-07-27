@@ -77,12 +77,12 @@
                             <td th:text="${user.userType}"></td>
                             <td th:text="${user.activated}"></td>
                             <td class="text-center">
-                                <a class="btn  btn-link  btn-xs js-tooltip" title="Editar">
+                                <a class="btn  btn-link  btn-xs js-tooltip" title="Editar" th:href="@{/usuario/{id}(id=${user.id})}">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                 </a>
                                 <a href="#" class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn"
                                    data-toggle="tooltip" data-placement="bottom" th:attr="title=#{deletar}"
-                                   th:onclick="|deleteRegister('${user.id}', 'users/' )|">
+                                   th:onclick="|deleteRegister('${user.id}', 'usuario/' )|">
                                     <i class="glyphicon glyphicon-remove"></i> <span class="icon-name"></span>
                                 </a>
                             </td>

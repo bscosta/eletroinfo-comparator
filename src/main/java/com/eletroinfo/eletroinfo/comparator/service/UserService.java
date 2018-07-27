@@ -24,4 +24,6 @@ public interface UserService {
     boolean existsByLoginAndDeletedFalse(String login);
 
     boolean existsByEmailAndDeletedFalse(String email);
+
+    void delete(Long id);
 }

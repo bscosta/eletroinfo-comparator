@@ -43,4 +43,10 @@ public class UserServiceImpl implements UserService {
     public boolean existsByEmailAndDeletedFalse(String email) {
         return this.userRepository.existsByEmailAndDeletedFalse(email);
     }
+
+    public void delete(Long id) {
+        Optional<User> user = this.userRepository.findById(id);
+        user.get().setDeleted(true);
+        this.userRepository.save(user.get());
+    }
 }
