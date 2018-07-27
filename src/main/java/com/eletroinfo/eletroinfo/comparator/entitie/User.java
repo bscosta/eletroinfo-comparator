@@ -5,6 +5,7 @@ import com.eletroinfo.eletroinfo.comparator.enumeration.UserType;
 import org.springframework.security.web.util.matcher.IpAddressMatcher;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;

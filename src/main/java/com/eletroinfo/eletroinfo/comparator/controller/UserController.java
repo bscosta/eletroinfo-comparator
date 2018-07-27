@@ -1,8 +1,10 @@
 package com.eletroinfo.eletroinfo.comparator.controller;
 
 import com.eletroinfo.eletroinfo.comparator.entitie.User;
+import com.eletroinfo.eletroinfo.comparator.enumeration.TypeMessage;
 import com.eletroinfo.eletroinfo.comparator.enumeration.UserType;
 import com.eletroinfo.eletroinfo.comparator.filter.UserFilter;
+import com.eletroinfo.eletroinfo.comparator.notification.NotificationHandler;
 import com.eletroinfo.eletroinfo.comparator.service.UserService;
 import com.eletroinfo.eletroinfo.comparator.validations.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private NotificationHandler notificationHandler;
 
     @GetMapping
     public ModelAndView user(UserFilter userFilter) {
@@ -76,8 +81,15 @@ public class UserController {
             return userNew(user);
         }
 
+        notificationHandler.setType(TypeMessage.message_sucess);
+        if (user.getId() == null) {
+            notificationHandler.getMessages().add("Usuário salvo com sucesso!");
+        } else {
+            notificationHandler.getMessages().add("Usuário editado com sucesso!");
+        }
+
         user = this.userService.save(user);
-        attributes.addFlashAttribute("mensagem", "Usuário salvo com sucesso");
+        attributes.addFlashAttribute(notificationHandler.getType().name(), notificationHandler.getMessages());
         attributes.addFlashAttribute(user);
         return new ModelAndView("redirect:/usuario/"+user.getId());
     }

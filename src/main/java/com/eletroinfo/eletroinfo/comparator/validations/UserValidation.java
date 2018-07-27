@@ -53,12 +53,13 @@ public class UserValidation implements Validator {
     public void validateLogin(User user, Errors errors) {
         if(this.userService.existsByLoginAndDeletedFalse(user.getLogin())){
             errors.rejectValue("login","", "Login "+ user.getLogin() +" já existe");
+            errors.rejectValue("deletar", "delete.botao.cancelar", "");
         }
     }
 
     public void validateEmail(User user, Errors errors) {
         if(this.userService.existsByEmailAndDeletedFalse(user.getEmail())){
-            errors.rejectValue("email","", "Email "+ user.getEmail() +" já existe");
+            errors.rejectValue("email","email.existe", user.getEmail());
         }
     }
 }

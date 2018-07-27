@@ -14,16 +14,10 @@
 					</h1>
 				</div>
 			</div>
-
 			<div class="container-fluid">
 				<form method="post" th:object="${user}" th:action="${user.novo} ? @{/usuario/novo} :
 								@{/usuario/{id}(id=${user.id})}" class="form-vertical  js-form-loading">
-					<div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()}">
-						<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
-						<th:block th:each="detailedError : ${#fields.detailedErrors()}">
-							<div><i class="fa  fa-exclamation-circle"></i> [[${detailedError.message}]]</div>
-						</th:block>
-					</div>
+					<div th:replace="layout/fragments/message :: messages"></div>
 					<input type="hidden" th:field="*{id}" />
 					<div class="row">
 						<div class="col-sm-2">

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" >
+
+<head></head>
+
+<div th:fragment="messages">
+
+    <div th:if="${message_sucess != null}" class="alert  alert-success  alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div th:each=" sucess : ${message_sucess}">
+            <i class="fa  fa-check"></i>
+            <span th:text="${sucess}"></span>
+        </div>
+    </div>
+
+    <div th:if="${message_warn != null}" class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <div th:each=" warn : ${message_warn}">
+            <span th:text="${warn}"></span>
+        </div>
+    </div>
+
+    <div th:if="${message_error != null}" class="alert  alert-danger  alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div th:each=" erro : ${message_error}">
+            <i class="fa  fa-exclamation-circle"></i>
+            <span th:text="${erro}"></span>
+        </div>
+    </div>
+
+    <div th:if="${#fields.hasAnyErrors()}" class="alert  alert-danger  alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" ><span aria-hidden="true">&times;</span></button>
+        <th:block th:each="detailedError : ${#fields.detailedErrors()}">
+            <div><i class="fa  fa-exclamation-circle"></i> [[${detailedError.message}]]</div>
+        </th:block>
+    </div>
+
+</div>
+
+</body>
+</html>
