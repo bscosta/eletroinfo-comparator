@@ -43,16 +43,16 @@ public class UserController {
 
     @GetMapping
     public ModelAndView user(UserFilter userFilter) {
-        ModelAndView mv = new ModelAndView("/usuario/lista-usuario");
+        ModelAndView mv = new ModelAndView("/user/list-user");
         mv.addObject("userData", new PageImpl(new ArrayList()));
         mv.addObject("userType", UserType.values());
         return mv;
     }
 
-    @GetMapping(value = "/find")
+    @GetMapping(value = "/buscar")
     public ModelAndView findUser(UserFilter userFilter, @PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
         Page<User> userPage = this.userService.findByParameters(userFilter, pageable);
-        ModelAndView mv = new ModelAndView("/usuario/lista-usuario");
+        ModelAndView mv = new ModelAndView("/user/list-user");
         mv.addObject("userData", userPage);
         mv.addObject("request", httpServletRequest);
         mv.addObject("userType", UserType.values());
@@ -64,7 +64,7 @@ public class UserController {
         if (user.isNovo()) {
             user.setActivated(true);
         }
-        ModelAndView mv = new ModelAndView("/usuario/cadastro-usuario", "user", user);
+        ModelAndView mv = new ModelAndView("/user/save-user", "user", user);
         mv.addObject("userType", UserType.values());
         return mv;
     }

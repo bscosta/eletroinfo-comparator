@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserService {
 
     /**
-     *  Salva um usuario no banco de dados e retorna o usuario com o ID
+     *  Salva um user no banco de dados e retorna o user com o ID
      *
      * @param user
      * @return User
