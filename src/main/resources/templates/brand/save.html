@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<body>
+
+<section layout:fragment="conteudo">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-10">
+                    <h1 th:if="${brand.novo}" th:text="#{titulo.cadastro.marca}"></h1>
+                    <h1 th:unless="${brand.novo}" th:text="#{titulo.editar.marca}"></h1>
+                </div>
+                <div class="col-xs-2" th:unless="${brand.novo}">
+                    <div class="aw-page-header-controls">
+                        <a class="btn btn-primary" th:href="@{/marca/novo}">
+                            <i class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm" th:text="#{novo}"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <form method="post" th:object="${brand}" th:action="${brand.novo} ? @{/marca/novo} :
+								@{/marca/{id}(id=${brand.id})}" class="form-vertical  js-form-loading">
+            <div th:replace="layout/fragments/message :: messages"></div>
+            <input type="hidden" th:field="*{id}" />
+            <div class="row">
+                <div class="col-sm-6 form-group">
+                    <label for="name" th:text="#{nome}"></label>
+                    <input type="text" class="form-control" th:field="*{name}"/>
+                </div>
+                <div class="col-sm-6 form-group">
+                    <label for="description" th:text="#{descricao}"></label>
+                    <input type="text" class="form-control" th:field="*{description}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn  btn-primary" type="submit" th:text="#{salvar}"></button>
+                <a th:href="@{/marca}" class="btn  btn-default" th:text="#{voltar}"></a>
+            </div>
+        </form>
+    </div>
+
+</section>
+<th:block layout:fragment="javascript-extra">
+    <script th:src="@{/javascripts/vendors/bootstrap-toggle.min.js}"></script>
+</th:block>
+</body>
+</html>
