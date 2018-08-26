@@ -9,9 +9,19 @@
 
 			<div class="page-header">
 				<div class="container-fluid">
-					<h1>
-						Cadastro de usuário
-					</h1>
+					<div class="row">
+						<div class="col-xs-10">
+							<h1 th:if="${user.novo}" th:text="#{titulo.cadastro.usuario}"></h1>
+							<h1 th:unless="${user.novo}" th:text="#{titulo.editar.usuario}"></h1>
+						</div>
+						<div class="col-xs-2" th:unless="${user.novo}">
+							<div class="aw-page-header-controls">
+								<a class="btn btn-primary" th:href="@{/usuario/novo}">
+									<i class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm" th:text="#{novo}"></span>
+								</a>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="container-fluid">
@@ -21,24 +31,24 @@
 					<input type="hidden" th:field="*{id}" />
 					<div class="row">
 						<div class="col-sm-2">
-							<label for="name">Status</label>
+							<label for="activated" th:text="#{status}"></label>
 							<div>
 								<input type="checkbox" checked class="form-control" data-on="Ativado" data-off="Desativado" data-toggle="toggle" th:field="*{activated}">
 							</div>
 						</div>
 						<div class="col-sm-7">
-							<label for="name">Nome</label>
+							<label for="name" th:text="#{nome}"></label>
 							<input type="text" class="form-control" th:field="*{name}"/>
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-sm-5">
-							<label for="email">Email</label>
+							<label for="email" th:text="#{email}"></label>
 							<input type="email" class="form-control" th:field="*{email}"/>
 						</div>
 						<div class="col-sm-4">
-							<label for="userType" class="control-label">Tipo Usuário</label>
+							<label for="userType" class="control-label" th:text="#{tipo.usuario}"></label>
 							<select id="status" class="form-control" th:field="*{userType}">
 								<option value="">Selecione</option>
 								<option th:each="userType : ${userType}" th:value="${userType}" th:text="${userType}"></option>
@@ -49,22 +59,22 @@
 					<div class="row">
 						<div class="col-sm-5">
 							<div class="form-group">
-								<label for="login">Usuário</label>
+								<label for="login" th:text="#{usuario}"></label>
 								<input type="text" class="form-control" th:field="*{login}"/>
 							</div>
 						</div>
 
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="password">Senha</label>
+								<label for="password" th:text="#{senha}"></label>
 								<input type="password" class="form-control" th:field="*{password}"/>
 							</div>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<button class="btn  btn-primary" type="submit">Salvar</button>
-						<a th:href="@{/usuario}" class="btn  btn-default">Voltar</a>
+						<button class="btn  btn-primary" type="submit" th:text="#{salvar}"></button>
+						<a th:href="@{/usuario}" class="btn  btn-default" th:text="#{voltar}"></a>
 					</div>
 				</form>
 			</div>

@@ -33,7 +33,7 @@ public class UserValidation implements Validator {
         validateLogin(user, errors);
         validateEmail(user, errors);
         if (user.getPassword().isEmpty()) {
-            errors.rejectValue("password","", "Campo de senha não pode ser vazio");
+            errors.rejectValue("password","senha.vazio", "Campo de senha não pode ser vazio");
         }
     }
 
@@ -51,15 +51,22 @@ public class UserValidation implements Validator {
     }
 
     public void validateLogin(User user, Errors errors) {
-        if(this.userService.existsByLoginAndDeletedFalse(user.getLogin())){
-            errors.rejectValue("login","", "Login "+ user.getLogin() +" já existe");
-            errors.rejectValue("deletar", "delete.botao.cancelar", "");
+        if (user.getLogin() == null || user.getLogin().isEmpty()) {
+            errors.rejectValue("login","login.vazio", "");
+        } else if(this.userService.existsByLoginAndDeletedFalse(user.getLogin())){
+            errors.rejectValue("login","login.repetido", new Object[] {user.getLogin()}, "");
         }
     }
 
     public void validateEmail(User user, Errors errors) {
-        if(this.userService.existsByEmailAndDeletedFalse(user.getEmail())){
-            errors.rejectValue("email","email.existe", user.getEmail());
+        if(!user.getEmail().isEmpty() && this.userService.existsByEmailAndDeletedFalse(user.getEmail())){
+            errors.rejectValue("email","email.repetido", new Object[] {user.getEmail()},"");
+        }
+    }
+
+    public void validateUserType(User user, Errors errors) {
+        if (user.getUserType() == null) {
+            errors.rejectValue("userType","userType.vazio","");
         }
     }
 }

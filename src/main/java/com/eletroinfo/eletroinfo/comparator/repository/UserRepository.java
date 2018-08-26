@@ -2,7 +2,7 @@ package com.eletroinfo.eletroinfo.comparator.repository;
 
 import com.eletroinfo.eletroinfo.comparator.entitie.User;
 import com.eletroinfo.eletroinfo.comparator.enumeration.UserType;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,5 +24,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             + " AND UPPER(u.login) LIKE UPPER(CONCAT('%',:login,'%')) "
             + " AND (:userType is null OR u.userType = :userType) "
             + " AND deleted is false ")
-    Page<User> findByParameters(@Param("name") String name, @Param("email") String email, @Param("login") String login, @Param("userType") UserType userType, Pageable pageable);
+    PageImpl<User> findByParameters(@Param("name") String name, @Param("email") String email, @Param("login") String login, @Param("userType") UserType userType, Pageable pageable);
 }

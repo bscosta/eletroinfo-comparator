@@ -6,9 +6,9 @@ import com.eletroinfo.eletroinfo.comparator.enumeration.UserType;
 import com.eletroinfo.eletroinfo.comparator.filter.UserFilter;
 import com.eletroinfo.eletroinfo.comparator.notification.NotificationHandler;
 import com.eletroinfo.eletroinfo.comparator.service.UserService;
+import com.eletroinfo.eletroinfo.comparator.util.PageWrapper;
 import com.eletroinfo.eletroinfo.comparator.validations.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Bruno Costa
@@ -44,16 +43,16 @@ public class UserController {
     @GetMapping
     public ModelAndView user(UserFilter userFilter) {
         ModelAndView mv = new ModelAndView("/user/list-user");
-        mv.addObject("userData", new PageImpl(new ArrayList()));
+        mv.addObject("pageData", new PageImpl(new ArrayList()));
         mv.addObject("userType", UserType.values());
         return mv;
     }
 
     @GetMapping(value = "/buscar")
-    public ModelAndView findUser(UserFilter userFilter, @PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
-        Page<User> userPage = this.userService.findByParameters(userFilter, pageable);
+    public ModelAndView findUser(UserFilter userFilter, @PageableDefault(size = 7) Pageable pageable, HttpServletRequest httpServletRequest) {
+        PageWrapper<User> userPage = new PageWrapper<>(userService.findByParameters(userFilter, pageable), httpServletRequest);
         ModelAndView mv = new ModelAndView("/user/list-user");
-        mv.addObject("userData", userPage);
+        mv.addObject("pageData", userPage);
         mv.addObject("request", httpServletRequest);
         mv.addObject("userType", UserType.values());
         return mv;
@@ -81,14 +80,14 @@ public class UserController {
             return userNew(user);
         }
 
-        notificationHandler.setType(TypeMessage.message_sucess);
         if (user.getId() == null) {
-            notificationHandler.getMessages().add("Usuário salvo com sucesso!");
+            notificationHandler.addMessageSucessSave();
         } else {
-            notificationHandler.getMessages().add("Usuário editado com sucesso!");
+            notificationHandler.addMessageSucessEdit();
         }
 
         user = this.userService.save(user);
+
         attributes.addFlashAttribute(notificationHandler.getType().name(), notificationHandler.getMessages());
         attributes.addFlashAttribute(user);
         return new ModelAndView("redirect:/usuario/"+user.getId());

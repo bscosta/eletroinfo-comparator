@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<body>
+
+<section layout:fragment="conteudo">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>
+                Cadastro de usuário
+            </h1>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <form method="post" th:object="${user}" th:action="${user.novo} ? @{/usuario/novo} :
+								@{/usuario/{id}(id=${user.id})}" class="form-vertical  js-form-loading">
+            <div th:replace="layout/fragments/message :: messages"></div>
+            <input type="hidden" th:field="*{id}" />
+            <div class="row">
+                <div class="col-sm-2">
+                    <label for="name">Status</label>
+                    <div>
+                        <input type="checkbox" checked class="form-control" data-on="Ativado" data-off="Desativado" data-toggle="toggle" th:field="*{activated}">
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <label for="name">Nome</label>
+                    <input type="text" class="form-control" th:field="*{name}"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" th:field="*{email}"/>
+                </div>
+                <div class="col-sm-4">
+                    <label for="userType" class="control-label">Tipo Usuário</label>
+                    <select id="status" class="form-control" th:field="*{userType}">
+                        <option value="">Selecione</option>
+                        <option th:each="userType : ${userType}" th:value="${userType}" th:text="${userType}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="login">Usuário</label>
+                        <input type="text" class="form-control" th:field="*{login}"/>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" class="form-control" th:field="*{password}"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn  btn-primary" type="submit">Salvar</button>
+                <a th:href="@{/usuario}" class="btn  btn-default">Voltar</a>
+            </div>
+        </form>
+    </div>
+
+</section>
+<th:block layout:fragment="javascript-extra">
+    <script th:src="@{/javascripts/vendors/bootstrap-toggle.min.js}"></script>
+</th:block>
+</body>
+</html>

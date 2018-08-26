@@ -1,11 +1,9 @@
 package com.eletroinfo.eletroinfo.comparator.entitie;
 
-import com.eletroinfo.eletroinfo.comparator.converter.ZoneIdConverter;
+import com.eletroinfo.eletroinfo.comparator.converters.ZoneIdConverter;
 import com.eletroinfo.eletroinfo.comparator.enumeration.UserType;
-import org.springframework.security.web.util.matcher.IpAddressMatcher;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;

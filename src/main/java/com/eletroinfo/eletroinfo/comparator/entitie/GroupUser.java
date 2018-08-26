@@ -1,7 +1,6 @@
 package com.eletroinfo.eletroinfo.comparator.entitie;
 
-import com.eletroinfo.eletroinfo.comparator.converter.ZoneIdConverter;
-import org.springframework.security.web.util.matcher.IpAddressMatcher;
+import com.eletroinfo.eletroinfo.comparator.converters.ZoneIdConverter;
 
 import javax.persistence.*;
 import java.io.Serializable;
