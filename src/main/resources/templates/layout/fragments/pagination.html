@@ -2,27 +2,28 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:fragment="pagination">
-    <div class="col-sm-12  text-center" th:if="${userData.size > 0}">
+<head></head>
+
+
+    <div class="col-sm-12  text-center" th:if="${not #lists.isEmpty(pageData.content)}" th:fragment="pagination">
         <nav>
-            <ul class="pagination  pagination-sm" th:with="paginaAtual=${userData.number}">
-                <li th:class="${userData.first} ? disabled">
-                    <a href="" th:remove="${userData.first} ? tag"><span>&laquo;</span></a>
+            <ul class="pagination  pagination-sm" th:with="currentPage=${pageData.currentPage}">
+                <li th:class="${pageData.first} ? disabled">
+                    <a href="${pageData.urlForPage(currentPage - 1)}" th:remove="${pageData.first} ? tag"><span>&laquo;</span></a>
                 </li>
-                <th:block th:each="p : ${#numbers.sequence(1, userData.totalPages)}" th:with="numeroPagina=${p - 1}">
-                    <li th:class="${paginaAtual == numeroPagina} ? active">
-                        <a th:href="${request.requestURL.append(
-				        request.getQueryString() != null ? '?' + request.getQueryString() : '')
-                        .toString().replaceAll('\\+', '%20')}">[[${p}]]</a>
+                <th:block th:each="p : ${#numbers.sequence(1, pageData.totalPages)}" th:with="numberPager=${p - 1}">
+                    <li th:class="${currentPage == numberPager} ? active">
+                        <a th:href="${pageData.urlForPage(numberPager)}">[[${p}]]</a>
                     </li>
                 </th:block>
 
-                <li th:class="${userData.last} ? disabled">
-                    <a href="" th:remove="${userData.last} ? tag"><span>&raquo;</span></a>
+
+                <li th:class="${pageData.last} ? disabled">
+                    <a href="${pageData.urlForPage(currentPage + 1)}" th:remove="${pageData.last} ? tag"><span>&raquo;</span></a>
                 </li>
             </ul>
         </nav>
     </div>
-</th:block>
+
 
 </html>

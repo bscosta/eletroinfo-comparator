@@ -40,8 +40,17 @@ public class NotificationHandler {
     }
 
     public void addMessageinternationalized(TypeMessage typeMessage, String key){
-        this.type = TypeMessage.message_warn;
         this.getMessages().add(messageUtil.getMessage(key));
+    }
+
+    public void addMessageSucessSave(){
+        this.type = TypeMessage.message_sucess;
+        this.addMessageinternationalized(TypeMessage.message_sucess, "sucesso.salvar");
+    }
+
+    public void addMessageSucessEdit(){
+        this.type = TypeMessage.message_sucess;
+        this.addMessageinternationalized(TypeMessage.message_sucess, "sucesso.editar");
     }
 
     public void getMessage404NotFound(){
