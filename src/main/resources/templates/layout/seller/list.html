@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
+<head th:include="~{layout/layout :: header (title='Vendedor')}"></head>
 <body>
 
 <section layout:fragment="conteudo">
@@ -55,9 +56,9 @@
                 <tbody>
                 <tr th:each="seller : ${pageData.content}">
                     <td th:text="${seller.name}"></td>
-                    <td th:text="${seller.description}">
+                    <td>
                         <th:block th:each="sellerContact : ${seller.contacts}">
-                            <span th:text="${sellerContact.valueContact}"></span>
+                            <span th:text="${sellerContact.valueContact} + ' - '"></span>
                         </th:block>
                     </td>
                     <td class="text-center">

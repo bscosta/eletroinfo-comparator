@@ -40,6 +40,7 @@ public class NotificationHandler {
     }
 
     public void addMessageinternationalized(TypeMessage typeMessage, String key){
+        this.type = typeMessage;
         this.getMessages().add(messageUtil.getMessage(key));
     }
 

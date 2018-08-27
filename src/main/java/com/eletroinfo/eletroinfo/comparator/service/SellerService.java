@@ -5,7 +5,13 @@ import com.eletroinfo.eletroinfo.comparator.filter.SellerFilter;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface SellerService {
 
     PageImpl<Seller> findByParameters(SellerFilter sellerFilter, Pageable pageable);
+
+    Seller save(Seller seller);
+
+    Optional<Seller> findById(Long id);
 }

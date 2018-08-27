@@ -5,7 +5,12 @@ import com.eletroinfo.eletroinfo.comparator.converters.ZoneIdConverter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * @author Bruno Costa
+ */
 
 @Entity
 @Table(name = "seller")
@@ -18,10 +23,10 @@ public class Seller {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "seller_contact",
-            joinColumns = { @JoinColumn(name = "Seller_id")},
-            inverseJoinColumns = { @JoinColumn(name = "contact_id")})
+            joinColumns = { @JoinColumn(name = "seller_id", table = "seller", referencedColumnName="id")},
+            inverseJoinColumns = { @JoinColumn(name = "contact_id", table = "contact", referencedColumnName="id")})
     private List<Contact> contacts;
 
     @Column(name = "deleted", nullable = false)
@@ -48,6 +53,9 @@ public class Seller {
     @Convert(converter = ZoneIdConverter.class)
     @Column(name = "zone_last_update", nullable = true)
     private ZoneId zoneLastUpdate;
+
+    @Transient
+    private Boolean isUpdateContact;
 
     public Boolean isNovo() {
         return this.id == null;
@@ -131,5 +139,18 @@ public class Seller {
 
     public void setZoneLastUpdate(ZoneId zoneLastUpdate) {
         this.zoneLastUpdate = zoneLastUpdate;
+    }
+
+    public Boolean getUpdateContact() {
+        return isUpdateContact;
+    }
+
+    public void setUpdateContact(Boolean updateContact) {
+        isUpdateContact = updateContact;
+    }
+
+    public Seller() {
+        super();
+        this.contacts = new ArrayList<>();
     }
 }

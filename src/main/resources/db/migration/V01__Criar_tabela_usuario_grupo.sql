@@ -7,13 +7,14 @@ CREATE TABLE user (
     user_type INT NOT NULL,
     activated BOOL DEFAULT true,
     deleted BOOL DEFAULT false,
-    user_registration BIGINT NOT NULL,
-    user_last_update BIGINT NOT NULL,
-    date_last_update TIMESTAMP NOT NULL,
-    zone_register VARCHAR(100) NOT NULL,
-    zone_last_update VARCHAR(100) NOT NULL,
-    ip_register VARCHAR(50) NOT NULL,
-    ip_last_update VARCHAR(50) NOT NULL
+    user_register BIGINT(5),
+    date_register timestamp,
+    user_last_update BIGINT(5),
+    date_last_update timestamp,
+    zone_register VARCHAR(50),
+    zone_last_update VARCHAR(50),
+    ip_register VARCHAR(50),
+    ip_last_update VARCHAR(50)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE group_user (
@@ -21,12 +22,12 @@ CREATE TABLE group_user (
     name VARCHAR(60) NOT NULL,
     description VARCHAR(100),
     deleted BOOL DEFAULT false,
-    user_registration BIGINT NOT NULL,
-    user_last_update BIGINT NOT NULL,
-    date_register TIMESTAMP NOT NULL,
-    date_last_update TIMESTAMP NOT NULL,
-    zone_register VARCHAR(100) NOT NULL,
-    zone_last_update VARCHAR(100) NOT NULL,
+    user_register BIGINT(5),
+    date_register timestamp,
+    user_last_update BIGINT(5),
+    date_last_update timestamp,
+    zone_register VARCHAR(50),
+    zone_last_update VARCHAR(50),
     ip_register VARCHAR(50) NOT NULL,
     ip_last_update VARCHAR(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

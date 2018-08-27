@@ -15,7 +15,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SellerRepository extends JpaRepository<Seller, Long> {
 
-    @Query("SELECT s FROM Seller s INNER JOIN s.contacts sc WHERE UPPER(s.name) LIKE UPPER(CONCAT('%',:name,'%'))" +
-           " and UPPER(sc.valueContact) LIKE UPPER(CONCAT('%',:contact,'%')) and s.deleted is false")
-    PageImpl<Seller> findByParameters(@Param("name") String name, @Param("contact") String contact, Pageable pageable);
 }
