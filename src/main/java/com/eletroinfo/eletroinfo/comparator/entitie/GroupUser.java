@@ -40,8 +40,8 @@ public class GroupUser implements Serializable {
     private boolean deleted;
 
     @ManyToOne(optional = true, fetch=FetchType.LAZY)
-    @JoinColumn(name = "user_registration")
-    private User userRegistration;
+    @JoinColumn(name = "user_registrater")
+    private User userRegistrater;
 
     @ManyToOne(optional = true, fetch=FetchType.LAZY)
     @JoinColumn(name = "user_last_update")
@@ -107,12 +107,12 @@ public class GroupUser implements Serializable {
         this.deleted = deleted;
     }
 
-    public User getUserRegistration() {
-        return userRegistration;
+    public User getUserRegistrater() {
+        return userRegistrater;
     }
 
-    public void setUserRegistration(User userRegistration) {
-        this.userRegistration = userRegistration;
+    public void setUserRegistrater(User userRegistrater) {
+        this.userRegistrater = userRegistrater;
     }
 
     public User getUserLastUpdate() {

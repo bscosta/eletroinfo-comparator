@@ -52,12 +52,15 @@ public class User implements Serializable {
     private boolean deleted;
 
     @ManyToOne(optional = true, fetch=FetchType.LAZY)
-    @JoinColumn(name = "user_registration", nullable = false)
-    private User userRegistration;
+    @JoinColumn(name = "user_register", nullable = false)
+    private User userRegistrater;
 
     @ManyToOne(optional = true, fetch=FetchType.LAZY)
     @JoinColumn(name = "user_last_update", nullable = false)
     private User userLastUpdate;
+
+    @Column(name = "date_register", nullable = false)
+    private LocalDateTime dateRegister;
 
     @Column(name = "date_last_update", nullable = false)
     private LocalDateTime dateLastUpdate;
@@ -164,12 +167,20 @@ public class User implements Serializable {
         this.deleted = deleted;
     }
 
-    public User getUserRegistration() {
-        return userRegistration;
+    public User getUserRegistrater() {
+        return userRegistrater;
     }
 
-    public void setUserRegistration(User userRegistration) {
-        this.userRegistration = userRegistration;
+    public void setUserRegistrater(User userRegistrater) {
+        this.userRegistrater = userRegistrater;
+    }
+
+    public LocalDateTime getDateRegister() {
+        return dateRegister;
+    }
+
+    public void setDateRegister(LocalDateTime dateRegister) {
+        this.dateRegister = dateRegister;
     }
 
     public User getUserLastUpdate() {
