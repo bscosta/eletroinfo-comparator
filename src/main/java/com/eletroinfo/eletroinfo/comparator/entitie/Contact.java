@@ -26,6 +26,9 @@ public class Contact {
     @Column(name = "value_contact", nullable = false)
     private String valueContact;
 
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted;
+
     @ManyToOne(optional = true, fetch= FetchType.LAZY)
     @JoinColumn(name = "user_register")
     private User userRegister;
@@ -86,6 +89,14 @@ public class Contact {
 
     public void setValueContact(String valueContact) {
         this.valueContact = valueContact;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public User getUserRegister() {

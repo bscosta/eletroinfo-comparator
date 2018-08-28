@@ -34,8 +34,11 @@ public class SellerServiceImpl implements SellerService {
         return sellerRepositoryCustom.findByParameters(sellerFilter.getName(), sellerFilter.getContact(), pageable);
     }
 
+    public Long countBySellerIdAndContactValueAndDeletedIsFalse(Long id, String contactValue) {
+        return sellerRepository.countBySellerIdAndContactValueAndDeletedIsFalse(id, contactValue);
+    }
+
     public Seller save(Seller seller) {
-        seller.getContacts().removeIf(contact -> contact.getValueContact() == null || contact.getValueContact().isEmpty());
         for (Contact contact : seller.getContacts()) {
             if (contact.getId() == null) {
                 contact = contactService.save(contact);

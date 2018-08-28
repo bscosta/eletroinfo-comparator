@@ -15,4 +15,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SellerRepository extends JpaRepository<Seller, Long> {
 
+    @Query(" SELECT count(s) FROM Seller s WHERE "
+         + " s.id IN (SELECT sc.sellerId FROM SellerContact sc, Contact c "
+         +  " WHERE sc.contactId = c.id AND c.valueContact = :contactValue )"
+         +  " AND s.id = :id "
+         +  " AND s.deleted is false ")
+    Long countBySellerIdAndContactValueAndDeletedIsFalse(@Param("id") Long id, @Param("contactValue") String contactValue);
 }

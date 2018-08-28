@@ -7,6 +7,7 @@ import com.eletroinfo.eletroinfo.comparator.filter.SellerFilter;
 import com.eletroinfo.eletroinfo.comparator.notification.NotificationHandler;
 import com.eletroinfo.eletroinfo.comparator.service.SellerService;
 import com.eletroinfo.eletroinfo.comparator.util.PageWrapper;
+import com.eletroinfo.eletroinfo.comparator.validations.SellerValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -34,8 +35,16 @@ public class SellerController {
     private SellerService sellerService;
 
     @Autowired
+    private SellerValidation sellerValidation;
+
+    @Autowired
     private NotificationHandler notificationHandler;
 
+    /**
+     *
+     * @param sellerFilter
+     * @return
+     */
     @GetMapping
     public ModelAndView list(SellerFilter sellerFilter) {
         ModelAndView mv =  new ModelAndView("layout/seller/list");
@@ -43,6 +52,13 @@ public class SellerController {
         return mv;
     }
 
+    /**
+     *
+     * @param sellerFilter
+     * @param pageable
+     * @param httpServletRequest
+     * @return
+     */
     @GetMapping(value = "/buscar")
     public ModelAndView find(SellerFilter sellerFilter, @PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
         PageWrapper<Seller> productPage = new PageWrapper<>(this.sellerService.findByParameters(sellerFilter, pageable), httpServletRequest);
@@ -52,6 +68,11 @@ public class SellerController {
         return mv;
     }
 
+    /**
+     *
+     * @param seller
+     * @return
+     */
     @GetMapping(value = "/novo")
     public ModelAndView newSaller(Seller seller) {
         ModelAndView mv = new ModelAndView("layout/seller/save", "seller", seller);
@@ -59,8 +80,20 @@ public class SellerController {
         return mv;
     }
 
+    /**
+     *
+     * @param seller
+     * @param bindingResult
+     * @param redirectAttributes
+     * @return
+     */
     @PostMapping(value = {"/novo", "{\\+d}"}, params = {"save"})
     public ModelAndView save(@Valid Seller seller, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        seller.getContacts().removeIf(contact -> contact.getId() == null);
+        sellerValidation.save(seller, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return newSaller(seller);
+        }
         seller = sellerService.save(seller);
         notificationHandler.addMessageSucessSave();
         redirectAttributes.addFlashAttribute(notificationHandler.getType().name(), notificationHandler.getMessages());
@@ -68,6 +101,12 @@ public class SellerController {
         return new ModelAndView("redirect:/vendedor/"+seller.getId());
     }
 
+    /**
+     *
+     * @param id
+     * @param seller
+     * @return
+     */
     @GetMapping("/{id}")
     public ModelAndView edit(@PathVariable("id") Long id, Seller seller) {
         if (seller.getName() == null) {
@@ -78,8 +117,21 @@ public class SellerController {
         return mv;
     }
 
+    /**
+     *
+     * @param seller
+     * @param bindingResult
+     * @return
+     */
     @PostMapping(value="/{\\d}", params = {"addContact"})
     public ModelAndView addContact(@Valid Seller seller, BindingResult bindingResult) {
+        sellerValidation.contact(seller, bindingResult);
+        if (bindingResult.hasErrors()) {
+            seller.setUpdateContact(true);
+            ModelAndView mv = newSaller(seller);
+            mv.addObject("sizeContacts", seller.getContacts().size()-1);
+            return mv;
+        }
         seller = sellerService.save(seller);
         seller.setUpdateContact(true);
         notificationHandler.addMessageinternationalized(TypeMessage.message_sucess, "contato.adicionado.sucesso");
@@ -88,9 +140,17 @@ public class SellerController {
         return mv;
     }
 
+    /**
+     *
+     * @param delContact
+     * @param seller
+     * @param bindingResult
+     * @return
+     */
     @PostMapping(value="/{\\d}", params={"delContact"})
     public ModelAndView delContact(@RequestParam("delContact") Long delContact, @Valid Seller seller, BindingResult bindingResult) {
         seller.getContacts().removeIf(contact -> contact.getId() == delContact);
+        seller.getContacts().removeIf(contact -> contact.getId() == null);
         seller = sellerService.save(seller);
         seller.setUpdateContact(true);
         notificationHandler.addMessageinternationalized(TypeMessage.message_sucess, "contato.removido.sucesso");

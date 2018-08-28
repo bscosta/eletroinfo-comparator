@@ -57,11 +57,11 @@
                     </div>
                     <div th:unless="${seller.novo}" class="tab-pane fade in" th:classappend="${seller.updateContact} ? active" id="contatos">
                         <th:block th:each="contacts,rowStat : *{#numbers.sequence(contacts.size() - 1, 0, -1)}">
-                            <input type="hidden" th:field="*{contacts[__${rowStat.index}__].id}">
-                            <input type="hidden" th:field="*{contacts[__${rowStat.index}__].typeContact}">
-                            <input type="hidden" th:field="*{contacts[__${rowStat.index}__].name}">
-                            <input type="hidden" th:field="*{contacts[__${rowStat.index}__].formContact}">
-                            <input type="hidden" th:field="*{contacts[__${rowStat.index}__].valueContact}">
+                            <input th:if="*{contacts[__${rowStat.index}__].id}" type="hidden" th:field="*{contacts[__${rowStat.index}__].id}">
+                            <input th:if="*{contacts[__${rowStat.index}__].id}" type="hidden" th:field="*{contacts[__${rowStat.index}__].typeContact}">
+                            <input th:if="*{contacts[__${rowStat.index}__].id}" type="hidden" th:field="*{contacts[__${rowStat.index}__].name}">
+                            <input th:if="*{contacts[__${rowStat.index}__].id}" type="hidden" th:field="*{contacts[__${rowStat.index}__].formContact}">
+                            <input th:if="*{contacts[__${rowStat.index}__].id}" type="hidden" th:field="*{contacts[__${rowStat.index}__].valueContact}">
                         </th:block>
                         <div class="row">
                             <div class="col-sm-2 form-group">
@@ -109,10 +109,10 @@
 
                                 <tbody>
                                 <tr th:each="contact : ${seller.contacts}">
-                                    <td th:text="${contact.typeContact}"></td>
-                                    <td th:text="${contact.name}"></td>
-                                    <td th:text="${contact.formContact}"></td>
-                                    <td th:text="${contact.valueContact}"></td>
+                                    <td th:if="${contact.id}" th:text="${contact.typeContact}"></td>
+                                    <td th:if="${contact.id}" th:text="${contact.name}"></td>
+                                    <td th:if="${contact.id}" th:text="${contact.formContact}"></td>
+                                    <td th:if="${contact.id}" th:text="${contact.valueContact}"></td>
                                     <td class="text-center">
                                         <!--<a class="btn  btn-link  btn-xs js-tooltip" th:title="#{editar}" th:href="@{/vendedor/{id}(id=${seller.id})}">
                                             <i class="glyphicon glyphicon-pencil"></i>
