@@ -31,21 +31,20 @@ public class SellerRepositoryCustomImpl implements SellerRepositoryCustom {
         where.append(" WHERE s.deleted is false ");
 
         if (!contact.isEmpty() || name.isEmpty())
-        where.append(" AND s.id IN (SELECT sc.sellerId FROM SellerContact sc, Contact c WHERE sc.contactId = c.id " +
-                     "AND UPPER(c.valueContact) LIKE UPPER(CONCAT('%" + contact + "%'))) ");
+        where.append(" AND s.id in ( SELECT sc.sellerId FROM SellerContact sc, Contact c WHERE sc.contactId = c.id" +
+                     " AND UPPER(c.valueContact) LIKE UPPER(CONCAT('%" + contact + "%'))) ");
 
         if (contact.isEmpty() && name.isEmpty())
-        where.append(" OR s.id not in (SELECT sc.sellerId FROM SellerContact sc, Contact c " +
-                     "WHERE sc.contactId = c.id)");
+        where.append(" OR s.id not in (SELECT sc.sellerId FROM SellerContact sc, Contact c WHERE sc.contactId = c.id)");
 
         if (!name.isEmpty())
-        where.append(" AND UPPER(s.name) LIKE UPPER(CONCAT('%" + name + "%'))");
+        where.append(" AND UPPER(s.name) LIKE UPPER(CONCAT('%" + name + "%')) ");
 
         /**
          * Fazendo um count
          */
         StringBuilder sqlCountTotal = new StringBuilder();
-        sqlCountTotal.append("SELECT count(s) FROM Seller s").append(where.toString());
+        sqlCountTotal.append("SELECT count(s) FROM Seller s ").append(where.toString());
 
         Long total = (Long) entityManager.createQuery(sqlCountTotal.toString()).getSingleResult();
         /**

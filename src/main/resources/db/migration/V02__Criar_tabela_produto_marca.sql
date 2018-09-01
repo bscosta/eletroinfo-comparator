@@ -40,7 +40,7 @@ CREATE TABLE contact (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     type_contact VARCHAR(20) NOT NULL,
     form_contact VARCHAR(20) NOT NULL,
-    name VARCHAR(60) NOT NULL,
+    name VARCHAR(130) NOT NULL,
     value_contact VARCHAR(50) NOT NULL,
     user_register BIGINT(5),
     date_register timestamp,

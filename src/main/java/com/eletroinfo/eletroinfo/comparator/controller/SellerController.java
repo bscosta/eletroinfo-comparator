@@ -5,6 +5,7 @@ import com.eletroinfo.eletroinfo.comparator.entitie.Seller;
 import com.eletroinfo.eletroinfo.comparator.enumeration.TypeMessage;
 import com.eletroinfo.eletroinfo.comparator.filter.SellerFilter;
 import com.eletroinfo.eletroinfo.comparator.notification.NotificationHandler;
+import com.eletroinfo.eletroinfo.comparator.service.ContactService;
 import com.eletroinfo.eletroinfo.comparator.service.SellerService;
 import com.eletroinfo.eletroinfo.comparator.util.PageWrapper;
 import com.eletroinfo.eletroinfo.comparator.validations.SellerValidation;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +35,9 @@ public class SellerController {
 
     @Autowired
     private SellerService sellerService;
+
+    @Autowired
+    private ContactService contactService;
 
     @Autowired
     private SellerValidation sellerValidation;
@@ -151,7 +156,8 @@ public class SellerController {
     public ModelAndView delContact(@RequestParam("delContact") Long delContact, @Valid Seller seller, BindingResult bindingResult) {
         seller.getContacts().removeIf(contact -> contact.getId() == delContact);
         seller.getContacts().removeIf(contact -> contact.getId() == null);
-        seller = sellerService.save(seller);
+        contactService.delete(delContact, "seller", seller.getId(), seller.getName());
+        sellerService.save(seller);
         seller.setUpdateContact(true);
         notificationHandler.addMessageinternationalized(TypeMessage.message_sucess, "contato.removido.sucesso");
         ModelAndView mv = newSaller(seller);
@@ -159,4 +165,10 @@ public class SellerController {
         return mv;
     }
 
+    @DeleteMapping("/{id}")
+    public @ResponseBody
+    ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        this.sellerService.delete(id);
+        return ResponseEntity.ok().build();
+    }
 }

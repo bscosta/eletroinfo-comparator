@@ -16,4 +16,6 @@ public interface SellerService {
     Seller save(Seller seller);
 
     Optional<Seller> findById(Long id);
+
+    void delete(Long id);
 }

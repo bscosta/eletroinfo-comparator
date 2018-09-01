@@ -48,6 +48,20 @@ public class SellerServiceImpl implements SellerService {
     }
 
     public Optional<Seller> findById(Long id) {
-        return sellerRepository.findById(id);
+        return sellerRepository.findByIdAndSellerDeletedIsFalse(id);
+    }
+
+    public void delete(Long id) {
+        Optional<Seller> seller = sellerRepository.findById(id);
+        if (seller.isPresent()) {
+            if (seller.get().getContacts() != null || !seller.get().getContacts().isEmpty()) {
+                for (Contact contact : seller.get().getContacts()) {
+                    contact.setDeleted(true);
+                    contactService.save(contact);
+                }
+            }
+            seller.get().setDeleted(true);
+            sellerRepository.save(seller.get());
+        }
     }
 }

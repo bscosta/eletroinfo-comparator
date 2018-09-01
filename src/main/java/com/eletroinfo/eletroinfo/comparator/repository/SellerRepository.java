@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * @author Bruno Costa
  */
@@ -21,4 +23,11 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
          +  " AND s.id = :id "
          +  " AND s.deleted is false ")
     Long countBySellerIdAndContactValueAndDeletedIsFalse(@Param("id") Long id, @Param("contactValue") String contactValue);
+
+    @Query(" SELECT s FROM Seller s WHERE " +
+           " s.id IN (SELECT sc.sellerId FROM SellerContact sc, Contact c "
+            +  " WHERE sc.contactId = c.id)"
+            +  " AND s.id = :id "
+            +  " AND s.deleted is false ")
+    Optional<Seller> findByIdAndSellerDeletedIsFalse(@Param("id") Long id);
 }
