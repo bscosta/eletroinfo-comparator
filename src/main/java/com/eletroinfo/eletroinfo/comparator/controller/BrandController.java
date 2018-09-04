@@ -3,17 +3,21 @@ package com.eletroinfo.eletroinfo.comparator.controller;
 import com.eletroinfo.eletroinfo.comparator.entitie.Brand;
 import com.eletroinfo.eletroinfo.comparator.enumeration.TypeMessage;
 import com.eletroinfo.eletroinfo.comparator.filter.BrandFilter;
+import com.eletroinfo.eletroinfo.comparator.notification.MessageSourceUtil;
 import com.eletroinfo.eletroinfo.comparator.notification.NotificationHandler;
 import com.eletroinfo.eletroinfo.comparator.service.BrandService;
 import com.eletroinfo.eletroinfo.comparator.util.PageWrapper;
 import com.eletroinfo.eletroinfo.comparator.validations.BrandValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -21,6 +25,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/marca")
@@ -96,5 +102,25 @@ public class BrandController {
     ResponseEntity<?> delete(@PathVariable("id") Long id) {
         this.brandService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     *
+     * @param brand
+     * @param bindingResult
+     * @return
+     */
+    @PostMapping(value = "/cadastroRapido", consumes = { MediaType.APPLICATION_JSON_VALUE })
+    public @ResponseBody ResponseEntity<?> quiskSave(@RequestBody @Valid Brand brand, BindingResult bindingResult) {
+        this.brandValidation.validateSave(brand, bindingResult);
+        if (bindingResult.hasErrors()) {
+            for (ObjectError message : bindingResult.getAllErrors()) {
+                notificationHandler.addMessageinternationalized(TypeMessage.message_error, message.getCode());
+            }
+            return ResponseEntity.badRequest().body(notificationHandler.getMessages());
+        }
+
+        brand = brandService.save(brand);
+        return ResponseEntity.ok(brand);
     }
 }

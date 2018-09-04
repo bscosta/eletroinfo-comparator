@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +32,10 @@ public class BrandServiceImpl implements BrandService {
 
     public Optional<Brand> findById(Long id) {
         return this.brandRepository.findById(id);
+    }
+
+    public List<Brand> findAll() {
+        return brandRepository.findAll();
     }
 
     public Brand delete(Long id) {

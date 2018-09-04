@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<body>
+
+<section layout:fragment="conteudo">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1 th:if="${product.novo}" th:text="#{titulo.cadastro.produto}"></h1>
+            <h1 th:unless="${product.novo}" th:text="#{titulo.editar.produto} + ': ' + ${product.name}"></h1>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <form method="post" th:object="${product}" th:action="${product.novo} ? @{/produto/novo} :
+								@{/produto/{id}(id=${product.id})}" class="form-vertical  js-form-loading">
+            <div th:replace="layout/fragments/message :: messages"></div>
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="row">
+                <div class="col-sm-6 form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" class="form-control" th:field="*{name}"/>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="unitMeasure" class="control-label">Unidade Medida</label>
+                    <select class="form-control" th:field="*{unitMeasure}">
+                        <option value="">Selecione</option>
+                        <option th:value="L" th:text="#{litro}"></option>
+                        <option th:value="ML" th:text="#{mili.litro}"></option>
+                        <option th:value="G" th:text="#{grama}"></option>
+                        <option th:value="KG" th:text="#{kilo.grama}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="name">Medida</label>
+                    <input type="text" class="form-control" th:field="*{measuredQuantity}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 form-group">
+                    <label for="brand.id" class="control-label">Marca</label>
+                    <div class="bw-field-action">
+                        <select class="form-control" id="brand" th:field="*{brand.id}">
+                            <option value="">Selecione</option>
+                            <option th:each="brand : ${brands}" th:value="${brand.id}" th:text="${brand.name}"></option>
+                        </select>
+                        <div class="bw-field-action__icon">
+                            <a href="#" data-toggle="modal" data-target="#modalQuickRegisterBrand" th:title="#{cadastrar.marca}">
+                                <i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="description">Descrição</label>
+                    <input type="text" class="form-control" th:field="*{description}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn  btn-primary" type="submit">Salvar</button>
+                <a th:href="@{/produto}" class="btn  btn-default">Voltar</a>
+            </div>
+        </form>
+    </div>
+    <div th:replace="brand/quickRegister :: modal"></div>
+</section>
+<th:block layout:fragment="javascript-extra">
+    <script th:src="@{/javascripts/vendors/bootstrap-toggle.min.js}"></script>
+    <script th:src="@{/brand/js/quickRegister.brand.js}"></script>
+</th:block>
+</body>
+</html>

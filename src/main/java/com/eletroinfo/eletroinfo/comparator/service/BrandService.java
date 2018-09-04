@@ -5,6 +5,7 @@ import com.eletroinfo.eletroinfo.comparator.filter.BrandFilter;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BrandService {
@@ -37,6 +38,12 @@ public interface BrandService {
      * @return
      */
     Optional<Brand> findById(Long id);
+
+    /**
+     *
+     * @return
+     */
+    List<Brand> findAll();
 
     /**
      *
