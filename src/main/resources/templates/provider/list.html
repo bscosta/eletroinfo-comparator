@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<body>
+
+<section layout:fragment="conteudo">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-10">
+                    <h1 th:text="#{pesquisa.fornecedor}"></h1>
+                </div>
+
+                <div class="col-xs-2">
+                    <div class="aw-page-header-controls">
+                        <a class="btn btn-primary" th:href="@{/fornecedor/novo}">
+                            <i class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm" th:text="#{novo.fornecedor}"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <form method="get" th:object="${providerFilter}" th:action="@{/fornecedor/buscar}" class="form-vertical  js-form-loading">
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <label for="input-produto-nome" th:text="#{nome}"></label>
+                    <input id="input-produto-nome" type="text" class="form-control" th:field="*{name}" />
+                </div>
+                <div class="form-group  col-sm-4" >
+                    <label class="control-label" for="email" th:text="#{contato}"></label>
+                    <input type="email" class="form-control" id="email" th:field="*{contact}" />
+                </div>
+                <div class="form-group  col-sm-4" >
+                    <label class="control-label" for="address" th:text="#{endereco}"></label>
+                    <input type="text" class="form-control" th:field="*{address}" />
+                </div>
+                <div class="col-xs-2">
+                    <div class="aw-page-header-controls">
+                        <button type="submit" class="btn btn-primary" href="#">
+                            <i class="fa  fa-search"></i> <span class="hidden-xs  hidden-sm" th:text="#{pesquisar}"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive pc-tabela-simples">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="table-projetos-col-nome" th:text="#{nome}"></th>
+                    <th class="table-projetos-col-contato" th:text="#{contato}"></th>
+                    <th class="table-projetos-col-" colspan="2"></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="provider : ${pageData.content}">
+                    <td th:text="${provider.name}"></td>
+                    <td>
+                        <th:block th:each="providerContact : ${provider.contacts}">
+                            <span th:text="${providerContact.valueContact} + ' - '"></span>
+                        </th:block>
+                    </td>
+                    <td class="text-center">
+                        <a class="btn  btn-link  btn-xs js-tooltip" title="Editar" th:href="@{/fornecedor/{id}(id=${provider.id})}">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </a>
+                        <a href="#" class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn"
+                           data-toggle="tooltip" data-placement="bottom" th:attr="title=#{deletar}"
+                           th:onclick="|deleteRegister('${provider.id}', 'fornecedor/' )|">
+                            <i class="glyphicon glyphicon-remove"></i> <span class="icon-name"></span>
+                        </a>
+                    </td>
+                    <!--</tr>
+                    <tr>
+                        <td colspan="4">Nenhum usuário encontrado</td>
+                    </tr>-->
+                </tbody>
+            </table>
+            <div th:replace="layout/fragments/pagination :: pagination"></div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

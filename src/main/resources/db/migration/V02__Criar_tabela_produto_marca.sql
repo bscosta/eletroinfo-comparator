@@ -100,13 +100,6 @@ CREATE TABLE provider_contact (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     provider_id BIGINT NOT NULL,
     contact_id BIGINT NOT NULL,
-    user_register BIGINT(5),
-    date_register timestamp,
-    user_last_update BIGINT(5),
-    date_last_update timestamp,
-    zone_register VARCHAR(50),
-    zone_last_update VARCHAR(50),
-    deleted BOOLEAN DEFAULT false NOT NULL,
     FOREIGN KEY (provider_id) REFERENCES provider(id),
     FOREIGN KEY (contact_id) REFERENCES contact(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
