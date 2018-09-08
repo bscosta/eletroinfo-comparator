@@ -48,7 +48,7 @@ public class SellerServiceImpl implements SellerService {
     }
 
     public Optional<Seller> findById(Long id) {
-        return sellerRepository.findByIdAndSellerDeletedIsFalse(id);
+        return sellerRepository.findByIdAndDeletedIsFalse(id);
     }
 
     public void delete(Long id) {

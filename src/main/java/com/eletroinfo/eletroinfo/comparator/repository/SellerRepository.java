@@ -30,4 +30,6 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
             +  " AND s.id = :id "
             +  " AND s.deleted is false ")
     Optional<Seller> findByIdAndSellerDeletedIsFalse(@Param("id") Long id);
+
+    Optional<Seller> findByIdAndDeletedIsFalse(Long id);
 }

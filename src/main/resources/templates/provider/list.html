@@ -25,6 +25,7 @@
     </div>
     <div class="container-fluid">
         <form method="get" th:object="${providerFilter}" th:action="@{/fornecedor/buscar}" class="form-vertical  js-form-loading">
+            <div th:replace="layout/fragments/message :: messages"></div>
             <div class="row">
                 <div class="form-group col-sm-4">
                     <label for="input-produto-nome" th:text="#{nome}"></label>
