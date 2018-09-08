@@ -37,13 +37,15 @@
             <input type="hidden" th:field="*{id}" />
             <div class="tabs-x tabs-above">
                 <ul id="tab-vendedor" class="nav nav-tabs" role="tablist">
-                    <li th:classappend="!${provider.updateContact} ? active"><a href="#dados-pessoais" role="tab" data-toggle="tab"><i
+                    <li th:classappend="!${provider.updateContact} and !${provider.updateAddress} ? active"><a href="#dados-pessoais" role="tab" data-toggle="tab"><i
                             class="glyphicon glyphicon-user"></i><span th:text="' ' + #{dados}"></span></a></li>
+                    <li th:classappend="${provider.updateAddress} ? active" th:unless="${provider.novo}"><a href="#enderecos" role="tab-kv" data-toggle="tab"><i class="glyphicon glyphicon-globe"></i>
+                        <span th:text="' ' + #{enderecos}"></span></a></li>
                     <li th:classappend="${provider.updateContact} ? active" th:unless="${provider.novo}"><a href="#contatos" role="tab-kv" data-toggle="tab"><i class="glyphicon glyphicon-phone"></i>
                         <span th:text="' ' + #{contatos}"></span></a></li>
                 </ul>
                 <div id="tab-vendedor-content" class="tab-content">
-                    <div class="tab-pane fade in" th:classappend="!${provider.updateContact} ? active" id="dados-pessoais">
+                    <div class="tab-pane fade in" th:classappend="!${provider.updateContact} and !${provider.updateAddress} ? active" id="dados-pessoais">
                         <div class="row">
                             <div class="col-sm-12 form-group">
                                 <label for="name" th:text="#{nome}"></label>
@@ -54,6 +56,116 @@
                             <button class="btn  btn-primary" type="submit" name="save" th:text="#{salvar}"></button>
                             <a th:href="@{/fornecedor}" class="btn  btn-default" th:text="#{voltar}"></a>
                         </div>
+                    </div>
+                    <div th:unless="${provider.novo}" class="tab-pane fade in" th:classappend="${provider.updateAddress} ? active" id="enderecos">
+                        <th:block th:each="addresses,rowStat : *{#numbers.sequence(addresses.size() - 1, 0, -1)}">
+                            <input th:if="*{addresses[__${rowStat.index}__].id}" type="hidden" th:field="*{addresses[__${rowStat.index}__].id}">
+                            <input th:if="*{addresses[__${rowStat.index}__].id}" type="hidden" th:field="*{addresses[__${rowStat.index}__].typeAddress}">
+                            <input th:if="*{addresses[__${rowStat.index}__].id}" type="hidden" th:field="*{addresses[__${rowStat.index}__].typePlace}">
+                            <input th:if="*{addresses[__${rowStat.index}__].id}" type="hidden" th:field="*{addresses[__${rowStat.index}__].address}">
+                            <input th:if="*{addresses[__${rowStat.index}__].id}" type="hidden" th:field="*{addresses[__${rowStat.index}__].number}">
+                            <input th:if="*{addresses[__${rowStat.index}__].id}" type="hidden" th:field="*{addresses[__${rowStat.index}__].neighborhood}">
+                            <input th:if="*{addresses[__${rowStat.index}__].id}" type="hidden" th:field="*{addresses[__${rowStat.index}__].complement}">
+                            <input th:if="*{addresses[__${rowStat.index}__].id}" type="hidden" th:field="*{addresses[__${rowStat.index}__].cep}">
+                            <input th:if="*{addresses[__${rowStat.index}__].id}" type="hidden" th:field="*{addresses[__${rowStat.index}__].city}">
+                            <input th:if="*{addresses[__${rowStat.index}__].id}" type="hidden" th:field="*{addresses[__${rowStat.index}__].uf}">
+                        </th:block>
+                        <div class="row">
+                            <div class="col-sm-2 form-group">
+                                <label for="typeAddress" class="control-label" th:text="#{tipo.endereco}"></label>
+                                <select class="form-control" th:field="*{addresses[__${sizeAddresses}__].typeAddress}">
+                                    <option value="">Selecione</option>
+                                    <option th:text="#{pessoal}" th:value="Pessoal"></option>
+                                    <option th:text="#{comercial}" th:value="Comercial"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                <label for="typePlace" class="control-label" th:text="#{tipo.logradouro}"></label>
+                                <select class="form-control" th:field="*{addresses[__${sizeAddresses}__].typePlace}">
+                                    <option value="">Selecione</option>
+                                    <option th:text="#{rua}" th:value="RUA"></option>
+                                    <option th:text="#{avenida}" th:value="AVENIDA"></option>
+                                    <option th:text="#{travessa}" th:value="TRAVESSA"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label th:text="#{endereco}"></label>
+                                <input type="text" class="form-control" th:field="*{addresses[__${sizeAddresses}__].address}"/>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                <label th:text="#{numero}"></label>
+                                <input type="number" class="form-control" th:field="*{addresses[__${sizeAddresses}__].number}"/>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label th:text="#{bairro}"></label>
+                                <input type="text" class="form-control" th:field="*{addresses[__${sizeAddresses}__].neighborhood}"/>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label th:text="#{complemento}"></label>
+                                <input type="text" class="form-control" th:field="*{addresses[__${sizeAddresses}__].complement}"/>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                <label th:text="#{cep}"></label>
+                                <input type="text" class="form-control" th:field="*{addresses[__${sizeAddresses}__].cep}"/>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label th:text="#{cidade}"></label>
+                                <input type="text" class="form-control" th:field="*{addresses[__${sizeAddresses}__].city}"/>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                <label for="uf" class="control-label" th:text="#{uf}"></label>
+                                <select class="form-control" th:field="*{addresses[__${sizeAddresses}__].uf}">
+                                    <option value="" th:text="#{selecione}"></option>
+                                    <option th:each="uf : ${ufs}" th:value="${uf}" th:text="#{${uf.descricao}}">Adocicada</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn  btn-primary" type="submit" th:text="#{adicionar}" name="addAddress"></button>
+                            <a th:href="@{/fornecedor}" class="btn  btn-default" th:text="#{voltar}"></a>
+                        </div>
+                        <div class="table-responsive pc-tabela-simples">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="table-projetos-col-nome" th:text="#{tipo.endereco}"></th>
+                                    <th class="table-projetos-col-dataInicio" th:text="#{endereco}"></th>
+                                    <th class="table-projetos-col-dataInicio" th:text="#{numero}"></th>
+                                    <th class="table-projetos-col-dataInicio" th:text="#{bairro}"></th>
+                                    <th class="table-projetos-col-dataInicio" th:text="#{cidade}"></th>
+                                    <th class="table-projetos-col-dataInicio" th:text="#{cep}"></th>
+                                    <th class="table-projetos-col-dataInicio" th:text="#{uf}"></th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:if="${address.id}" th:each="address : ${provider.addresses}">
+                                    <td th:text="${address.typeAddress}"></td>
+                                    <td th:text="${address.typePlace} + ' ' + ${address.address}"></td>
+                                    <td th:text="${address.number}"></td>
+                                    <td th:text="${address.neighborhood}"></td>
+                                    <td th:text="${address.city}"></td>
+                                    <td th:text="${address.cep}"></td>
+                                    <td th:text="${address.uf}"></td>
+                                    <td class="text-center">
+                                        <!--<a class="btn  btn-link  btn-xs js-tooltip" th:title="#{editar}" th:href="@{/vendedor/{id}(id=${seller.id})}">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>-->
+                                        <button th:value="${address.id}" name="delAddress"
+                                                class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn" th:title=#{deletar}>
+                                            <i class="glyphicon glyphicon-remove"></i> <span class="icon-name"></span>
+                                        </button>
+                                    </td>
+                                    <!--</tr>
+                                    <tr>
+                                        <td colspan="4">Nenhum usuário encontrado</td>
+                                    </tr>-->
+                                </tbody>
+                            </table>
+                            <!--<div th:replace="layout/fragments/pagination :: pagination"></div>-->
+                        </div>
+
+
                     </div>
                     <div th:unless="${provider.novo}" class="tab-pane fade in" th:classappend="${provider.updateContact} ? active" id="contatos">
                         <th:block th:each="contacts,rowStat : *{#numbers.sequence(contacts.size() - 1, 0, -1)}">

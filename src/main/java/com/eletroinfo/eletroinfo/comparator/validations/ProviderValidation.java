@@ -1,9 +1,12 @@
 package com.eletroinfo.eletroinfo.comparator.validations;
 
+import com.eletroinfo.eletroinfo.comparator.entitie.Address;
 import com.eletroinfo.eletroinfo.comparator.entitie.Contact;
 import com.eletroinfo.eletroinfo.comparator.entitie.Provider;
 import com.eletroinfo.eletroinfo.comparator.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -13,6 +16,7 @@ import org.springframework.validation.Validator;
  */
 
 @Component
+@Scope(value="request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ProviderValidation implements Validator {
 
     @Autowired
@@ -55,6 +59,22 @@ public class ProviderValidation implements Validator {
                 errors.rejectValue("contacts", "value.contato.vazio");
             } else if (contact.getId() == null && providerService.countByProviderIdAndContactValueAndDeletedIsFalse(provider.getId(), contact.getValueContact()) > 0) {
                 errors.rejectValue("contacts", "value.contato.existe", new Object[]{contact.getValueContact()},"");
+            }
+        }
+    }
+
+    public void address(Provider provider, Errors errors) {
+        for (Address address: provider.getAddresses()) {
+            if (address.getTypeAddress() == null || address.getTypeAddress().isEmpty()) {
+                errors.rejectValue("addresses", "tipo.endereco.vazio");
+            }
+            if (address.getTypePlace() == null || address.getTypePlace().isEmpty()) {
+                errors.rejectValue("addresses", "tipo.lugar.vazio");
+            }
+            if (address.getAddress() == null || address.getAddress().isEmpty()) {
+                errors.rejectValue("addresses", "endereco.vazio");
+            } else if(address.getId() == null && providerService.countByProviderIdAndAddressAndDeletedIsFalse(provider.getId(), address.getAddress()) > 0) {
+                errors.rejectValue("addresses", "endereco.existe", new Object[]{address.getAddress()}, "");
             }
         }
     }

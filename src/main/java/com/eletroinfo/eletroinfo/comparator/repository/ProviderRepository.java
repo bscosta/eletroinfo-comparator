@@ -22,6 +22,14 @@ public interface ProviderRepository extends JpaRepository<Provider, Long> {
 
     @Transactional(readOnly = true)
     @Query(" SELECT count(p) FROM Provider p WHERE "
+            + " p.id IN (SELECT pa.providerId FROM ProviderAddress pa, Address a "
+            +  " WHERE pa.addressId = a.id AND a.address = :address )"
+            +  " AND p.id = :id "
+            +  " AND p.deleted is false ")
+    Long countByProviderIdAndAddressAndDeletedIsFalse(@Param("id") Long id, @Param("address") String address);
+
+    @Transactional(readOnly = true)
+    @Query(" SELECT count(p) FROM Provider p WHERE "
             + " p.id IN (SELECT pc.providerId FROM ProviderContact pc, Contact c "
             +  " WHERE pc.contactId = c.id AND c.valueContact = :contactValue )"
             +  " AND p.id = :id "

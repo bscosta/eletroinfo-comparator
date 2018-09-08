@@ -1,10 +1,12 @@
 package com.eletroinfo.eletroinfo.comparator.service.impl;
 
+import com.eletroinfo.eletroinfo.comparator.entitie.Address;
 import com.eletroinfo.eletroinfo.comparator.entitie.Contact;
 import com.eletroinfo.eletroinfo.comparator.entitie.Provider;
 import com.eletroinfo.eletroinfo.comparator.filter.ProviderFilter;
 import com.eletroinfo.eletroinfo.comparator.repository.ProviderRepository;
 import com.eletroinfo.eletroinfo.comparator.repository.custom.ProviderRepositoryCustom;
+import com.eletroinfo.eletroinfo.comparator.service.AddressService;
 import com.eletroinfo.eletroinfo.comparator.service.ContactService;
 import com.eletroinfo.eletroinfo.comparator.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class ProviderServiceImpl implements ProviderService {
     private ProviderRepository providerRepository;
 
     @Autowired
+    private AddressService addressService;
+
+    @Autowired
     private ContactService contactService;
 
     public PageImpl<Provider> findByParameters(ProviderFilter providerFilter, Pageable pageable) {
@@ -38,11 +43,20 @@ public class ProviderServiceImpl implements ProviderService {
         return this.providerRepository.existsByNameAndDeletedFalse(name);
     }
 
+    public Long countByProviderIdAndAddressAndDeletedIsFalse(Long id, String address) {
+        return providerRepository.countByProviderIdAndAddressAndDeletedIsFalse(id, address);
+    }
+
     public Long countByProviderIdAndContactValueAndDeletedIsFalse(Long id, String contactValue) {
         return providerRepository.countByProviderIdAndContactValueAndDeletedIsFalse(id, contactValue);
     }
 
     public Provider save(Provider provider) {
+        for (Address address : provider.getAddresses()) {
+            if (address.getId() == null) {
+                address = addressService.save(address);
+            }
+        }
         for (Contact contact : provider.getContacts()) {
             if (contact.getId() == null) {
                 contact = contactService.save(contact);

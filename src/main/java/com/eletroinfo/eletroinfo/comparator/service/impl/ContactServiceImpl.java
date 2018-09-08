@@ -21,8 +21,8 @@ public class ContactServiceImpl implements ContactService {
     public void delete(Long id, String fkTable, Long fkId, String fkName) {
         Optional<Contact> contact = contactRepository.findById(id);
         if (contact.isPresent()) {
-            String teste = contact.get().getName() + " | fkTable: " + fkTable + " - fkId: " + fkId + " - fkName: " + fkName;
-            contact.get().setName(teste);
+            String contactDeleted = contact.get().getName() + " | fkTable: " + fkTable + " - fkId: " + fkId + " - fkName: " + fkName;
+            contact.get().setName(contactDeleted);
             contact.get().setDeleted(true);
             contactRepository.save(contact.get());
         }

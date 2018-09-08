@@ -55,7 +55,7 @@ CREATE TABLE address (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     type_address VARCHAR(20) NOT NULL,
     type_place VARCHAR(20) NOT NULL,
-    address VARCHAR(100) NOT NULL,
+    address VARCHAR(150) NOT NULL,
     number BIGINT(7) NOT NULL,
     neighborhood VARCHAR(60) NOT NULL,
     complement VARCHAR(60) NOT NULL,
@@ -108,13 +108,6 @@ CREATE TABLE provider_address (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     provider_id BIGINT NOT NULL,
     address_id BIGINT NOT NULL,
-    user_register BIGINT(5),
-    date_register timestamp,
-    user_last_update BIGINT(5),
-    date_last_update timestamp,
-    zone_register VARCHAR(50),
-    zone_last_update VARCHAR(50),
-    deleted BOOLEAN DEFAULT false NOT NULL,
     FOREIGN KEY (provider_id) REFERENCES provider(id),
     FOREIGN KEY (address_id) REFERENCES address(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

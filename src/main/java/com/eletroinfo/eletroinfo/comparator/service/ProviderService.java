@@ -31,6 +31,14 @@ public interface ProviderService {
     /**
      *
      * @param id
+     * @param address
+     * @return
+     */
+    Long countByProviderIdAndAddressAndDeletedIsFalse(Long id, String address);
+
+    /**
+     *
+     * @param id
      * @param contactValue
      * @return
      */

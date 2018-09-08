@@ -63,6 +63,9 @@ public class Provider {
     private ZoneId zoneLastUpdate;
 
     @Transient
+    private Boolean isUpdateAddress;
+
+    @Transient
     private Boolean isUpdateContact;
 
     public Boolean isNovo() {
@@ -165,6 +168,14 @@ public class Provider {
         this.zoneLastUpdate = zoneLastUpdate;
     }
 
+    public Boolean getUpdateAddress() {
+        return isUpdateAddress;
+    }
+
+    public void setUpdateAddress(Boolean updateAddress) {
+        isUpdateAddress = updateAddress;
+    }
+
     public Boolean getUpdateContact() {
         return isUpdateContact;
     }
@@ -176,5 +187,6 @@ public class Provider {
     public Provider() {
         super();
         this.contacts = new ArrayList<>();
+        this.addresses = new ArrayList<>();
     }
 }
