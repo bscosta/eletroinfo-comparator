@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<body>
+
+<section layout:fragment="conteudo">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-10">
+                    <h1 th:text="#{pesquisa.orcamento}"></h1>
+                </div>
+
+                <div class="col-xs-2">
+                    <div class="aw-page-header-controls">
+                        <a class="btn btn-primary" th:href="@{/orcamento/novo}">
+                            <i class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm" th:text="#{novo.orcamento}"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <form method="get" th:object="${budgetFilter}" th:action="@{/orcamento/buscar}" class="form-vertical  js-form-loading">
+            <div th:replace="layout/fragments/message :: messages"></div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="productName" th:text="#{nome.produto}"></label>
+                    <input type="text" class="form-control" th:field="*{productName}" />
+                </div>
+                <div class="form-group  col-sm-6" >
+                    <label class="control-label" for="sellerName" th:text="#{nome.fornecedor}"></label>
+                    <input type="email" class="form-control" th:field="*{providerName}" />
+                </div>
+                <div class="form-group  col-sm-6" >
+                    <label class="control-label" for="sellerName" th:text="#{nome.vendedor}"></label>
+                    <input type="text" class="form-control" th:field="*{sellerName}" />
+                </div>
+                <div class="form-group  col-sm-6" >
+                    <label class="control-label" for="barcode" th:text="#{codigo.barras}"></label>
+                    <input type="text" class="form-control" th:field="*{barcode}" />
+                </div>
+                <div class="col-xs-2">
+                    <div class="aw-page-header-controls">
+                        <button type="submit" class="btn btn-primary" href="#">
+                            <i class="fa  fa-search"></i> <span class="hidden-xs  hidden-sm" th:text="#{pesquisar}"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive pc-tabela-simples">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="table-projetos-col-nome" th:text="#{nome.produto}"></th>
+                    <th class="table-projetos-col-contato" th:text="#{nome.fornecedor}"></th>
+                    <th class="table-projetos-col-contato" th:text="#{nome.vendedor}"></th>
+                    <th class="table-projetos-col-contato" th:text="#{nome.vendedor}"></th>
+                    <th class="table-projetos-col-contato" th:text="#{preco}"></th>
+                    <th class="table-projetos-col-contato" th:text="#{desconto}"></th>
+                    <th class="table-projetos-col-contato" th:text="#{quantidade}"></th>
+                    <th class="table-projetos-col-" colspan="2"></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="budget : ${pageData.content}">
+                    <td th:text="${budget.product.name}"></td>
+                    <td th:text="${budget.provider.name}"></td>
+                    <td th:text="${budget.seller.name}"></td>
+                    <td th:text="${budget.price}"></td>
+                    <td th:text="${budget.rebate}"></td>
+                    <td th:text="${budget.quantity}"></td>
+                    <td class="text-center">
+                        <a class="btn  btn-link  btn-xs js-tooltip" title="Editar" th:href="@{/fornecedor/{id}(id=${budget.id})}">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </a>
+                        <a href="#" class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn"
+                           data-toggle="tooltip" data-placement="bottom" th:attr="title=#{deletar}"
+                           th:onclick="|deleteRegister('${budget.id}', 'orcamento/' )|">
+                            <i class="glyphicon glyphicon-remove"></i> <span class="icon-name"></span>
+                        </a>
+                    </td>
+                    <!--</tr>
+                    <tr>
+                        <td colspan="4">Nenhum usuário encontrado</td>
+                    </tr>-->
+                </tbody>
+            </table>
+            <div th:replace="layout/fragments/pagination :: pagination"></div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
