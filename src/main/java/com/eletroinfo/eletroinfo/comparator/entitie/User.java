@@ -2,6 +2,7 @@ package com.eletroinfo.eletroinfo.comparator.entitie;
 
 import com.eletroinfo.eletroinfo.comparator.converters.ZoneIdConverter;
 import com.eletroinfo.eletroinfo.comparator.enumeration.UserType;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,7 +16,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
+@DynamicUpdate
+public class User extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -48,37 +50,6 @@ public class User implements Serializable {
     @Column(name = "activated", nullable = false)
     private boolean activated;
 
-    @Column(name = "deleted", nullable = false)
-    private boolean deleted;
-
-    @ManyToOne(optional = true, fetch=FetchType.LAZY)
-    @JoinColumn(name = "user_register", nullable = false)
-    private User userRegistrater;
-
-    @ManyToOne(optional = true, fetch=FetchType.LAZY)
-    @JoinColumn(name = "user_last_update", nullable = false)
-    private User userLastUpdate;
-
-    @Column(name = "date_register", nullable = false)
-    private LocalDateTime dateRegister;
-
-    @Column(name = "date_last_update", nullable = false)
-    private LocalDateTime dateLastUpdate;
-
-    @Convert(converter = ZoneIdConverter.class)
-    @Column(name = "zone_register", nullable = false)
-    private ZoneId zoneRegister;
-
-    @Convert(converter = ZoneIdConverter.class)
-    @Column(name = "zone_last_update", nullable = false)
-    private ZoneId zoneLastUpdate;
-
-    @Column(name = "ip_register", nullable = false)
-    private String ipRegister;
-
-    @Column(name = "ip_last_update", nullable = false)
-    private String ipLastUpdate;
-
     public Boolean isNovo() {
         return id == null;
     }
@@ -86,13 +57,12 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String name, String email, String login, String password, UserType userType, boolean deleted) {
+    public User(String name, String email, String login, String password, UserType userType) {
         this.name = name;
         this.email = email;
         this.login = login;
         this.password = password;
         this.userType = userType;
-        this.deleted = deleted;
     }
 
     public Long getId() {
@@ -157,77 +127,5 @@ public class User implements Serializable {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public User getUserRegistrater() {
-        return userRegistrater;
-    }
-
-    public void setUserRegistrater(User userRegistrater) {
-        this.userRegistrater = userRegistrater;
-    }
-
-    public LocalDateTime getDateRegister() {
-        return dateRegister;
-    }
-
-    public void setDateRegister(LocalDateTime dateRegister) {
-        this.dateRegister = dateRegister;
-    }
-
-    public User getUserLastUpdate() {
-        return userLastUpdate;
-    }
-
-    public void setUserLastUpdate(User userLastUpdate) {
-        this.userLastUpdate = userLastUpdate;
-    }
-
-    public LocalDateTime getDateLastUpdate() {
-        return dateLastUpdate;
-    }
-
-    public void setDateLastUpdate(LocalDateTime dateLastUpdate) {
-        this.dateLastUpdate = dateLastUpdate;
-    }
-
-    public ZoneId getZoneRegister() {
-        return zoneRegister;
-    }
-
-    public void setZoneRegister(ZoneId zoneRegister) {
-        this.zoneRegister = zoneRegister;
-    }
-
-    public ZoneId getZoneLastUpdate() {
-        return zoneLastUpdate;
-    }
-
-    public void setZoneLastUpdate(ZoneId zoneLastUpdate) {
-        this.zoneLastUpdate = zoneLastUpdate;
-    }
-
-    public String getIpRegister() {
-        return ipRegister;
-    }
-
-    public void setIpRegister(String ipRegister) {
-        this.ipRegister = ipRegister;
-    }
-
-    public String getIpLastUpdate() {
-        return ipLastUpdate;
-    }
-
-    public void setIpLastUpdate(String ipLastUpdate) {
-        this.ipLastUpdate = ipLastUpdate;
     }
 }

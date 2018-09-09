@@ -1,6 +1,7 @@
 package com.eletroinfo.eletroinfo.comparator.entitie;
 
 import com.eletroinfo.eletroinfo.comparator.converters.ZoneIdConverter;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,7 +15,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "group_user")
-public class GroupUser implements Serializable {
+@DynamicUpdate
+public class GroupUser extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,37 +37,6 @@ public class GroupUser implements Serializable {
             joinColumns = { @JoinColumn(name = "group_id")},
             inverseJoinColumns = { @JoinColumn(name = "user_id")})
     private List<User> listUsers;
-
-    @Column(name = "deleted", length = 100)
-    private boolean deleted;
-
-    @ManyToOne(optional = true, fetch=FetchType.LAZY)
-    @JoinColumn(name = "user_registrater")
-    private User userRegistrater;
-
-    @ManyToOne(optional = true, fetch=FetchType.LAZY)
-    @JoinColumn(name = "user_last_update")
-    private User userLastUpdate;
-
-    @Column(name = "date_register", nullable = false)
-    private LocalDateTime dateRegister;
-
-    @Column(name = "date_last_update", nullable = true)
-    private LocalDateTime dateLastUpdate;
-
-    @Convert(converter = ZoneIdConverter.class)
-    @Column(name = "zone_register", nullable = true)
-    private ZoneId zoneRegister;
-
-    @Convert(converter = ZoneIdConverter.class)
-    @Column(name = "zone_last_update", nullable = true)
-    private ZoneId zoneLastUpdate;
-
-    @Column(name = "ip_register", nullable = true)
-    private String ipRegister;
-
-    @Column(name = "ip_last_update", nullable = true)
-    private String ipLastUpdate;
 
     public Long getId() {
         return id;
@@ -97,77 +68,5 @@ public class GroupUser implements Serializable {
 
     public void setListUsers(List<User> listUsers) {
         this.listUsers = listUsers;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public User getUserRegistrater() {
-        return userRegistrater;
-    }
-
-    public void setUserRegistrater(User userRegistrater) {
-        this.userRegistrater = userRegistrater;
-    }
-
-    public User getUserLastUpdate() {
-        return userLastUpdate;
-    }
-
-    public void setUserLastUpdate(User userLastUpdate) {
-        this.userLastUpdate = userLastUpdate;
-    }
-
-    public LocalDateTime getDateRegister() {
-        return dateRegister;
-    }
-
-    public void setDateRegister(LocalDateTime dateRegister) {
-        this.dateRegister = dateRegister;
-    }
-
-    public LocalDateTime getDateLastUpdate() {
-        return dateLastUpdate;
-    }
-
-    public void setDateLastUpdate(LocalDateTime dateLastUpdate) {
-        this.dateLastUpdate = dateLastUpdate;
-    }
-
-    public ZoneId getZoneRegister() {
-        return zoneRegister;
-    }
-
-    public void setZoneRegister(ZoneId zoneRegister) {
-        this.zoneRegister = zoneRegister;
-    }
-
-    public ZoneId getZoneLastUpdate() {
-        return zoneLastUpdate;
-    }
-
-    public void setZoneLastUpdate(ZoneId zoneLastUpdate) {
-        this.zoneLastUpdate = zoneLastUpdate;
-    }
-
-    public String getIpRegister() {
-        return ipRegister;
-    }
-
-    public void setIpRegister(String ipRegister) {
-        this.ipRegister = ipRegister;
-    }
-
-    public String getIpLastUpdate() {
-        return ipLastUpdate;
-    }
-
-    public void setIpLastUpdate(String ipLastUpdate) {
-        this.ipLastUpdate = ipLastUpdate;
     }
 }

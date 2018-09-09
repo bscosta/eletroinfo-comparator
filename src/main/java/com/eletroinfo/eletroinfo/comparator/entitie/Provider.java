@@ -1,8 +1,10 @@
 package com.eletroinfo.eletroinfo.comparator.entitie;
 
 import com.eletroinfo.eletroinfo.comparator.converters.ZoneIdConverter;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -14,7 +16,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "provider")
-public class Provider {
+@DynamicUpdate
+public class Provider extends BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

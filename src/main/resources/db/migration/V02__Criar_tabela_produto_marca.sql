@@ -8,6 +8,8 @@ CREATE TABLE brand (
     date_last_update timestamp,
     zone_register VARCHAR(50),
     zone_last_update VARCHAR(50),
+    ip_register VARCHAR(50),
+    ip_last_update VARCHAR(50),
     deleted BOOLEAN DEFAULT false NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -20,6 +22,8 @@ CREATE TABLE seller (
     date_last_update timestamp,
     zone_register VARCHAR(50),
     zone_last_update VARCHAR(50),
+    ip_register VARCHAR(50),
+    ip_last_update VARCHAR(50),
     deleted BOOLEAN DEFAULT false NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -33,6 +37,8 @@ CREATE TABLE provider (
     date_last_update timestamp,
     zone_register VARCHAR(50),
     zone_last_update VARCHAR(50),
+    ip_register VARCHAR(50),
+    ip_last_update VARCHAR(50),
     deleted BOOLEAN DEFAULT false NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -48,6 +54,8 @@ CREATE TABLE contact (
     date_last_update timestamp,
     zone_register VARCHAR(50),
     zone_last_update VARCHAR(50),
+    ip_register VARCHAR(50),
+    ip_last_update VARCHAR(50),
     deleted BOOLEAN DEFAULT false NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -68,6 +76,8 @@ CREATE TABLE address (
     date_last_update timestamp,
     zone_register VARCHAR(50),
     zone_last_update VARCHAR(50),
+    ip_register VARCHAR(50),
+    ip_last_update VARCHAR(50),
     deleted BOOLEAN DEFAULT false NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -84,6 +94,8 @@ CREATE TABLE product (
     date_last_update timestamp,
     zone_register VARCHAR(50),
     zone_last_update VARCHAR(50),
+    ip_register VARCHAR(50),
+    ip_last_update VARCHAR(50),
     deleted BOOLEAN DEFAULT false NOT NULL,
     FOREIGN KEY (brand_id) REFERENCES brand(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -112,7 +124,7 @@ CREATE TABLE provider_address (
     FOREIGN KEY (address_id) REFERENCES address(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE product_provider_seller (
+CREATE TABLE budget (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     product_id BIGINT NOT NULL,
     provider_id BIGINT NOT NULL,
@@ -127,6 +139,8 @@ CREATE TABLE product_provider_seller (
     date_last_update timestamp,
     zone_register VARCHAR(50),
     zone_last_update VARCHAR(50),
+    ip_register VARCHAR(50),
+    ip_last_update VARCHAR(50),
     deleted BOOLEAN DEFAULT false NOT NULL,
     FOREIGN KEY (product_id) REFERENCES product(id),
     FOREIGN KEY (provider_id) REFERENCES provider(id),
