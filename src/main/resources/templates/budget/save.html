@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<body>
+
+<section layout:fragment="conteudo">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-10">
+                    <h1 th:if="${budget.novo}" th:text="#{titulo.cadastro.orcamento}"></h1>
+                    <h1 th:unless="${budget.novo}" th:text="#{titulo.editar.orcamento}"></h1>
+                </div>
+                <div class="col-xs-2" th:unless="${budget.novo}">
+                    <div class="aw-page-header-controls">
+                        <a class="btn btn-primary" th:href="@{/orcamento/novo}">
+                            <i class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm" th:text="#{novo}"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <form method="post" th:object="${budget}" th:action="${budget.novo} ? @{/orcamento/novo} :
+								@{/orcamento/{id}(id=${budget.id})}" class="form-vertical  js-form-loading">
+            <div th:replace="layout/fragments/message :: messages"></div>
+            <input type="hidden" th:field="*{id}" />
+            <div class="row">
+                <div class="col-sm-3 form-group">
+                    <label for="product.id" class="control-label">Produto</label>
+                    <div class="bw-field-action">
+                        <select class="form-control" id="product" th:field="*{product.id}">
+                            <option value="">Selecione</option>
+                            <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+                        </select>
+                        <div class="bw-field-action__icon">
+                            <a href="#" data-toggle="modal" data-target="#modalQuickRegisterBrand" th:title="#{cadastrar.produto}">
+                                <i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="provider.id" class="control-label">Fornecedor</label>
+                    <div class="bw-field-action">
+                        <select class="form-control" id="provider" th:field="*{provider.id}">
+                            <option value="">Selecione</option>
+                            <option th:each="provider : ${providers}" th:value="${provider.id}" th:text="${provider.name}"></option>
+                        </select>
+                        <div class="bw-field-action__icon">
+                            <a href="#" data-toggle="modal" data-target="#modalQuickRegisterBrand" th:title="#{cadastrar.fornecedor}">
+                                <i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="seller.id" class="control-label">Vendedor</label>
+                    <div class="bw-field-action">
+                        <select class="form-control" id="seller" th:field="*{seller.id}">
+                            <option value="">Selecione</option>
+                            <option th:each="seller : ${sellers}" th:value="${seller.id}" th:text="${seller.name}"></option>
+                        </select>
+                        <div class="bw-field-action__icon">
+                            <a href="#" data-toggle="modal" data-target="#modalQuickRegisterBrand" th:title="#{cadastrar.vendedor}">
+                                <i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 form-group">
+                    <label for="price" th:text="#{preco}"></label>
+                    <input type="number" class="form-control" th:placeholder="#{R$}" th:field="*{price}"/>
+                </div>
+                <div class="col-sm-2 form-group">
+                    <label for="rebate" th:text="#{desconto}"></label>
+                    <input type="number" class="form-control" th:placeholder="#{desconto}" th:field="*{rebate}"/>
+                </div>
+                <div class="col-sm-2 form-group">
+                    <label for="quantity" th:text="#{quantidade}"></label>
+                    <input type="number" class="form-control" th:placeholder="#{quantidade}" th:field="*{quantity}"/>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="barcode" th:text="#{codigo.barras}"></label>
+                    <input type="number" class="form-control" th:placeholder="#{codigo.barras}" th:field="*{barcode}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn  btn-primary" type="submit" th:text="#{salvar}"></button>
+                <a th:href="@{/orcamento}" class="btn  btn-default" th:text="#{voltar}"></a>
+            </div>
+        </form>
+    </div>
+
+</section>
+<th:block layout:fragment="javascript-extra">
+    <script th:src="@{/javascripts/vendors/bootstrap-toggle.min.js}"></script>
+</th:block>
+</body>
+</html>

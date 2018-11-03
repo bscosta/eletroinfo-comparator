@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,6 +50,10 @@ public class SellerServiceImpl implements SellerService {
 
     public Optional<Seller> findById(Long id) {
         return sellerRepository.findByIdAndDeletedIsFalse(id);
+    }
+
+    public List<Seller> findAll() {
+        return this.sellerRepository.findAll();
     }
 
     public void delete(Long id) {

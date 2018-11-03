@@ -5,6 +5,7 @@ import com.eletroinfo.eletroinfo.comparator.filter.ProviderFilter;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -57,4 +58,16 @@ public interface ProviderService {
      * @return
      */
     Optional<Provider> findById(Long id);
+
+    /**
+     *
+     * @return
+     */
+    List<Provider> findAll();
+
+    /**
+     *
+     * @param id
+     */
+    void delete(Long id);
 }

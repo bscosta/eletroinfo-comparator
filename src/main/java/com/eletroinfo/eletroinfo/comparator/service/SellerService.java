@@ -5,6 +5,7 @@ import com.eletroinfo.eletroinfo.comparator.filter.SellerFilter;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface SellerService {
@@ -16,6 +17,8 @@ public interface SellerService {
     Seller save(Seller seller);
 
     Optional<Seller> findById(Long id);
+
+    List<Seller> findAll();
 
     void delete(Long id);
 }

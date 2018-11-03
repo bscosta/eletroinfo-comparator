@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -67,5 +68,15 @@ public class ProviderServiceImpl implements ProviderService {
 
     public Optional<Provider> findById(Long id) {
         return providerRepository.findByIdAndDeletedIsFalse(id);
+    }
+
+    public List<Provider> findAll() {
+        return this.providerRepository.findAll();
+    }
+
+    public void delete(Long id) {
+        Optional<Provider> provider = this.providerRepository.findById(id);
+        provider.get().setDeleted(true);
+        this.providerRepository.save(provider.get());
     }
 }
