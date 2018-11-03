@@ -33,6 +33,8 @@ public class ProviderRespositoryCustomImpl implements ProviderRepositoryCustom {
         if (contact.isEmpty() && name.isEmpty())
             where.append(" OR p.id not in (SELECT pc.providerId FROM ProviderContact pc, Contact c WHERE pc.contactId = c.id)");
 
+        where.append(" AND p.deleted is false ");
+
         if (!name.isEmpty())
             where.append(" AND UPPER(p.name) LIKE UPPER(CONCAT('%" + name + "%')) ");
 

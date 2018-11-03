@@ -5,6 +5,7 @@ import com.eletroinfo.eletroinfo.comparator.filter.ProductFilter;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
@@ -37,4 +38,10 @@ public interface ProductService {
      * @return
      */
     Optional<Product> findById(Long id);
+
+    /**
+     *
+     * @return
+     */
+    List<Product> findAll();
 }

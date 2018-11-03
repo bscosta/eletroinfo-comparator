@@ -32,8 +32,8 @@
                     <input type="text" class="form-control" th:field="*{productName}" />
                 </div>
                 <div class="form-group  col-sm-6" >
-                    <label class="control-label" for="sellerName" th:text="#{nome.fornecedor}"></label>
-                    <input type="email" class="form-control" th:field="*{providerName}" />
+                    <label class="control-label" for="providerName" th:text="#{nome.fornecedor}"></label>
+                    <input type="text" class="form-control" th:field="*{providerName}" />
                 </div>
                 <div class="form-group  col-sm-6" >
                     <label class="control-label" for="sellerName" th:text="#{nome.vendedor}"></label>
@@ -55,40 +55,40 @@
         <div class="table-responsive pc-tabela-simples">
             <table class="table table-hover">
                 <thead>
-                <tr>
-                    <th class="table-projetos-col-nome" th:text="#{nome.produto}"></th>
-                    <th class="table-projetos-col-contato" th:text="#{nome.fornecedor}"></th>
-                    <th class="table-projetos-col-contato" th:text="#{nome.vendedor}"></th>
-                    <th class="table-projetos-col-contato" th:text="#{nome.vendedor}"></th>
-                    <th class="table-projetos-col-contato" th:text="#{preco}"></th>
-                    <th class="table-projetos-col-contato" th:text="#{desconto}"></th>
-                    <th class="table-projetos-col-contato" th:text="#{quantidade}"></th>
-                    <th class="table-projetos-col-" colspan="2"></th>
-                </tr>
-                </thead>
-
-                <tbody>
-                <tr th:each="budget : ${pageData.content}">
-                    <td th:text="${budget.product.name}"></td>
-                    <td th:text="${budget.provider.name}"></td>
-                    <td th:text="${budget.seller.name}"></td>
-                    <td th:text="${budget.price}"></td>
-                    <td th:text="${budget.rebate}"></td>
-                    <td th:text="${budget.quantity}"></td>
-                    <td class="text-center">
-                        <a class="btn  btn-link  btn-xs js-tooltip" title="Editar" th:href="@{/fornecedor/{id}(id=${budget.id})}">
-                            <i class="glyphicon glyphicon-pencil"></i>
-                        </a>
-                        <a href="#" class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn"
-                           data-toggle="tooltip" data-placement="bottom" th:attr="title=#{deletar}"
-                           th:onclick="|deleteRegister('${budget.id}', 'orcamento/' )|">
-                            <i class="glyphicon glyphicon-remove"></i> <span class="icon-name"></span>
-                        </a>
-                    </td>
-                    <!--</tr>
                     <tr>
+                        <th class="table-projetos-col-nome" th:text="#{nome.produto}"></th>
+                        <th class="table-projetos-col-contato" th:text="#{nome.fornecedor}"></th>
+                        <th class="table-projetos-col-contato" th:text="#{nome.vendedor}"></th>
+                        <th class="table-projetos-col-contato" th:text="#{codigo.barras}"></th>
+                        <th class="table-projetos-col-contato" th:text="#{preco}"></th>
+                        <th class="table-projetos-col-contato" th:text="#{desconto}"></th>
+                        <th class="table-projetos-col-contato" th:text="#{quantidade}"></th>
+                        <th class="table-projetos-col-" colspan="2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="budget : ${pageData.content}">
+                        <td th:text="${budget.product.name}"></td>
+                        <td th:text="${budget.provider.name}"></td>
+                        <td th:text="${budget.seller.name}"></td>
+                        <td th:text="${budget.barcode}"></td>
+                        <td th:text="${budget.price}"></td>
+                        <td th:text="${budget.rebate}"></td>
+                        <td th:text="${budget.quantity}"></td>
+                        <td class="text-center">
+                            <a class="btn  btn-link  btn-xs js-tooltip" title="Editar" th:href="@{/orcamento/{id}(id=${budget.id})}">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </a>
+                            <a href="#" class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn"
+                               data-toggle="tooltip" data-placement="bottom" th:attr="title=#{deletar}"
+                               th:onclick="|deleteRegister('${budget.id}', 'orcamento/' )|">
+                                <i class="glyphicon glyphicon-remove"></i> <span class="icon-name"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr th:unless=${pageData.content}>
                         <td colspan="4">Nenhum usuário encontrado</td>
-                    </tr>-->
+                    </tr>
                 </tbody>
             </table>
             <div th:replace="layout/fragments/pagination :: pagination"></div>

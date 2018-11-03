@@ -4,6 +4,9 @@ import com.eletroinfo.eletroinfo.comparator.converters.ZoneIdConverter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -36,13 +39,13 @@ public class Budget extends BaseEntity implements Serializable {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    private int price;
+    private Integer price;
 
-    private int rebate;
+    private Integer rebate;
 
     private Long quantity;
 
-    private int barcode;
+    private Long barcode;
 
     public Boolean isNovo() {
         return this.id == null;
@@ -80,19 +83,19 @@ public class Budget extends BaseEntity implements Serializable {
         this.seller = seller;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public int getRebate() {
+    public Integer getRebate() {
         return rebate;
     }
 
-    public void setRebate(int rebate) {
+    public void setRebate(Integer rebate) {
         this.rebate = rebate;
     }
 
@@ -104,11 +107,11 @@ public class Budget extends BaseEntity implements Serializable {
         this.quantity = quantity;
     }
 
-    public int getBarcode() {
+    public Long getBarcode() {
         return barcode;
     }
 
-    public void setBarcode(int barcode) {
+    public void setBarcode(Long barcode) {
         this.barcode = barcode;
     }
 }

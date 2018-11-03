@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -102,6 +103,13 @@ public class ProviderController {
 
         ModelAndView mv = newProvider(provider);
         return mv;
+    }
+
+    @DeleteMapping("/{id}")
+    public @ResponseBody
+    ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        this.providerService.delete(id);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(value="/{\\d}", params = {"addAddress"})
