@@ -21,8 +21,8 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
  */
 
 @Configuration
-@EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class })
-@ComponentScan("com.eletroinfo.eletroinfo.comparator.controllers")
+//@EnableAutoConfiguration(exclude = { SecurityConfig.class })
+//@ComponentScan("com.eletroinfo.eletroinfo.comparator.controllers")
 @EnableWebMvc
 public class WebApplicationConfig implements WebMvcConfigurer, ApplicationContextAware {
 
