@@ -8,6 +8,7 @@
 
         <title th:text="${title}">Comparator - Inicio</title>
 
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors.min.css}"/>
         <link rel="stylesheet" type="text/css" th:href="@{/stylesheets/algaworks.min.css}"/>
         <link rel="stylesheet" type="text/css" th:href="@{/stylesheets/application.css}"/>
@@ -53,7 +54,7 @@
                     <ul class="nav navbar-nav  navbar-right">
 
                         <li>
-                            <a href="#" class="js-search-modal-trigger-show"><i class="fa  fa-search"></i></a>
+                            <a href="#" th:title="#{pesquisar}" class="js-search-modal-trigger-show"><i class="fa  fa-search"></i></a>
                         </li>
 
                         <li class="dropdown">
@@ -99,12 +100,27 @@
                             </li>
                             <li class="aw-menu__item  is-expanded">
                                 <a th:href="@{/marca}">
-                                    <i class="fa fa-product-hunt"></i><span>Marcas</span>
+                                    <i class="fas fa-shopping-cart"></i><span>Marca</span>
                                 </a>
                             </li>
                             <li class="aw-menu__item  is-expanded">
                                 <a th:href="@{/produto}">
-                                    <i class="fa fa-product-hunt"></i><span>Produtos</span>
+                                    <i class="fa fa-product-hunt"></i><span>Produto</span>
+                                </a>
+                            </li>
+                            <li class="aw-menu__item  is-expanded">
+                                <a th:href="@{/vendedor}">
+                                    <i class="fa fa-user"></i><span>Vendedor</span>
+                                </a>
+                            </li>
+                            <li class="aw-menu__item  is-expanded">
+                                <a th:href="@{/fornecedor}">
+                                    <i class="fas fa-people-carry"></i><span>Fornecedor</span>
+                                </a>
+                            </li>
+                            <li class="aw-menu__item  is-expanded">
+                                <a th:href="@{/orcamento}">
+                                    <i class="far fa-list-alt"></i><span>Orçamento</span>
                                 </a>
                             </li>
 

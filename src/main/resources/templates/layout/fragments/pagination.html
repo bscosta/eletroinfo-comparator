@@ -9,17 +9,17 @@
         <nav>
             <ul class="pagination  pagination-sm" th:with="currentPage=${pageData.currentPage}">
                 <li th:class="${pageData.first} ? disabled">
-                    <a th:href="${pageData.urlForPage(currentPage - 1)}" th:remove="${pageData.first} ? tag"><span>&laquo;</span></a>
+                    <a th:href="${pageData.urlForPage(currentPage - 1)}" th:title="#{anterior}" th:remove="${pageData.first} ? tag"><span>&laquo;</span></a>
                 </li>
                 <th:block th:each="p : ${#numbers.sequence(1, pageData.totalPages)}" th:with="numberPager=${p - 1}">
                     <li th:class="${currentPage == numberPager} ? active">
-                        <a th:href="${pageData.urlForPage(numberPager)}">[[${p}]]</a>
+                        <a th:href="${pageData.urlForPage(numberPager)}" th:title="${currentPage == numberPager} ? #{atual} : ${p}" >[[${p}]]</a>
                     </li>
                 </th:block>
 
 
                 <li th:class="${pageData.last} ? disabled">
-                    <a th:href="${pageData.urlForPage(currentPage + 1)}" th:remove="${pageData.last} ? tag"><span>&raquo;</span></a>
+                    <a th:href="${pageData.urlForPage(currentPage + 1)}" th:title="#{proxima}" th:remove="${pageData.last} ? tag"><span>&raquo;</span></a>
                 </li>
             </ul>
         </nav>
