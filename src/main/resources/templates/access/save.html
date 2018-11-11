@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head th:include="~{layout/layout :: header (title='Grupo de Usuários')}">
+    <th:block layout:fragment="head-end">
+        <link th:href="@{/stylesheets/lou-multi-select/css/multi-select.css}" rel="stylesheet" />
+    </th:block>
+</head>
+<body>
+
+<section layout:fragment="conteudo">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1 th:if="${permissionDto.userDto}" th:text="#{titulo.editar.permissoes.usuarios}"></h1>
+            <h1 th:if="${permissionDto.groupUserDto}" th:text="#{titulo.editar.permissoes.grupo.usuarios}"></h1>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <form method="post" th:object="${permissionDto}" th:action="${permissionDto.userDto} ? @{/acessos/usuario/{id}(id=${permissionDto.userDto.id})} :
+								@{/acessos/grupoUsuarios/{id}(id=${permissionDto.groupUserDto.id})}" class="form-vertical  js-form-loading">
+            <div th:replace="layout/fragments/message :: messages"></div>
+            <input type="hidden" th:field="*{userDto.id}" />
+            <input type="hidden" th:field="*{groupUserDto.id}" />
+            <div class="row form-group">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="header">
+                        <h2 th:text="#{titulo.selecione.acessos}"></h2>
+                        <ul class="header-dropdown m-r--5">
+                        </ul>
+                    </div>
+                    <div id="body">
+                        <select multiple="multiple" id="usersMultiSelect" data-page="-1" data-last="false" class="ms usersMultiSelect" th:field="*{parentMenusDto}">
+                            <option value='000' th:text="#{buscar.usuarios}"></option>
+                            <option th:if="${usersGroup != null}" th:each="user : ${usersGroup}" th:value="${user.id}" th:text="${user.name}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn  btn-primary" type="submit" th:text="#{salvar}">Salvar</button>
+                <a th:href="@{/grupoUsuarios}" class="btn  btn-default" th:text="#{voltar}">Voltar</a>
+            </div>
+        </form>
+    </div>
+
+</section>
+<th:block layout:fragment="javascript-extra">
+    <script th:src="@{/javascripts/vendors/bootstrap-toggle.min.js}"></script>
+    <script th:src="@{/vendors/lou-multi-select/jquery.multi-select.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.quicksearch/2.4.0/jquery.quicksearch.min.js"></script>
+    <!--<script th:src="@{/vendors/quick-search/jquery.quicksearch.js}"></script>-->
+    <script th:src="@{/group-user/save.js}"></script>
+</th:block>
+</body>
+</html>
