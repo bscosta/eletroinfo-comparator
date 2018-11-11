@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
@@ -18,6 +20,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Transactional(readOnly = true)
     boolean existsByEmailAndDeletedFalse(String email);
+
+    @Transactional(readOnly = true)
+    Optional<User> findByLogin(String login);
 
     @Query("SELECT u FROM User u WHERE UPPER(u.name) LIKE UPPER(CONCAT('%',:name,'%')) "
             + " AND UPPER(u.email) LIKE UPPER(CONCAT('%',:email,'%')) "

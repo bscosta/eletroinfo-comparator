@@ -2,6 +2,7 @@ package com.eletroinfo.eletroinfo.comparator.validations;
 
 import com.eletroinfo.eletroinfo.comparator.entitie.User;
 import com.eletroinfo.eletroinfo.comparator.service.UserService;
+import com.eletroinfo.eletroinfo.comparator.util.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -34,6 +35,11 @@ public class UserValidation implements Validator {
         validateEmail(user, errors);
         if (user.getPassword().isEmpty()) {
             errors.rejectValue("password","senha.vazio", "Campo de senha não pode ser vazio");
+        } else {
+            validatePassword(user, errors);
+            if (!errors.hasErrors()) {
+                user.setPassword(PasswordUtils.generateBCrypt(user.getPassword()));
+            }
         }
     }
 
@@ -47,6 +53,11 @@ public class UserValidation implements Validator {
         }
         if (user.getPassword() == null) {
             user.setPassword(userSaved.get().getPassword());
+        } else {
+            validatePassword(user, errors);
+            if (!errors.hasErrors()) {
+                user.setPassword(PasswordUtils.generateBCrypt(user.getPassword()));
+            }
         }
     }
 
@@ -55,6 +66,12 @@ public class UserValidation implements Validator {
             errors.rejectValue("login","login.vazio", "");
         } else if(this.userService.existsByLoginAndDeletedFalse(user.getLogin())){
             errors.rejectValue("login","login.repetido", new Object[] {user.getLogin()}, "");
+        }
+    }
+
+    public void validatePassword(User user, Errors errors) {
+        if (!new PasswordUtils().validatePassword(user.getPassword())) {
+            errors.rejectValue("password","senha.exigencias", "");
         }
     }
 

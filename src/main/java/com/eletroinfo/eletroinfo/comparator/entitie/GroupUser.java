@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,12 +32,16 @@ public class GroupUser extends BaseEntity implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Basic(fetch = FetchType.LAZY)
-    @ManyToMany(fetch = FetchType.LAZY)
+    @Basic(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_group",
             joinColumns = { @JoinColumn(name = "group_id")},
             inverseJoinColumns = { @JoinColumn(name = "user_id")})
     private List<User> listUsers;
+
+    public Boolean isNovo() {
+        return this.id == null;
+    }
 
     public Long getId() {
         return id;
@@ -68,5 +73,10 @@ public class GroupUser extends BaseEntity implements Serializable {
 
     public void setListUsers(List<User> listUsers) {
         this.listUsers = listUsers;
+    }
+
+    public GroupUser() {
+        super();
+        this.listUsers = new ArrayList<>();
     }
 }

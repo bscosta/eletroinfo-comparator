@@ -1,5 +1,6 @@
 package com.eletroinfo.eletroinfo.comparator.service;
 
+import com.eletroinfo.eletroinfo.comparator.dto.UserDto;
 import com.eletroinfo.eletroinfo.comparator.entitie.User;
 import com.eletroinfo.eletroinfo.comparator.filter.UserFilter;
 import org.springframework.data.domain.PageImpl;
@@ -21,9 +22,13 @@ public interface UserService {
 
     PageImpl<User> findByParameters(UserFilter userFilter, Pageable pageable);
 
+    UserDto convertUserEntityToUserDto(User user);
+
     boolean existsByLoginAndDeletedFalse(String login);
 
     boolean existsByEmailAndDeletedFalse(String email);
+
+    Optional<User> findByLogin(String login);
 
     void delete(Long id);
 }

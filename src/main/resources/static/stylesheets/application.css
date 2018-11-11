@@ -46,3 +46,43 @@
   min-width: 105px;
   text-align: center;
 }
+
+/**
+ * Edições css  para multi select
+**/
+.ms-container {
+    width: auto !important;
+}
+
+#ms-searchable.ms-container {
+    background-position: 168px 110px;
+}
+
+input.search-input {
+    box-sizing: border-box;
+    -moz-box-sizing:border-box;
+    width: 100%;
+    margin-bottom: 5px;
+    height: auto;
+}
+
+@media only screen and (max-width: 600px) {
+    .ms-selectable{
+        margin-left: -15px !important;
+    }
+
+    .ms-selection{
+        float: left !important;
+        margin-top: 80px !important;
+        margin-left: -15px !important;
+    }
+
+    .ms-container{
+        width: auto !important;
+        float: left !important;
+    }
+}
+
+.element.style {
+    display: block !important;
+}

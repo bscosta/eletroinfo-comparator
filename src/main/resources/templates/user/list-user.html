@@ -73,7 +73,7 @@
                             <td th:text="${user.email}"></td>
                             <td th:text="${user.login}"></td>
                             <td th:text="${user.userType}"></td>
-                            <td th:text="${user.activated}"></td>
+                            <td th:text="${user.activated} ? #{ativo} : #{Desativado}"></td>
                             <td class="text-center">
                                 <a class="btn  btn-link  btn-xs js-tooltip" th:title="#{editar}" th:href="@{/usuario/{id}(id=${user.id})}">
                                     <i class="glyphicon glyphicon-pencil"></i>
@@ -84,10 +84,10 @@
                                     <i class="glyphicon glyphicon-remove"></i> <span class="icon-name"></span>
                                 </a>
                             </td>
-                        <!--</tr>
-                        <tr>
-                            <td colspan="4">Nenhum usuário encontrado</td>
-                        </tr>-->
+                        </tr>
+                        <tr align="center" th:if="${pageData.empty}">
+                            <td colspan="5" th:text="#{nenhum.usuario}"></td>
+                        </tr>
                         </tbody>
                     </table>
                     <div th:replace="layout/fragments/pagination :: pagination"></div>
