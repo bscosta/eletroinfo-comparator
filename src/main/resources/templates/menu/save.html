@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head th:include="~{layout/layout :: header (title='Fornecedor')}">
+    <th:block layout:fragment="head-end">
+        <link th:href="@{/stylesheets/vendors/bootstrap-tabs-x/bootstrap-tabs-x.css}" rel="stylesheet" />
+    </th:block>
+</head>
+<body>
+
+<section layout:fragment="conteudo">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-10">
+                    <h1 th:if="${menu.novo}" th:text="#{titulo.cadastro.menu}"></h1>
+                    <h1 th:unless="${menu.novo}" th:text="#{titulo.editar.menu} + ': ' + ${menu.name}"></h1>
+                </div>
+                <div class="col-xs-2" th:unless="${menu.novo}">
+                    <div class="aw-page-header-controls">
+                        <a class="btn btn-primary" th:href="@{/menu/novo}">
+                            <i class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm" th:text="#{novo}"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <form method="post" th:object="${menu}" th:action="${menu.novo} ? @{/menu/novo} :
+								@{/menu/{id}(id=${menu.id})}" class="form-vertical  js-form-loading">
+            <div th:replace="layout/fragments/message :: messages"></div>
+            <input type="hidden" th:field="*{id}" />
+            <div class="tabs-x tabs-above">
+                <ul id="tab-vendedor" class="nav nav-tabs" role="tablist">
+                    <li th:classappend="!${menu.updateFeature} ? active"><a href="#dados-menu" role="tab" data-toggle="tab"><i
+                            class="glyphicon glyphicon-user"></i><span th:text="' ' + #{dados.menu}"></span></a></li>
+                    <li th:classappend="${menu.updateFeature} ? active" th:unless="${menu.novo}"><a href="#features" role="tab-kv" data-toggle="tab"><i class="glyphicon glyphicon-globe"></i>
+                        <span th:text="' ' + #{features}"></span></a></li>
+                </ul>
+                <div id="tab-vendedor-content" class="tab-content">
+                    <div class="tab-pane fade in" th:classappend="!${menu.updateFeature} ? active" id="dados-menu">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="internalMenu" th:text="#{menu.interno}"></label>
+                                <div>
+                                    <input type="checkbox" checked class="form-control" th:data-on="#{sim}" th:data-off="#{nao}" data-toggle="toggle" th:checked="${menu.internalMenu} ? true : false">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="menuTop" th:text="#{menu.pai}"></label>
+                                <div>
+                                    <input type="checkbox" id="CheckParentMenu" checked class="form-control" th:data-on="#{sim}" th:data-off="#{nao}" data-toggle="toggle" th:checked="!${menu.menuTop} ? true : false">
+                                </div>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="parentMenu" class="control-label" th:text="#{menu.pai}"></label>
+                                <div class="bw-field-action">
+                                    <select class="form-control" id="parentMenu" th:field="*{menuTop.id}" th:disabled="!${parentMenus}">
+                                        <option value="" th:text="#{selecione}">Selecione</option>
+                                        <option th:if="${parentMenus}" th:each="parentMenu : ${parentMenus}" th:value="${parentMenu.id}" th:text="${parentMenu.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="name" th:text="#{nome}"></label>
+                                <input type="text" class="form-control" th:field="*{name}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="internationalizationCode" th:text="#{codigo.internacionalizacao}"></label>
+                                <input type="text" class="form-control" th:field="*{internationalizationCode}"/>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="url" th:text="#{url}"></label>
+                                <input type="text" class="form-control" th:field="*{url}"/>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="icon" th:text="#{icone}"></label>
+                                <input type="text" class="form-control" th:field="*{icon}"/>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="tag" th:text="#{tag}"></label>
+                                <input type="text" class="form-control" th:field="*{tag}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn  btn-primary" type="submit" name="save" th:text="#{salvar}"></button>
+                            <a th:href="@{/menu}" class="btn  btn-default" th:text="#{voltar}"></a>
+                        </div>
+                    </div>
+                    <div th:unless="${menu.novo}" class="tab-pane fade in" th:classappend="${menu.updateFeature} ? active" id="features">
+                        <th:block th:each="features,rowStat : *{#numbers.sequence(features.size() - 1, 0, -1)}">
+                            <input th:if="*{features[__${rowStat.index}__].id}" type="hidden" th:field="*{features[__${rowStat.index}__].id}">
+                        </th:block>
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                <label th:text="#{nome}"></label>
+                                <input type="text" class="form-control" th:field="*{features[__${sizeFeatures}__].name}"/>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label th:text="#{codigo}"></label>
+                                <input type="text" class="form-control" th:field="*{features[__${sizeFeatures}__].code}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn  btn-primary" type="submit" th:text="#{adicionar}" name="addFeature"></button>
+                            <a th:href="@{/menu}" class="btn  btn-default" th:text="#{voltar}"></a>
+                        </div>
+                        <div class="table-responsive pc-tabela-simples">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="table-features-col-nome" th:text="#{nome}"></th>
+                                    <th class="table-feature-col-codigo" th:text="#{codigo}"></th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:if="${feature.code}" th:each="feature : ${menu.features}">
+                                    <td th:text="${feature.name}"></td>
+                                    <td th:text="${feature.code}"></td>
+                                    <td class="text-center">
+                                        <!--<a class="btn  btn-link  btn-xs js-tooltip" th:title="#{editar}" th:href="@{/vendedor/{id}(id=${seller.id})}">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>-->
+                                        <button th:value="${feature.id}" name="delFeature"
+                                                class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn" th:title=#{deletar}>
+                                            <i class="glyphicon glyphicon-remove"></i> <span class="icon-name"></span>
+                                        </button>
+                                    </td>
+                                    <!--</tr>
+                                    <tr>
+                                        <td colspan="4">Nenhum usuário encontrado</td>
+                                    </tr>-->
+                                </tbody>
+                            </table>
+                            <!--<div th:replace="layout/fragments/pagination :: pagination"></div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</section>
+<th:block layout:fragment="javascript-extra">
+    <script th:src="@{/javascripts/vendors/bootstrap-toggle.min.js}"></script>
+    <script th:src="@{/javascripts/vendors/bootstrap-tabs-x/bootstrap-tabs-x.js}"></script>
+    <script th:src="@{/menu/js/save.js}"></script>
+</th:block>
+</body>
+</html>

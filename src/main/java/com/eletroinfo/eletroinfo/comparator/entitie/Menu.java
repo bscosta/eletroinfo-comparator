@@ -1,7 +1,20 @@
 package com.eletroinfo.eletroinfo.comparator.entitie;
 
+import com.eletroinfo.eletroinfo.comparator.dto.FeatureDto;
+import com.vladmihalcea.hibernate.type.array.IntArrayType;
+import com.vladmihalcea.hibernate.type.array.StringArrayType;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
+import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,13 +23,17 @@ import java.util.List;
 
 @Entity
 @Table(name = "menu")
+@DynamicUpdate
 public class Menu extends BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
     private String url;
@@ -27,17 +44,29 @@ public class Menu extends BaseEntity implements Serializable {
 
     private String icon;
 
+    private String tag;
+
     @Column(name = "internal_menu")
     private boolean internalMenu;
 
     @Column(name = "internationalization_code")
     private String internationalizationCode;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "menu_feature",
-            joinColumns = { @JoinColumn(name = "menu_id", table = "menu", referencedColumnName="id")},
-            inverseJoinColumns = { @JoinColumn(name = "feature_id", table = "feature", referencedColumnName="id")})
-    private List<Feature> features;
+            joinColumns = { @JoinColumn(name = "menu_id")},
+            inverseJoinColumns = { @JoinColumn(name = "feature_id")})
+    private List<Feature> features = new ArrayList<>();
+
+    @Transient
+    private Boolean isUpdateFeature;
+
+    public Menu(){
+    }
+
+    public Boolean isNovo() {
+        return  this.id == null;
+    }
 
     public Long getId() {
         return id;
@@ -79,6 +108,14 @@ public class Menu extends BaseEntity implements Serializable {
         this.icon = icon;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     public boolean isInternalMenu() {
         return internalMenu;
     }
@@ -101,5 +138,13 @@ public class Menu extends BaseEntity implements Serializable {
 
     public void setFeatures(List<Feature> features) {
         this.features = features;
+    }
+
+    public Boolean getUpdateFeature() {
+        return isUpdateFeature;
+    }
+
+    public void setUpdateFeature(Boolean updateFeature) {
+        isUpdateFeature = updateFeature;
     }
 }
