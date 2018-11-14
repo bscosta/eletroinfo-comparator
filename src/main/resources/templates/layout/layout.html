@@ -27,8 +27,8 @@
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
     <body>
@@ -69,7 +69,7 @@
                                     <div class="aw-logged-user">
                                         <img src="https://api.adorable.io/avatars/80/joaodascouves"
                                              width="80" height="80" alt="João das Couves" class="aw-logged-user__picture" />
-                                        <span class="aw-logged-user__name">Bruno Costa</span>
+                                        <span class="aw-logged-user__name" th:text="${#authentication.principal.permissionDto.userDto.name}"></span>
                                     </div>
                                 </li>
                                 <li role="separator" class="divider"></li>
@@ -79,7 +79,7 @@
                         </li>
 
                         <li>
-                            <a href="#"><em class="fa  fa-sign-out"></em></a>
+                            <a th:href="@{/logout}"><em class="fa  fa-sign-out"></em></a>
                         </li>
                     </ul>
 
@@ -91,7 +91,25 @@
                     <nav class="aw-menu  js-menu">
                         <ul class="aw-menu__list">
 
-                            <li class="aw-menu__item">
+
+                            <li th:if="!${parentMenu.internalMenu}" class="aw-menu__item  is-active" th:each="parentMenu : ${#authentication.principal.permissionDto.parentMenusDto}">
+                                <a href="#">
+                                    <i th:classappend="${parentMenu.icon == null or parentMenu.icon == ''} ? 'fa  fa-fw  fa-file-text'  : ${parentMenu.icon}"></i>
+                                    <span th:text="${parentMenu.internationalizationCode != null and parentMenu.internationalizationCode != ''} ? #{${parentMenu.internationalizationCode}} : ${parentMenu.name}">Cadastros</span>
+                                    <i class="aw-menu__navigation-icon  fa"></i>
+                                </a>
+
+                                <ul class="aw-menu__list  aw-menu__list--sublist">
+                                    <li th:if="!${childMenu.internalMenu}" class="aw-menu__item  aw-menu__item--link" th:each="childMenu : ${parentMenu.menuChildDtoList}">
+                                        <a th:href="${childMenu.url}">
+                                            <i th:classappend="|${#httpServletRequest.getRequestURI().contains(childMenu.url) ? 'is-active' : ''} ${childMenu.icon == null or childMenu.icon == '' ? 'fas fa-align-justify' : childMenu.icon}|"></i>
+                                            <span th:text="${childMenu.internationalizationCode != null and childMenu.internationalizationCode != ''} ? #{${childMenu.internationalizationCode}} : ${childMenu.name}"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!--<li class="aw-menu__item">
                                 <a href="#"><i class="fa  fa-fw  fa-home"></i><span>Dashboard</span></a>
                             </li>
 
@@ -107,7 +125,7 @@
                             </li>
                             <li class="aw-menu__item  is-expanded">
                                 <a th:href="@{/produto}">
-                                    <i class="fa fa-product-hunt"></i><span>Produto</span>
+                                    <i class="fa fa-product-hunt"></i><span th:text="${#authentication.principal.permissionDto.userDto.name}">Produto</span>
                                 </a>
                             </li>
                             <li class="aw-menu__item  is-expanded">
@@ -124,7 +142,7 @@
                                 <a th:href="@{/orcamento}">
                                     <i class="far fa-list-alt"></i><span>Orçamento</span>
                                 </a>
-                            </li>
+                            </li>-->
 
                         </ul>
                     </nav>

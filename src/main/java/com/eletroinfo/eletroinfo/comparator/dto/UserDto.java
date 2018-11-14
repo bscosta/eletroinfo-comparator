@@ -10,6 +10,8 @@ public class UserDto {
 
     private String login;
 
+    private String password;
+
     private Long userType;
 
     public Long getId() {
@@ -42,6 +44,14 @@ public class UserDto {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getUserType() {

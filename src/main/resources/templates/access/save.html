@@ -14,8 +14,8 @@
 
     <div class="page-header">
         <div class="container-fluid">
-            <h1 th:if="${permissionDto.userDto}" th:text="#{titulo.editar.permissoes.usuarios}"></h1>
-            <h1 th:if="${permissionDto.groupUserDto}" th:text="#{titulo.editar.permissoes.grupo.usuarios}"></h1>
+            <h1 th:if="${permissionDto.userDto}" th:text="#{titulo.editar.acessos.usuario} + ': ' + ${permissionDto.userDto.name}"></h1>
+            <h1 th:if="${permissionDto.groupUserDto}" th:text="#{titulo.editar.acessos.grupo.usuarios}"></h1>
         </div>
     </div>
     <div class="container-fluid">
@@ -23,7 +23,9 @@
 								@{/acessos/grupoUsuarios/{id}(id=${permissionDto.groupUserDto.id})}" class="form-vertical  js-form-loading">
             <div th:replace="layout/fragments/message :: messages"></div>
             <input type="hidden" th:field="*{userDto.id}" />
+            <input type="hidden" th:field="*{userDto.name}" />
             <input type="hidden" th:field="*{groupUserDto.id}" />
+            <input type="hidden" th:field="*{groupUserDto.name}" />
             <div class="row form-group">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="header">
@@ -31,10 +33,13 @@
                         <ul class="header-dropdown m-r--5">
                         </ul>
                     </div>
+                    <input type="hidden" th:field="*{listSavedIds}"/>
                     <div id="body">
-                        <select multiple="multiple" id="usersMultiSelect" data-page="-1" data-last="false" class="ms usersMultiSelect" th:field="*{parentMenusDto}">
-                            <option value='000' th:text="#{buscar.usuarios}"></option>
-                            <option th:if="${usersGroup != null}" th:each="user : ${usersGroup}" th:value="${user.id}" th:text="${user.name}"></option>
+                        <select th:disabled="${permissionDto.userDto.userType <= 1}" multiple="multiple" id="usersMultiSelect" data-page="-1" data-last="false" class="ms usersMultiSelect" th:field="*{listConsultedsMenusChildIds}">
+                            <optgroup th:if="${accessUserLogged != null}" th:each="parentMenu : ${accessUserLogged}" th:label="${parentMenu.name}" th:value="${parentMenu.id}">
+                                <option th:if="${parentMenu != null}" th:each="childMenu : ${parentMenu.menuChildDtoList}" th:value="${childMenu.id}" th:text="${childMenu.name}"></option>
+                            </optgroup>
+                                <option style="visibility: hidden;" th:if="${accessUserConsulted}" th:each="menuChildId : ${accessUserConsulted}" th:value="${menuChildId}"></option>
                         </select>
                     </div>
                 </div>
@@ -53,7 +58,7 @@
     <script th:src="@{/vendors/lou-multi-select/jquery.multi-select.js}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.quicksearch/2.4.0/jquery.quicksearch.min.js"></script>
     <!--<script th:src="@{/vendors/quick-search/jquery.quicksearch.js}"></script>-->
-    <script th:src="@{/group-user/save.js}"></script>
+    <script th:src="@{/access/save.js}"></script>
 </th:block>
 </body>
 </html>

@@ -13,15 +13,15 @@ public class UserMenu extends BaseEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name="user_id", nullable = false)
     private User userId;
 
-    @ManyToOne
-    @JoinColumn(name="menu_id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name="menu_id", nullable = false)
     private Menu menuId;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_menu_feature",
         joinColumns = { @JoinColumn(name = "user_menu_id")},
         inverseJoinColumns = { @JoinColumn(name = "feature_id")})

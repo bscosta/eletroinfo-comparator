@@ -29,7 +29,7 @@ public class UserPermissionRepositoryImpl implements UserPermissionRepository {
     private Map<Long, Set<FeatureDto>> mapFeatures = new HashMap<>();
 
     @Transactional(readOnly = true)
-    public PermissionDto findPermissionById(Long id) {
+    public PermissionDto findPermissionById(Long id, String login, Boolean isLogOn) {
 
         parentMenuDtosFinal = new ArrayList<>();
         parentMenuDtoList = new HashSet<>();
@@ -37,7 +37,7 @@ public class UserPermissionRepositoryImpl implements UserPermissionRepository {
         mapFeatures = new HashMap<>();
 
         PermissionDto permissionDto = new PermissionDto();
-        UserDto userDto = findUserById(id);
+        UserDto userDto = findUserById(id, login, isLogOn);
 
         if (userDto.getId() != null) {
             PermissionDto permissionUser = null;
@@ -46,25 +46,91 @@ public class UserPermissionRepositoryImpl implements UserPermissionRepository {
                 permissionUser = findAllUserPermisson();
                 permissionUser.setUserDto(userDto);
                 return permissionUser;
+            } else {
+                permissionUser = findPermissonUserByUserId(userDto.getId());
+                permissionGroupUser = findPermissonGroupUserByUserId(userDto.getId());
+
+                if (permissionGroupUser.getParentMenusDto() == null || permissionGroupUser.getParentMenusDto().isEmpty()) {
+                    permissionUser.setUserDto(userDto);
+                    return permissionUser;
+                }
+
+                if (permissionUser.getParentMenusDto() == null || permissionUser.getParentMenusDto().isEmpty()) {
+                    permissionGroupUser.setUserDto(userDto);
+                    return permissionGroupUser;
+                }
+
+                /**
+                 * mapeando permissoes do usuario
+                 */
+                mapPermissions(permissionUser.getParentMenusDto());
+
+                /**
+                 * mapeando permissoes do grupo de usuario
+                 */
+                mapPermissions(permissionGroupUser.getParentMenusDto());
+
+                /**
+                 * Juntando permissoes do usuario com os do grupo
+                 */
+                for (ParentMenuDto parentMenuDto : parentMenuDtoList) {
+                    ParentMenuDto parentMenu = parentMenuDto;
+                    CopyOnWriteArrayList<MenuChildDto> menuChildDtoList = new CopyOnWriteArrayList<>(mapMenuChild.get(parentMenu.getId()));
+                    for (MenuChildDto menuChild : menuChildDtoList) {
+                        menuChild.setFeatureDtoList(mapFeatures.get(menuChild.getId()));
+                    }
+                    parentMenu.setMenuChildDtoList(menuChildDtoList);
+                    parentMenuDtosFinal.add(parentMenu);
+
+                }
+                permissionDto.setUserDto(userDto);
+                permissionDto.setParentMenusDto(parentMenuDtosFinal);
             }
 
+            return permissionDto;
+        } else {
+            return permissionDto;
         }
-
-        return null;
     }
 
     @Transactional(readOnly = true)
-    public UserDto findUserById(Long id) {
+    public void mapPermissions(List<ParentMenuDto> parentMenuDtos) {
+
+        /**
+         * permission group user
+         */
+        for (ParentMenuDto parentMenuDto : parentMenuDtos) {
+            parentMenuDtoList.add(parentMenuDto);
+
+            mapMenuChild.put(parentMenuDto.getId(), new HashSet<>(parentMenuDto.getMenuChildDtoList()));
+            if (parentMenuDto.getMenuChildDtoList() != null || !parentMenuDto.getMenuChildDtoList().isEmpty()) {
+                for (MenuChildDto menuChildDto : parentMenuDto.getMenuChildDtoList()) {
+                    mapFeatures.put(menuChildDto.getId(), new HashSet<>(menuChildDto.getFeatureDtoList()));
+                }
+            }
+        }
+
+    }
+
+    @Transactional(readOnly = true)
+    public UserDto findUserById(Long id, String login, Boolean isLogOn) {
         UserDto userDtoResult = new UserDto();
         StringBuilder query = new StringBuilder();
 
         /**
          * Busca menus e features do usuario
          */
-        query.append(" select u.id, u.name, u.email, u.login, u.user_type ");
+        query.append(" select u.id, u.name, u.email, u.login, u.user_type, u.password ");
         query.append(" from user u ");
-        query.append(" where u.id = " + id);
-        query.append(" and u.deleted = false");
+
+        if (id != null) {
+            query.append(" where u.id = " + id);
+        }
+        if (login != null && !login.isEmpty()) {
+            query.append(" where u.login = '" + login + "' ");
+            query.append(" and u.activated = true ");
+        }
+        query.append(" and u.deleted = false ");
 
         jdbcTemplate.query(query.toString(), new RowMapper<UserDto>() {
             public UserDto mapRow(ResultSet rs, int i) throws SQLException {
@@ -75,6 +141,10 @@ public class UserPermissionRepositoryImpl implements UserPermissionRepository {
                         userDtoResult.setEmail(rs.getString(3));
                         userDtoResult.setLogin(rs.getString(4));
                         userDtoResult.setUserType(rs.getLong(5));
+
+                        if (isLogOn) {
+                            userDtoResult.setPassword(rs.getString(6));
+                        }
                     }
 
                 } catch (Exception e) {
@@ -87,8 +157,6 @@ public class UserPermissionRepositoryImpl implements UserPermissionRepository {
         return userDtoResult;
     }
 
-
-
     @Transactional(readOnly = true)
     public PermissionDto findPermissonUserByUserId(Long id) {
         PermissionDto permissionDto = new PermissionDto();
@@ -98,8 +166,10 @@ public class UserPermissionRepositoryImpl implements UserPermissionRepository {
 
         StringBuilder query = new StringBuilder();
 
-        query.append(" select m.id, m.name, m.url, m.menu_top_id, m.icon, m.tag, m.internal_menu, , m.internationalization_code ");
+        query.append(" select m.id, m.name, m.url, m.menu_top_id, m.icon, m.tag, m.internal_menu, m.internationalization_code, ");
+        query.append(" pm.id, pm.name, pm.icon, pm.tag, pm.internal_menu, pm.internationalization_code ");
         query.append(" from menu m ");
+        query.append(" inner join menu pm on pm.id = m.menu_top_id ");
         query.append(" inner join user_menu um on um.menu_id = m.id ");
         query.append(" where m.deleted = false ");
         query.append(" and um.deleted = false ");
@@ -114,16 +184,109 @@ public class UserPermissionRepositoryImpl implements UserPermissionRepository {
                 if (rs.getObject(4) != null) {
                     menuTopId = rs.getLong(4);
                 }
-                if (menuTopId == 0) {
-                    ParentMenuDto parentMenuDto = new ParentMenuDto(rs.getLong(1), rs.getString(2), rs.getString(5), rs.getString(6), rs.getBoolean(7), rs.getString(8));
-                    userparentMenuDtoList.add(parentMenuDto);
+                if (rs.getLong(9) > 0) {
+                    ParentMenuDto parentMenuDto = new ParentMenuDto(rs.getLong(9), rs.getString(10), rs.getString(11), rs.getString(12), rs.getBoolean(13), rs.getString(14));
+                    if (userparentMenuDtoList.stream().filter(parentMenuDtoFilter -> parentMenuDtoFilter.getId().equals(parentMenuDto.getId())).count() == 0) {
+                        userparentMenuDtoList.add(parentMenuDto);
+                    }
                 }
 
                 if (menuTopId != 0) {
+                    permissionDto.getListConsultedsMenusChildIds().add(rs.getLong(1));
                     MenuChildDto menuChildDto = new MenuChildDto(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getLong(4), rs.getString(5), rs.getString(6), rs.getBoolean(7), rs.getString(8));
 
                     if (rs.getLong(1) > 0) {
-                        List<FeatureDto> featureDtoList = getFeatures(rs.getLong(1), 0, 0);
+                        List<FeatureDto> featureDtoList = getFeatures(0, id, 0);
+                        menuChildDto.getFeatureDtoList().addAll(featureDtoList);
+                        for(FeatureDto featureDto : featureDtoList) {
+                            permissionDto.getListConsultedsFeaturesIds().add(featureDto.getId());
+                        }
+                    }
+
+                    if (mapUserMenuChild.get(rs.getLong(4)) != null && !mapUserMenuChild.get(rs.getLong(4)).contains(menuChildDto)) {
+                        menuChildDtoList.clear();
+                        menuChildDtoList.addAll(mapUserMenuChild.get(rs.getLong(4)));
+                        menuChildDtoList.add(menuChildDto);
+                    }
+
+                    if (mapUserMenuChild.get(rs.getLong(4)) == null) {
+                        menuChildDtoList.add(menuChildDto);
+                    }
+
+                    mapUserMenuChild.put(rs.getLong(4), menuChildDtoList);
+                }
+
+                return permissionResult;
+            };
+        });
+
+        //ordena os menus pais
+        orderMenuFather(userparentMenuDtoList);
+
+        for (ParentMenuDto parentMenuDto : userparentMenuDtoList) {
+            List<MenuChildDto> mapMenuChildDtoList = mapUserMenuChild.get(parentMenuDto.getId());
+            if (mapMenuChildDtoList != null && !mapMenuChildDtoList.isEmpty()) {
+
+                //ordena os menus filhos
+                orderMenuChild(mapMenuChildDtoList);
+
+                parentMenuDto.setMenuChildDtoList(mapMenuChildDtoList);
+            }
+        }
+
+        permissionDto.setParentMenusDto(userparentMenuDtoList);
+
+        return permissionDto;
+    }
+
+    @Transactional(readOnly = true)
+    public PermissionDto findPermissonGroupUserByUserId(Long id) {
+        PermissionDto permissionDto = new PermissionDto();
+
+        CopyOnWriteArrayList<ParentMenuDto> userparentMenuDtoList = new CopyOnWriteArrayList<>();
+        Map<Long, List<MenuChildDto>> mapUserMenuChild = new HashMap<>();
+
+        StringBuilder query = new StringBuilder();
+
+        query.append(" select m.id, m.name, m.url, m.menu_top_id, m.icon, m.tag, m.internal_menu, m.internationalization_code, ");
+        query.append(" pm.id, pm.name, pm.icon, pm.tag, pm.internal_menu, pm.internationalization_code, ug.group_id ");
+        query.append(" from user u ");
+        query.append(" inner join user_group ug on ug.user_id = u.id ");
+        query.append(" inner join group_user_menu gum on gum.group_id = ug.group_id ");
+        query.append(" inner join menu m on m.id = gum.menu_id ");
+        query.append(" inner join menu pm on pm.id = m.menu_top_id ");
+        query.append(" where m.deleted = false ");
+        query.append(" and u.deleted = false ");
+        query.append(" and gum.deleted = false ");
+        query.append(" and u.id = " + id);
+
+        jdbcTemplate.query(query.toString(), new RowMapper<PermissionDto>() {
+            @Override
+            public PermissionDto mapRow(ResultSet rs, int i) throws SQLException {
+                PermissionDto permissionResult = new PermissionDto();
+                List<MenuChildDto> menuChildDtoList = new ArrayList<>();
+                long menuTopId = 0;
+                if (rs.getObject(4) != null) {
+                    menuTopId = rs.getLong(4);
+                }
+
+                if (rs.getLong(9) > 0) {
+                    ParentMenuDto parentMenuDto = new ParentMenuDto(rs.getLong(9), rs.getString(10), rs.getString(11), rs.getString(12), rs.getBoolean(13), rs.getString(14));
+                    if (userparentMenuDtoList.stream().filter(parentMenuDtoFilter -> parentMenuDtoFilter.getId().equals(parentMenuDto.getId())).count() == 0) {
+                        userparentMenuDtoList.add(parentMenuDto);
+                    }
+                }
+
+                if (menuTopId != 0) {
+                    permissionDto.getListConsultedsMenusChildIds().add(rs.getLong(1));
+
+                    MenuChildDto menuChildDto = new MenuChildDto(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getLong(4), rs.getString(5), rs.getString(6), rs.getBoolean(7), rs.getString(8));
+
+                    if (rs.getLong(1) > 0) {
+                        List<FeatureDto> featureDtoList = getFeatures(0, 0, rs.getLong(15));
+                        for(FeatureDto featureDto : featureDtoList) {
+                            permissionDto.getListConsultedsFeaturesIds().add(featureDto.getId());
+                        }
                         menuChildDto.getFeatureDtoList().addAll(featureDtoList);
                     }
 
@@ -191,11 +354,15 @@ public class UserPermissionRepositoryImpl implements UserPermissionRepository {
                 }
 
                 if (menuTopId != 0) {
+                    permissionDto.getListConsultedsMenusChildIds().add(rs.getLong(1));
                     MenuChildDto menuChildDto = new MenuChildDto(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getLong(4), rs.getString(5), rs.getString(6), rs.getBoolean(7), rs.getString(8));
 
                     if (rs.getLong(1) > 0) {
                         List<FeatureDto> featureDtoList = getFeatures(rs.getLong(1), 0, 0);
                         menuChildDto.getFeatureDtoList().addAll(featureDtoList);
+                        for(FeatureDto featureDto : featureDtoList) {
+                            permissionDto.getListConsultedsFeaturesIds().add(featureDto.getId());
+                        }
                     }
 
                     if (mapMenuChild.get(rs.getLong(4)) != null && !mapMenuChild.get(rs.getLong(4)).contains(menuChildDto)) {
@@ -254,20 +421,20 @@ public class UserPermissionRepositoryImpl implements UserPermissionRepository {
 
 
         if(userId > 0){
-            query.append("inner join user_menu_feature umf on umf.feature_id = f.id");
-            query.append("inner join user_menu um on um.id = umf.user_menu_id");
-            query.append("where um.user_id = " +  userId);
+            query.append(" inner join user_menu_feature umf on umf.feature_id = f.id ");
+            query.append(" inner join user_menu um on um.id = umf.user_menu_id ");
+            query.append(" where um.user_id = " +  userId);
         }
 
         if(groupUserId > 0){
-            query.append("inner join group_user_menu_feature gumf on gumf.feature_id = f.id");
-            query.append("inner join group_user_menu gum on gum.id = gumf.group_user_menu_id");
-            query.append("where gum.group_user_id = " +  groupUserId);
+            query.append(" inner join group_user_menu_feature gumf on gumf.feature_id = f.id ");
+            query.append(" inner join group_user_menu gum on gum.id = gumf.group_user_menu_id ");
+            query.append(" where gum.group_user_id = " +  groupUserId);
         }
 
         if (menuId > 0) {
-            query.append(" inner join menu_feature mf on mf.feature_id = f.id");
-            query.append(" inner join menu m on m.id = mf.menu_id");
+            query.append(" inner join menu_feature mf on mf.feature_id = f.id ");
+            query.append(" inner join menu m on m.id = mf.menu_id ");
             query.append(" where m.id = " + menuId);
         }
 

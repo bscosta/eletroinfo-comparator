@@ -8,5 +8,5 @@ import com.eletroinfo.eletroinfo.comparator.dto.PermissionDto;
 
 public interface UserPermissionRepository {
 
-    PermissionDto findPermissionById(Long id);
+    PermissionDto findPermissionById(Long id, String login, Boolean isLogOn);
 }

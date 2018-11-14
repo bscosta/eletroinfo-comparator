@@ -9,4 +9,6 @@ import com.eletroinfo.eletroinfo.comparator.dto.PermissionDto;
 public interface UserPermissionService {
 
     PermissionDto findByPermissionById(Long id);
+
+    PermissionDto findByPermissionForLogonByLogin(String login);
 }
