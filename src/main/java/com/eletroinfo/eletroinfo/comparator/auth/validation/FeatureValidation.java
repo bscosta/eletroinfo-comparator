@@ -1,4 +1,4 @@
-package com.eletroinfo.eletroinfo.comparator.validations;
+package com.eletroinfo.eletroinfo.comparator.auth.validation;
 
 import com.eletroinfo.eletroinfo.comparator.auth.entitie.Feature;
 import org.springframework.stereotype.Component;

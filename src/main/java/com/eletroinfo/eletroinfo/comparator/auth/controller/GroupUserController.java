@@ -6,7 +6,7 @@ import com.eletroinfo.eletroinfo.comparator.notification.NotificationHandler;
 import com.eletroinfo.eletroinfo.comparator.auth.service.GroupUserService;
 import com.eletroinfo.eletroinfo.comparator.auth.service.UserService;
 import com.eletroinfo.eletroinfo.comparator.util.PageWrapper;
-import com.eletroinfo.eletroinfo.comparator.validations.GroupUserValidation;
+import com.eletroinfo.eletroinfo.comparator.auth.validation.GroupUserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

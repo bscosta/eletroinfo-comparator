@@ -8,7 +8,7 @@ import com.eletroinfo.eletroinfo.comparator.auth.service.UserService;
 import com.eletroinfo.eletroinfo.comparator.util.AjaxPagedSearch.SearchAjaxDto;
 import com.eletroinfo.eletroinfo.comparator.util.AjaxPagedSearch.TransferAjaxDto;
 import com.eletroinfo.eletroinfo.comparator.util.PageWrapper;
-import com.eletroinfo.eletroinfo.comparator.validations.UserValidation;
+import com.eletroinfo.eletroinfo.comparator.auth.validation.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
