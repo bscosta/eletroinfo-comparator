@@ -14,8 +14,10 @@ public class PermissionDto {
     private List<ParentMenuDto> parentMenusDto;
 
     private Set<Long> listConsultedsMenusChildIds = new HashSet<>();
-    private Set<Long> listConsultedsFeaturesIds = new HashSet<>();
 
+    private Set<String> listConsultedMenusFeaturesIds = new HashSet<>();
+
+    private Set<String> listSavedMenusFeaturesIds = new HashSet<>();
 
     private Set<Long> listSavedIds;
 
@@ -60,16 +62,24 @@ public class PermissionDto {
         this.listConsultedsMenusChildIds = listConsultedsMenusChildIds;
     }
 
-    public Set<Long> getListConsultedsFeaturesIds() {
-        return listConsultedsFeaturesIds;
-    }
-
-    public void setListConsultedsFeaturesIds(Set<Long> listConsultedsFeaturesIds) {
-        this.listConsultedsFeaturesIds = listConsultedsFeaturesIds;
-    }
-
     public Set<Long> getListSavedIds() {
         return listSavedIds;
+    }
+
+    public Set<String> getListConsultedMenusFeaturesIds() {
+        return listConsultedMenusFeaturesIds;
+    }
+
+    public Set<String> getListSavedMenusFeaturesIds() {
+        return listSavedMenusFeaturesIds;
+    }
+
+    public void setListSavedMenusFeaturesIds(Set<String> listSavedMenusFeaturesIds) {
+        this.listSavedMenusFeaturesIds = listSavedMenusFeaturesIds;
+    }
+
+    public void setListConsultedMenusFeaturesIds(Set<String> listConsultedMenusFeaturesIds) {
+        this.listConsultedMenusFeaturesIds = listConsultedMenusFeaturesIds;
     }
 
     public void setListSavedIds(Set<Long> listSavedIds) {

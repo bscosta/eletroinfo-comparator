@@ -1,4 +1,4 @@
-package com.eletroinfo.eletroinfo.comparator.repository.custom;
+package com.eletroinfo.eletroinfo.comparator.auth.repository.custom;
 
 import com.eletroinfo.eletroinfo.comparator.dto.PermissionDto;
 

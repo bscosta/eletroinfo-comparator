@@ -1,11 +1,12 @@
-package com.eletroinfo.eletroinfo.comparator.controller;
+package com.eletroinfo.eletroinfo.comparator.auth.controller;
 
+import com.eletroinfo.eletroinfo.comparator.dto.MenuChildDto;
 import com.eletroinfo.eletroinfo.comparator.dto.PermissionDto;
 import com.eletroinfo.eletroinfo.comparator.enumeration.TypeMessage;
 import com.eletroinfo.eletroinfo.comparator.notification.NotificationHandler;
 import com.eletroinfo.eletroinfo.comparator.security.UserLogged;
-import com.eletroinfo.eletroinfo.comparator.service.UserMenuService;
-import com.eletroinfo.eletroinfo.comparator.service.UserPermissionService;
+import com.eletroinfo.eletroinfo.comparator.auth.service.UserMenuService;
+import com.eletroinfo.eletroinfo.comparator.auth.service.UserPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,32 +17,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
-
 
 /**
  * @author Bruno Costa
  */
 
 @Controller
-@RequestMapping(value = "/acessos")
-public class AccessController {
+@RequestMapping(value = "/permissao")
+public class PermissionController {
 
     @Autowired
     private NotificationHandler notificationHandler;
 
     @Autowired
-    private UserMenuService userMenuService;
-
-    @Autowired
     private UserPermissionService userPermissionService;
 
+    @Autowired
+    private UserMenuService userMenuService;
+
     @GetMapping(value = "/usuario/{id}")
-    public ModelAndView userAccess(@PathVariable("id") Long id, PermissionDto permissionDto, @AuthenticationPrincipal UserLogged userLogged, RedirectAttributes redirectAttributes) {
+    public ModelAndView userPermission(@PathVariable("id") Long id, @AuthenticationPrincipal UserLogged userLogged, PermissionDto permissionDto, RedirectAttributes redirectAttributes) {
         List<Long> longList = new ArrayList<>();
         PermissionDto permissionDtoResult = this.userPermissionService.findByPermissionById(id);
         if (permissionDtoResult.getUserDto() != null) {
@@ -52,30 +49,44 @@ public class AccessController {
             redirectAttributes.addFlashAttribute(notificationHandler.getType().name(), notificationHandler.getMessages());
             return mv;
         }
-        permissionDto.setListSavedIds(permissionDto.getListConsultedsMenusChildIds());
-        Set<Long> menusChildIds = new HashSet<>();
-        menusChildIds.addAll(permissionDto.getListConsultedsMenusChildIds());
-        for (Long menuChildId : userLogged.getPermissionDto().getListConsultedsMenusChildIds()) {
-            menusChildIds.removeIf(aLong -> aLong.equals(menuChildId));
+
+        Set<MenuChildDto> menuChildDtoSet = new HashSet<>();
+        for (Long childMenuId : permissionDto.getListConsultedsMenusChildIds()) {
+            for (MenuChildDto menuChildDto : userLogged.getPermissionDto().getParentMenusDto()
+                    .stream().map(parentMenuDto -> parentMenuDto.getMenuChildDtoList())
+                        .flatMap(Collection::stream).collect(Collectors.toSet())) {
+                if (menuChildDto.getId().equals(childMenuId)) {
+                    menuChildDtoSet.add(menuChildDto);
+                }
+            }
         }
-        ModelAndView mv = new ModelAndView("access/save", "permissionDto", permissionDto);
+
+        permissionDto.setListSavedMenusFeaturesIds(permissionDto.getListConsultedMenusFeaturesIds());
+        Set<String> menusFeaturesIds = new HashSet<>();
+        menusFeaturesIds.addAll(permissionDto.getListConsultedMenusFeaturesIds());
+        for (String menuFeature : userLogged.getPermissionDto().getListConsultedMenusFeaturesIds()) {
+            menusFeaturesIds.removeIf(aLong -> aLong.equals(menuFeature));
+        }
+
+        ModelAndView mv = new ModelAndView("permission/save", "permissionDto", permissionDto);
         if (permissionDto.getUserDto().getUserType() <= 1) {
             notificationHandler.addMessageinternationalized(TypeMessage.message_warn, "usuario.developer");
             mv.addObject(notificationHandler.getType().name(), notificationHandler.getMessages());
         }
-        mv.addObject("accessUserLogged", userLogged.getPermissionDto().getParentMenusDto());
-        mv.addObject("accessUserConsulted", menusChildIds);
+        mv.addObject("permissionUserLogged", menuChildDtoSet);
+        mv.addObject("permissionUserConsulted", menusFeaturesIds);
         return mv;
     }
 
     @PostMapping(value = "/usuario/{\\+d}")
     public ModelAndView saveUserAccess(PermissionDto permissionDto, RedirectAttributes redirectAttributes) {
-        permissionDto = this.userMenuService.saveUserAccess(permissionDto);
+        permissionDto = this.userMenuService.saveUserPermission(permissionDto);
 
         notificationHandler.addMessageSucessEdit();
 
         redirectAttributes.addFlashAttribute(notificationHandler.getType().name(), notificationHandler.getMessages());
         redirectAttributes.addFlashAttribute(permissionDto);
-        return new ModelAndView("redirect:/acessos/usuario/"+permissionDto.getUserDto().getId());
+        return new ModelAndView("redirect:/permissao/usuario/"+permissionDto.getUserDto().getId());
     }
+
 }
