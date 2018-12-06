@@ -1,9 +1,9 @@
 package com.eletroinfo.eletroinfo.comparator.validations;
 
-import com.eletroinfo.eletroinfo.comparator.entitie.Address;
-import com.eletroinfo.eletroinfo.comparator.entitie.Contact;
-import com.eletroinfo.eletroinfo.comparator.entitie.Provider;
-import com.eletroinfo.eletroinfo.comparator.service.ProviderService;
+import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Address;
+import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Contact;
+import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Provider;
+import com.eletroinfo.eletroinfo.comparator.cptr.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;

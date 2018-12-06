@@ -1,7 +1,7 @@
 package com.eletroinfo.eletroinfo.comparator.validations;
 
-import com.eletroinfo.eletroinfo.comparator.entitie.Product;
-import com.eletroinfo.eletroinfo.comparator.service.ProductService;
+import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Product;
+import com.eletroinfo.eletroinfo.comparator.cptr.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

@@ -68,7 +68,7 @@
                 </thead>
 
                 <tbody>
-                <tr th:each="product : ${productData.content}">
+                <tr th:each="product : ${pageData.content}">
                     <td th:text="${product.name}"></td>
                     <td th:text="${product.brand.name}"></td>
                     <td th:text="${product.measuredQuantity} + ' ' + ${product.unitMeasure}"></td>
@@ -82,10 +82,10 @@
                             <i class="glyphicon glyphicon-remove"></i> <span class="icon-name"></span>
                         </a>
                     </td>
-                    <!--</tr>
-                    <tr>
-                        <td colspan="4">Nenhum usuário encontrado</td>
-                    </tr>-->
+                    </tr>
+                <!--<tr>
+                    <td colspan="4">Nenhum usuário encontrado</td>
+                </tr>-->
                 </tbody>
             </table>
             <div th:replace="layout/fragments/pagination :: pagination"></div>

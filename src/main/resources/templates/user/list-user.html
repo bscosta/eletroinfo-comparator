@@ -78,6 +78,12 @@
                                 <a class="btn  btn-link  btn-xs js-tooltip" th:title="#{editar}" th:href="@{/usuario/{id}(id=${user.id})}">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                 </a>
+                                <a class="btn  btn-link  btn-xs js-tooltip" th:title="#{acessos}" th:href="@{/acessos/usuario/{id}(id=${user.id})}">
+                                    <i class="far fa-list-alt"></i>
+                                </a>
+                                <a class="btn  btn-link  btn-xs js-tooltip" th:title="#{permissoes}" th:href="@{/permissao/usuario/{id}(id=${user.id})}">
+                                    <i class="fas fa-lock"></i>
+                                </a>
                                 <a href="#" class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn"
                                    data-toggle="tooltip" data-placement="bottom" th:attr="title=#{deletar}"
                                    th:onclick="|deleteRegister('${user.id}', 'usuario/' )|">
@@ -85,9 +91,9 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr align="center" th:if="${pageData.empty}">
+                        <!--<tr align="center" th:if="${#lists.isEmpty(pageData.content == '')}">
                             <td colspan="5" th:text="#{nenhum.usuario}"></td>
-                        </tr>
+                        </tr>-->
                         </tbody>
                     </table>
                     <div th:replace="layout/fragments/pagination :: pagination"></div>

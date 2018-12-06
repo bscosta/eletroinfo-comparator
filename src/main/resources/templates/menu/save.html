@@ -39,7 +39,7 @@
                 <ul id="tab-vendedor" class="nav nav-tabs" role="tablist">
                     <li th:classappend="!${menu.updateFeature} ? active"><a href="#dados-menu" role="tab" data-toggle="tab"><i
                             class="glyphicon glyphicon-user"></i><span th:text="' ' + #{dados.menu}"></span></a></li>
-                    <li th:classappend="${menu.updateFeature} ? active" th:unless="${menu.novo}"><a href="#features" role="tab-kv" data-toggle="tab"><i class="glyphicon glyphicon-globe"></i>
+                    <li th:classappend="${menu.updateFeature} ? active" th:unless="${menu.novo}" th:if="${menu.menuTop}"><a href="#features" role="tab-kv" data-toggle="tab"><i class="glyphicon glyphicon-globe"></i>
                         <span th:text="' ' + #{features}"></span></a></li>
                 </ul>
                 <div id="tab-vendedor-content" class="tab-content">
@@ -78,7 +78,7 @@
                             </div>
                             <div class="col-md-3 form-group">
                                 <label for="url" th:text="#{url}"></label>
-                                <input type="text" class="form-control" th:field="*{url}"/>
+                                <input th:disabled="${menu.menuTop.id} ? false : true" type="text" class="form-control" th:field="*{url}"/>
                             </div>
                             <div class="col-md-3 form-group">
                                 <label for="icon" th:text="#{icone}"></label>
@@ -94,7 +94,7 @@
                             <a th:href="@{/menu}" class="btn  btn-default" th:text="#{voltar}"></a>
                         </div>
                     </div>
-                    <div th:unless="${menu.novo}" class="tab-pane fade in" th:classappend="${menu.updateFeature} ? active" id="features">
+                    <div th:unless="${menu.novo}" th:if="${menu.menuTop}" class="tab-pane fade in" th:classappend="${menu.updateFeature} ? active" id="features">
                         <th:block th:each="features,rowStat : *{#numbers.sequence(features.size() - 1, 0, -1)}">
                             <input th:if="*{features[__${rowStat.index}__].id}" type="hidden" th:field="*{features[__${rowStat.index}__].id}">
                         </th:block>

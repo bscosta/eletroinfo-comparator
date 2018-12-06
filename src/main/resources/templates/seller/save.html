@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head th:include="~{layout/layout :: header (title='Vendedor')}">
+    <th:block layout:fragment="head-end">
+        <link th:href="@{/stylesheets/vendors/bootstrap-tabs-x/bootstrap-tabs-x.css}" rel="stylesheet" />
+    </th:block>
+</head>
+<body>
+
+<section layout:fragment="conteudo">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-10">
+                    <h1 th:if="${seller.novo}" th:text="#{titulo.cadastro.vendedor}"></h1>
+                    <h1 th:unless="${seller.novo}" th:text="#{titulo.editar.vendedor} + ': ' + ${seller.name}"></h1>
+                </div>
+                <div class="col-xs-2" th:unless="${seller.novo}">
+                    <div class="aw-page-header-controls">
+                        <a class="btn btn-primary" th:href="@{/vendedor/novo}">
+                            <i class="fa  fa-plus-circle"></i> <span class="hidden-xs  hidden-sm" th:text="#{novo}"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <form method="post" th:object="${seller}" th:action="${seller.novo} ? @{/vendedor/novo} :
+								@{/vendedor/{id}(id=${seller.id})}" class="form-vertical  js-form-loading">
+            <div th:replace="layout/fragments/message :: messages"></div>
+            <input type="hidden" th:field="*{id}" />
+            <div class="tabs-x tabs-above">
+                <ul id="tab-vendedor" class="nav nav-tabs" role="tablist">
+                    <li th:classappend="!${seller.updateContact} ? active"><a href="#dados-pessoais" role="tab" data-toggle="tab"><i
+                            class="glyphicon glyphicon-user"></i><span th:text="' ' + #{dados}"></span></a></li>
+                    <li th:classappend="${seller.updateContact} ? active" th:unless="${seller.novo}"><a href="#contatos" role="tab-kv" data-toggle="tab"><i class="glyphicon glyphicon-phone"></i>
+                        <span th:text="' ' + #{contatos}"></span></a></li>
+                </ul>
+                <div id="tab-vendedor-content" class="tab-content">
+                    <div class="tab-pane fade in" th:classappend="!${seller.updateContact} ? active" id="dados-pessoais">
+                        <div class="row">
+                            <div class="col-sm-12 form-group">
+                                <label for="name" th:text="#{nome}"></label>
+                                <input type="text" class="form-control" th:field="*{name}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn  btn-primary" type="submit" name="save" th:text="#{salvar}"></button>
+                            <a th:href="@{/vendedor}" class="btn  btn-default" th:text="#{voltar}"></a>
+                        </div>
+                    </div>
+                    <div th:unless="${seller.novo}" class="tab-pane fade in" th:classappend="${seller.updateContact} ? active" id="contatos">
+                        <th:block th:each="contacts,rowStat : *{#numbers.sequence(contacts.size() - 1, 0, -1)}">
+                            <input th:if="*{contacts[__${rowStat.index}__].id}" type="hidden" th:field="*{contacts[__${rowStat.index}__].id}">
+                            <input th:if="*{contacts[__${rowStat.index}__].id}" type="hidden" th:field="*{contacts[__${rowStat.index}__].typeContact}">
+                            <input th:if="*{contacts[__${rowStat.index}__].id}" type="hidden" th:field="*{contacts[__${rowStat.index}__].name}">
+                            <input th:if="*{contacts[__${rowStat.index}__].id}" type="hidden" th:field="*{contacts[__${rowStat.index}__].formContact}">
+                            <input th:if="*{contacts[__${rowStat.index}__].id}" type="hidden" th:field="*{contacts[__${rowStat.index}__].valueContact}">
+                        </th:block>
+                        <div class="row">
+                            <div class="col-sm-2 form-group">
+                                <label for="typeContact" class="control-label" th:text="#{tipo.contato}"></label>
+                                <select class="form-control" th:field="*{contacts[__${sizeContacts}__].typeContact}">
+                                    <option value="">Selecione</option>
+                                    <option th:text="#{pessoal}" th:value="Pessoal"></option>
+                                    <option th:text="#{comercial}" th:value="Comercial"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label th:text="#{nome}"></label>
+                                <input type="text" class="form-control" th:field="*{contacts[__${sizeContacts}__].name}"/>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                <label for="formContact" class="control-label" th:text="#{forma.contato}"></label>
+                                <select class="form-control" th:field="*{contacts[__${sizeContacts}__].formContact}">
+                                    <option value="">Selecione</option>
+                                    <option th:text="#{fixo}" th:value="Fixo"></option>
+                                    <option th:text="#{celular}" th:value="Celular"></option>
+                                    <option th:text="#{whatsapp}" th:value="Whatsapp"></option>
+                                    <option th:text="#{skype}" th:value="Skype"></option>
+                                    <option th:text="#{email}" th:value="Email"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label th:text="#{contato}"></label>
+                                <input type="text" class="form-control" th:field="*{contacts[__${sizeContacts}__].valueContact}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn  btn-primary" type="submit" th:text="#{adicionar}" name="addContact"></button>
+                            <a th:href="@{/vendedor}" class="btn  btn-default" th:text="#{voltar}"></a>
+                        </div>
+                        <div class="table-responsive pc-tabela-simples">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="table-projetos-col-nome" th:text="#{tipo.contato}"></th>
+                                    <th class="table-projetos-col-dataInicio" th:text="#{nome}"></th>
+                                    <th class="table-projetos-col-dataInicio" th:text="#{forma.contato}"></th>
+                                    <th class="table-projetos-col-dataInicio" th:text="#{contato}"></th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:if="${contact.id}" th:each="contact : ${seller.contacts}">
+                                    <td th:text="${contact.typeContact}"></td>
+                                    <td th:text="${contact.name}"></td>
+                                    <td th:text="${contact.formContact}"></td>
+                                    <td th:text="${contact.valueContact}"></td>
+                                    <td class="text-center">
+                                        <!--<a class="btn  btn-link  btn-xs js-tooltip" th:title="#{editar}" th:href="@{/vendedor/{id}(id=${seller.id})}">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>-->
+                                        <button th:value="${contact.id}" name="delContact"
+                                                class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn" th:title=#{deletar}>
+                                            <i class="glyphicon glyphicon-remove"></i> <span class="icon-name"></span>
+                                        </button>
+                                    </td>
+                                    <!--</tr>
+                                    <tr>
+                                        <td colspan="4">Nenhum usuário encontrado</td>
+                                    </tr>-->
+                                </tbody>
+                            </table>
+                            <!--<div th:replace="layout/fragments/pagination :: pagination"></div>-->
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</section>
+<th:block layout:fragment="javascript-extra">
+    <script th:src="@{/javascripts/vendors/bootstrap-toggle.min.js}"></script>
+    <script th:src="@{/javascripts/vendors/bootstrap-tabs-x/bootstrap-tabs-x.js}"></script>
+</th:block>
+</body>
+</html>

@@ -1,6 +1,6 @@
 package com.eletroinfo.eletroinfo.comparator.validations;
 
-import com.eletroinfo.eletroinfo.comparator.entitie.Budget;
+import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Budget;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

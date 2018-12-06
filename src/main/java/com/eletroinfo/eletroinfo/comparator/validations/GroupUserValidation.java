@@ -1,6 +1,6 @@
 package com.eletroinfo.eletroinfo.comparator.validations;
 
-import com.eletroinfo.eletroinfo.comparator.entitie.GroupUser;
+import com.eletroinfo.eletroinfo.comparator.auth.entitie.GroupUser;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

@@ -1,7 +1,7 @@
 package com.eletroinfo.eletroinfo.comparator.validations;
 
-import com.eletroinfo.eletroinfo.comparator.entitie.User;
-import com.eletroinfo.eletroinfo.comparator.service.UserService;
+import com.eletroinfo.eletroinfo.comparator.auth.entitie.User;
+import com.eletroinfo.eletroinfo.comparator.auth.service.UserService;
 import com.eletroinfo.eletroinfo.comparator.util.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

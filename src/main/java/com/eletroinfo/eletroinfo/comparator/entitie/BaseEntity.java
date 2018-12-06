@@ -1,5 +1,6 @@
 package com.eletroinfo.eletroinfo.comparator.entitie;
 
+import com.eletroinfo.eletroinfo.comparator.auth.entitie.User;
 import com.eletroinfo.eletroinfo.comparator.converters.ZoneIdConverter;
 import com.eletroinfo.eletroinfo.comparator.listeners.BaseEntityListener;
 
@@ -103,5 +104,21 @@ public abstract class BaseEntity implements Serializable {
 
     public void setZoneLastUpdate(ZoneId zoneLastUpdate) {
         this.zoneLastUpdate = zoneLastUpdate;
+    }
+
+    public String getIpRegister() {
+        return ipRegister;
+    }
+
+    public void setIpRegister(String ipRegister) {
+        this.ipRegister = ipRegister;
+    }
+
+    public String getIpLastUpdate() {
+        return ipLastUpdate;
+    }
+
+    public void setIpLastUpdate(String ipLastUpdate) {
+        this.ipLastUpdate = ipLastUpdate;
     }
 }
