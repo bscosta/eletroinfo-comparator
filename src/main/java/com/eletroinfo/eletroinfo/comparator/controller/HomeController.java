@@ -1,7 +1,7 @@
 package com.eletroinfo.eletroinfo.comparator.controller;
 
 import com.eletroinfo.eletroinfo.comparator.enumeration.UserType;
-import com.eletroinfo.eletroinfo.comparator.filter.UserFilter;
+import com.eletroinfo.eletroinfo.comparator.auth.filter.UserFilter;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

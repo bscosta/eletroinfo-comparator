@@ -1,6 +1,8 @@
 package com.eletroinfo.eletroinfo.comparator.config;
 
+import com.eletroinfo.eletroinfo.comparator.interceptors.RunTimeInterceptor;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.ApplicationContext;
@@ -12,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -27,6 +30,9 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 public class WebApplicationConfig implements WebMvcConfigurer, ApplicationContextAware {
 
     private ApplicationContext applicationContext;
+
+    @Autowired
+    private RunTimeInterceptor runTimeInterceptor;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -56,5 +62,15 @@ public class WebApplicationConfig implements WebMvcConfigurer, ApplicationContex
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("**/").addResourceLocations("classpath:/static/");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(runTimeInterceptor);
+    }
+
+    @Bean
+    public RunTimeInterceptor runTimeInterceptor(){
+        return new RunTimeInterceptor();
     }
 }

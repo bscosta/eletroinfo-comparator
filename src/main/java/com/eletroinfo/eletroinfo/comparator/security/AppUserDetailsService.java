@@ -3,9 +3,7 @@ package com.eletroinfo.eletroinfo.comparator.security;
 import com.eletroinfo.eletroinfo.comparator.dto.MenuChildDto;
 import com.eletroinfo.eletroinfo.comparator.dto.ParentMenuDto;
 import com.eletroinfo.eletroinfo.comparator.dto.PermissionDto;
-import com.eletroinfo.eletroinfo.comparator.entitie.User;
-import com.eletroinfo.eletroinfo.comparator.service.UserPermissionService;
-import com.eletroinfo.eletroinfo.comparator.service.UserService;
+import com.eletroinfo.eletroinfo.comparator.auth.service.UserPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+/**
+ * @author Bruno Costa
+ */
 
 @Service
 public class AppUserDetailsService implements UserDetailsService {
@@ -29,13 +31,9 @@ public class AppUserDetailsService implements UserDetailsService {
         if (permissionDto == null) {
             new UsernameNotFoundException("Usuário ou senha incorretos");
         }
+
         List<GrantedAuthority> grantedAuthorities = this.getAuthorities(permissionDto);
         return new UserLogged(permissionDto, grantedAuthorities);
-    }
-
-    private PermissionDto getPermissoes(User user) {
-        //Listando as permissões do usuário
-        return this.userPermissionService.findByPermissionById(user.getId());
     }
 
     public List<GrantedAuthority> getAuthorities(PermissionDto permissionDto){
