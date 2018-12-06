@@ -1,4 +1,4 @@
-package com.eletroinfo.eletroinfo.comparator.validations;
+package com.eletroinfo.eletroinfo.comparator.cptr.validation;
 
 import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Budget;
 import org.springframework.stereotype.Component;

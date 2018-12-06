@@ -8,7 +8,7 @@ import com.eletroinfo.eletroinfo.comparator.cptr.service.ProductService;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.ProviderService;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.SellerService;
 import com.eletroinfo.eletroinfo.comparator.util.PageWrapper;
-import com.eletroinfo.eletroinfo.comparator.validations.BudgetValidation;
+import com.eletroinfo.eletroinfo.comparator.cptr.validation.BudgetValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

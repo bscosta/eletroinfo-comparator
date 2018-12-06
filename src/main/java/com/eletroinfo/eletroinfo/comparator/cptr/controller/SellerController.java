@@ -7,7 +7,7 @@ import com.eletroinfo.eletroinfo.comparator.notification.NotificationHandler;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.ContactService;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.SellerService;
 import com.eletroinfo.eletroinfo.comparator.util.PageWrapper;
-import com.eletroinfo.eletroinfo.comparator.validations.SellerValidation;
+import com.eletroinfo.eletroinfo.comparator.cptr.validation.SellerValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

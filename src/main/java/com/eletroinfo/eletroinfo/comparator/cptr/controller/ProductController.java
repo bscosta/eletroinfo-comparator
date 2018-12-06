@@ -5,7 +5,7 @@ import com.eletroinfo.eletroinfo.comparator.cptr.filter.ProductFilter;
 import com.eletroinfo.eletroinfo.comparator.notification.NotificationHandler;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.BrandService;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.ProductService;
-import com.eletroinfo.eletroinfo.comparator.validations.ProductValidation;
+import com.eletroinfo.eletroinfo.comparator.cptr.validation.ProductValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

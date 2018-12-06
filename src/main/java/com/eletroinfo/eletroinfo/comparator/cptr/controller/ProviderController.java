@@ -9,7 +9,7 @@ import com.eletroinfo.eletroinfo.comparator.cptr.service.AddressService;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.ContactService;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.ProviderService;
 import com.eletroinfo.eletroinfo.comparator.util.PageWrapper;
-import com.eletroinfo.eletroinfo.comparator.validations.ProviderValidation;
+import com.eletroinfo.eletroinfo.comparator.cptr.validation.ProviderValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
