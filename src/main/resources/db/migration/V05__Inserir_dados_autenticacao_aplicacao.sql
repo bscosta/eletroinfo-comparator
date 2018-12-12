@@ -58,6 +58,12 @@ VALUES('Fornecedor', '/fornecedor', @pm_cptr_id, 'fas fa-people-carry', 'compara
 
 SET @cm_fornecedor_id = LAST_INSERT_ID();
 
+INSERT INTO auth.menu
+(name, url, menu_top_id, icon, tag, internal_menu, internationalization_code, user_register, date_register, user_last_update, date_last_update, zone_register, zone_last_update, ip_register, ip_last_update, deleted)
+VALUES('Orçamento', '/orcamento', @pm_cptr_id, 'far fa-list-alt', 'comparator, orçamento', 0, 'orcamento', @user_dev_id, NOW(), @user_dev_id, NOW(), 'America/Sao_Paulo', 'America/Sao_Paulo', '127.0.0.1', '127.0.0.1', 0);
+
+SET @cm_orcamento_id = LAST_INSERT_ID();
+
 INSERT INTO auth.feature
 (name, code, user_register, date_register, user_last_update, date_last_update, zone_register, zone_last_update, ip_register, ip_last_update, deleted)
 VALUES('Buscar Menu', 'buscar.menu', @user_dev_id, NOW(), @user_dev_id, NOW(), 'America/Sao_Paulo', 'America/Sao_Paulo', '127.0.0.1', '127.0.0.1', 0);
@@ -435,3 +441,48 @@ SET @ft_RmvCttFndr_id = LAST_INSERT_ID();
 
 INSERT INTO auth.menu_feature
 (menu_id, feature_id) VALUES (@cm_fornecedor_id, @ft_RmvCttFndr_id);
+
+INSERT INTO auth.feature
+(name, code, user_register, date_register, user_last_update, date_last_update, zone_register, zone_last_update, ip_register, ip_last_update, deleted)
+VALUES('Cadastrar Orçamento', 'cadastrar.orcamento', @user_dev_id, NOW(), @user_dev_id, NOW(), 'America/Sao_Paulo', 'America/Sao_Paulo', '127.0.0.1', '127.0.0.1', 0);
+
+SET @ft_CdstrOrcmt_id = LAST_INSERT_ID();
+
+INSERT INTO auth.menu_feature
+(menu_id, feature_id) VALUES (@cm_orcamento_id, @ft_CdstrOrcmt_id);
+
+INSERT INTO auth.feature
+(name, code, user_register, date_register, user_last_update, date_last_update, zone_register, zone_last_update, ip_register, ip_last_update, deleted)
+VALUES('Editar Orçamento', 'editar.orcamento', @user_dev_id, NOW(), @user_dev_id, NOW(), 'America/Sao_Paulo', 'America/Sao_Paulo', '127.0.0.1', '127.0.0.1', 0);
+
+SET @ft_EdtOrcmt_id = LAST_INSERT_ID();
+
+INSERT INTO auth.menu_feature
+(menu_id, feature_id) VALUES (@cm_orcamento_id, @ft_EdtOrcmt_id);
+
+INSERT INTO auth.feature
+(name, code, user_register, date_register, user_last_update, date_last_update, zone_register, zone_last_update, ip_register, ip_last_update, deleted)
+VALUES('Buscar Orçamento', 'buscar.orcamento', @user_dev_id, NOW(), @user_dev_id, NOW(), 'America/Sao_Paulo', 'America/Sao_Paulo', '127.0.0.1', '127.0.0.1', 0);
+
+SET @ft_BscOrcmt_id = LAST_INSERT_ID();
+
+INSERT INTO auth.menu_feature
+(menu_id, feature_id) VALUES (@cm_orcamento_id, @ft_BscOrcmt_id);
+
+INSERT INTO auth.feature
+(name, code, user_register, date_register, user_last_update, date_last_update, zone_register, zone_last_update, ip_register, ip_last_update, deleted)
+VALUES('Buscar Todos Orçamentos', 'buscar.todos.orcamentos', @user_dev_id, NOW(), @user_dev_id, NOW(), 'America/Sao_Paulo', 'America/Sao_Paulo', '127.0.0.1', '127.0.0.1', 0);
+
+SET @ft_BscTdsOrcmt_id = LAST_INSERT_ID();
+
+INSERT INTO auth.menu_feature
+(menu_id, feature_id) VALUES (@cm_orcamento_id, @ft_BscTdsOrcmt_id);
+
+INSERT INTO auth.feature
+(name, code, user_register, date_register, user_last_update, date_last_update, zone_register, zone_last_update, ip_register, ip_last_update, deleted)
+VALUES('Deletar Orçamento', 'deletar.orcamento', @user_dev_id, NOW(), @user_dev_id, NOW(), 'America/Sao_Paulo', 'America/Sao_Paulo', '127.0.0.1', '127.0.0.1', 0);
+
+SET @ft_DltOrcmt_id = LAST_INSERT_ID();
+
+INSERT INTO auth.menu_feature
+(menu_id, feature_id) VALUES (@cm_orcamento_id, @ft_DltOrcmt_id);
