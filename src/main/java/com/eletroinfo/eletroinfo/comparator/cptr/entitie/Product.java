@@ -32,6 +32,8 @@ public class Product extends BaseEntity implements Serializable {
     @Column(name = "measured_quantity")
     private Integer measuredQuantity;
 
+    private Integer barcode;
+
     public Boolean isNovo() {
         return this.id == null;
     }
@@ -82,5 +84,13 @@ public class Product extends BaseEntity implements Serializable {
 
     public void setMeasuredQuantity(Integer measuredQuantity) {
         this.measuredQuantity = measuredQuantity;
+    }
+
+    public Integer getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(Integer barcode) {
+        this.barcode = barcode;
     }
 }

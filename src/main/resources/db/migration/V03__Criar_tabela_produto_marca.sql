@@ -88,6 +88,7 @@ CREATE TABLE cptr.product (
     brand_id BIGINT NOT NULL,
     unit_measure VARCHAR(50),
     measured_quantity BIGINT,
+    barcode BIGINT,
     user_register BIGINT(5),
     date_register timestamp NULL,
     user_last_update BIGINT(5),
@@ -98,6 +99,25 @@ CREATE TABLE cptr.product (
     ip_last_update VARCHAR(50),
     deleted BOOLEAN DEFAULT false NOT NULL,
     FOREIGN KEY (brand_id) REFERENCES brand(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE cptr.item (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    product_id BIGINT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    rebate DECIMAL(10, 2) NOT NULL,
+    quantity BIGINT NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    user_register BIGINT(5),
+    date_register timestamp NULL,
+    user_last_update BIGINT(5),
+    date_last_update timestamp NULL,
+    zone_register VARCHAR(50),
+    zone_last_update VARCHAR(50),
+    ip_register VARCHAR(50),
+    ip_last_update VARCHAR(50),
+    deleted BOOLEAN DEFAULT false NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES product(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE cptr.seller_contact (
@@ -126,13 +146,10 @@ CREATE TABLE cptr.provider_address (
 
 CREATE TABLE cptr.budget (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    product_id BIGINT NOT NULL,
     provider_id BIGINT NOT NULL,
     seller_id BIGINT NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
-    rebate DECIMAL(10, 2) NOT NULL,
-    quantity BIGINT NOT NULL,
-    barcode BIGINT,
+    note TEXT NULL,
+    date_expire timestamp NOT NULL,
     user_register BIGINT(5),
     date_register timestamp NULL,
     user_last_update BIGINT(5),
@@ -142,7 +159,14 @@ CREATE TABLE cptr.budget (
     ip_register VARCHAR(50),
     ip_last_update VARCHAR(50),
     deleted BOOLEAN DEFAULT false NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES cptr.product(id),
     FOREIGN KEY (provider_id) REFERENCES cptr.provider(id),
     FOREIGN KEY (seller_id) REFERENCES cptr.seller(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE cptr.budget_item (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    budget_id BIGINT NOT NULL,
+    item_id BIGINT NOT NULL,
+    FOREIGN KEY (budget_id) REFERENCES cptr.budget(id),
+    FOREIGN KEY (item_id) REFERENCES cptr.item(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

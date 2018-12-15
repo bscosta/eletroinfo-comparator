@@ -17,10 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
 
     @Transactional(readOnly = true)
-    @Query("SELECT b FROM Budget b WHERE UPPER(b.product.name) LIKE UPPER(CONCAT('%',:productName,'%')) "
-            + " AND UPPER(b.provider.name) LIKE UPPER(CONCAT('%',:providerName,'%')) "
+    @Query("SELECT b FROM Budget b WHERE "
+            + " UPPER(b.provider.name) LIKE UPPER(CONCAT('%',:providerName,'%')) "
             + " AND UPPER(b.seller.name) LIKE UPPER(CONCAT('%',:sellerName,'%')) "
-            + " AND b.barcode = :barcode "
             + " AND b.deleted is false ")
-    PageImpl<Budget> findByParameters(@Param("productName") String productName, @Param("providerName") String providerName, @Param("sellerName") String sellerName, @Param("barcode") Long barcode, Pageable pageable);
+    PageImpl<Budget> findByParameters( @Param("providerName") String providerName, @Param("sellerName") String sellerName, Pageable pageable);
 }

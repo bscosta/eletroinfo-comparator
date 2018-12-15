@@ -5,6 +5,8 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Bruno Costa
@@ -23,10 +25,6 @@ public class Budget extends BaseEntity implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    @ManyToOne
     @JoinColumn(name = "provider_id")
     private Provider provider;
 
@@ -34,13 +32,16 @@ public class Budget extends BaseEntity implements Serializable {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    private Integer price;
+    @Column(name = "date_expire")
+    private LocalDateTime dateExpire;
 
-    private Integer rebate;
+    private String note;
 
-    private Long quantity;
-
-    private Long barcode;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "budget_item", schema = "cptr",
+            joinColumns = { @JoinColumn(name = "budget_id")},
+            inverseJoinColumns = { @JoinColumn(name = "item_id")})
+    private List<Item> items;
 
     public Boolean isNovo() {
         return this.id == null;
@@ -52,14 +53,6 @@ public class Budget extends BaseEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public Provider getProvider() {
@@ -78,35 +71,27 @@ public class Budget extends BaseEntity implements Serializable {
         this.seller = seller;
     }
 
-    public Integer getPrice() {
-        return price;
+    public LocalDateTime getDateExpire() {
+        return dateExpire;
     }
 
-    public void setPrice(Integer price) {
-        this.price = price;
+    public void setDateExpire(LocalDateTime dateExpire) {
+        this.dateExpire = dateExpire;
     }
 
-    public Integer getRebate() {
-        return rebate;
+    public String getNote() {
+        return note;
     }
 
-    public void setRebate(Integer rebate) {
-        this.rebate = rebate;
+    public void setNote(String note) {
+        this.note = note;
     }
 
-    public Long getQuantity() {
-        return quantity;
+    public List<Item> getItems() {
+        return items;
     }
 
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
-    }
-
-    public Long getBarcode() {
-        return barcode;
-    }
-
-    public void setBarcode(Long barcode) {
-        this.barcode = barcode;
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }

@@ -109,7 +109,7 @@ public class BudgetController {
      */
     @GetMapping(value = "/{id}")
     public ModelAndView edit(@PathVariable("id") Long id, Budget budget, RedirectAttributes redirectAttributes) {
-        if (budget.getProduct() == null) {
+        if (budget.getItems() == null && !budget.getItems().isEmpty()) {
             Optional<Budget> optionalBudget = this.budgetService.findById(id);
             if (!optionalBudget.isPresent()) {
                 notificationHandler.getMessage404NotFound();
