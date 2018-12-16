@@ -29,72 +29,136 @@
 								@{/orcamento/{id}(id=${budget.id})}" class="form-vertical  js-form-loading">
             <div th:replace="layout/fragments/message :: messages"></div>
             <input type="hidden" th:field="*{id}" />
-            <div class="row">
-                <div class="col-sm-3 form-group">
-                    <label for="product.id" class="control-label">Produto</label>
-                    <div class="bw-field-action">
-                        <select class="form-control" id="product" th:field="*{product.id}">
-                            <option value="">Selecione</option>
-                            <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
-                        </select>
-                        <div class="bw-field-action__icon">
-                            <a href="#" data-toggle="modal" data-target="#modalQuickRegisterBrand" th:title="#{cadastrar.produto}">
-                                <i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
-                            </a>
+            <div class="tabs-x tabs-above">
+                <ul id="tab-orcamento" class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#dados-orcamento" role="tab" data-toggle="tab"><i
+                            class="glyphicon glyphicon-th-list"></i><span th:text="' ' + #{dados.orcamento}"></span></a></li>
+                    <li><a href="#items" role="tab-kv" data-toggle="tab"><i class="glyphicon glyphicon-list-alt"></i>
+                        <span th:text="' ' + #{items}"></span></a></li>
+                </ul>
+                <div id="tab-orcamento-content" class="tab-content">
+                    <div class="tab-pane fade in active" id="dados-orcamento">
+                        <div class="row">
+                            <div class="col-sm-3 form-group">
+                                <label for="provider.id" class="control-label">Fornecedor</label>
+                                <div class="bw-field-action">
+                                    <select class="form-control" id="provider" th:field="*{provider.id}">
+                                        <option value="">Selecione</option>
+                                        <option th:if="${providers}" th:each="provider : ${providers}" th:value="${provider.id}" th:text="${provider.name}"></option>
+                                    </select>
+                                    <div class="bw-field-action__icon">
+                                        <a href="#" data-toggle="modal" data-target="#modalQuickRegisterBrand" th:title="#{cadastrar.fornecedor}">
+                                            <i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label for="seller.id" class="control-label">Vendedor</label>
+                                <div class="bw-field-action">
+                                    <select class="form-control" id="seller" th:field="*{seller.id}">
+                                        <option value="">Selecione</option>
+                                        <option th:if="${sellers}" th:each="seller : ${sellers}" th:value="${seller.id}" th:text="${seller.name}"></option>
+                                    </select>
+                                    <div class="bw-field-action__icon">
+                                        <a href="#" data-toggle="modal" data-target="#modalQuickRegisterBrand" th:title="#{cadastrar.vendedor}">
+                                            <i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label for="dateExpire" th:text="#{data.expira}"></label>
+                                <input type="datetime-local" class="form-control" th:field="*{dateExpire}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 form-group">
+                                <label for="note" th:text="#{anotacao}"></label>
+                                <input type="text" class="form-control" th:field="*{note}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn  btn-primary" type="submit" th:text="#{salvar}"></button>
+                            <a th:href="@{/orcamento}" class="btn  btn-default" th:text="#{voltar}"></a>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <label for="provider.id" class="control-label">Fornecedor</label>
-                    <div class="bw-field-action">
-                        <select class="form-control" id="provider" th:field="*{provider.id}">
-                            <option value="">Selecione</option>
-                            <option th:each="provider : ${providers}" th:value="${provider.id}" th:text="${provider.name}"></option>
-                        </select>
-                        <div class="bw-field-action__icon">
-                            <a href="#" data-toggle="modal" data-target="#modalQuickRegisterBrand" th:title="#{cadastrar.fornecedor}">
-                                <i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
-                            </a>
+                    <div class="tab-pane fade in" id="items">
+                        <th:block th:each="items,rowStat : *{#numbers.sequence(items.size() - 1, 0, -1)}">
+                            <input th:if="*{items[__${rowStat.index}__].id}" type="hidden" th:field="*{items[__${rowStat.index}__].id}">
+                        </th:block>
+                        <div class="row">
+                            <div class="col-sm-3 form-group">
+                                <label for="product.id" class="control-label">Produto</label>
+                                <div class="bw-field-action">
+                                    <select class="form-control" id="product" th:field="*{items[__${sizeItems}__].product}">
+                                        <option value="">Selecione</option>
+                                        <option th:if="${products}" th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+                                    </select>
+                                    <div class="bw-field-action__icon">
+                                        <a href="#" data-toggle="modal" data-target="#modalQuickRegisterBrand" th:title="#{cadastrar.produto}">
+                                            <i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label th:text="#{preco}"></label>
+                                <input type="text" class="form-control" th:field="*{items[__${sizeItems}__].price}"/>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label th:text="#{desconto}"></label>
+                                <input type="text" class="form-control" th:field="*{items[__${sizeItems}__].rebate}"/>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label th:text="#{quantidade}"></label>
+                                <input type="text" class="form-control" th:field="*{items[__${sizeItems}__].quantity}"/>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <label for="seller.id" class="control-label">Vendedor</label>
-                    <div class="bw-field-action">
-                        <select class="form-control" id="seller" th:field="*{seller.id}">
-                            <option value="">Selecione</option>
-                            <option th:each="seller : ${sellers}" th:value="${seller.id}" th:text="${seller.name}"></option>
-                        </select>
-                        <div class="bw-field-action__icon">
-                            <a href="#" data-toggle="modal" data-target="#modalQuickRegisterBrand" th:title="#{cadastrar.vendedor}">
-                                <i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
-                            </a>
+                        <div class="form-group">
+                            <button class="btn  btn-primary" type="submit" th:text="#{adicionar}" name="addItem"></button>
+                            <a th:href="@{/orcamento}" class="btn  btn-default" th:text="#{voltar}"></a>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 form-group">
-                    <label for="price" th:text="#{preco}"></label>
-                    <input type="number" class="form-control" th:placeholder="#{R$}" th:field="*{price}"/>
-                </div>
-                <div class="col-sm-2 form-group">
-                    <label for="rebate" th:text="#{desconto}"></label>
-                    <input type="number" class="form-control" th:placeholder="#{desconto}" th:field="*{rebate}"/>
-                </div>
-                <div class="col-sm-2 form-group">
-                    <label for="quantity" th:text="#{quantidade}"></label>
-                    <input type="number" class="form-control" th:placeholder="#{quantidade}" th:field="*{quantity}"/>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <label for="barcode" th:text="#{codigo.barras}"></label>
-                    <input type="number" class="form-control" th:placeholder="#{codigo.barras}" th:field="*{barcode}"/>
-                </div>
-            </div>
+                        <div class="table-responsive pc-tabela-simples">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="table-features-col-nome" th:text="#{produto}"></th>
+                                    <th class="table-features-col-nome" th:text="#{marca}"></th>
+                                    <th class="table-feature-col-codigo" th:text="#{preco}"></th>
+                                    <th class="table-feature-col-codigo" th:text="#{desconto}"></th>
+                                    <th class="table-feature-col-codigo" th:text="#{quantidade}"></th>
+                                    <th class="table-feature-col-codigo" th:text="#{status}"></th>
+                                </tr>
+                                </thead>
 
-            <div class="form-group">
-                <button class="btn  btn-primary" type="submit" th:text="#{salvar}"></button>
-                <a th:href="@{/orcamento}" class="btn  btn-default" th:text="#{voltar}"></a>
+                                <tbody>
+                                <tr th:if="${item.product}" th:each="item : ${budget.items}">
+                                    <td th:text="${item.product.name}"></td>
+                                    <td th:text="${item.product.brand.name}"></td>
+                                    <td th:text="${item.price}"></td>
+                                    <td th:text="${item.rebate}"></td>
+                                    <td th:text="${item.quantity}"></td>
+                                    <td th:text="${item.status}"></td>
+                                    <td class="text-center">
+                                        <!--<a class="btn  btn-link  btn-xs js-tooltip" th:title="#{editar}" th:href="@{/vendedor/{id}(id=${seller.id})}">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>-->
+                                        <button th:value="${item.id}" name="delItem"
+                                                class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn" th:title=#{deletar}>
+                                            <i class="glyphicon glyphicon-remove"></i> <span class="icon-name"></span>
+                                        </button>
+                                    </td>
+                                    <!--</tr>
+                                    <tr>
+                                        <td colspan="4">Nenhum usuário encontrado</td>
+                                    </tr>-->
+                                </tbody>
+                            </table>
+                            <!--<div th:replace="layout/fragments/pagination :: pagination"></div>-->
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>

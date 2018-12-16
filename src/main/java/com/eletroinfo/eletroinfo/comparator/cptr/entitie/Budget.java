@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +42,10 @@ public class Budget extends BaseEntity implements Serializable {
     @JoinTable(name = "budget_item", schema = "cptr",
             joinColumns = { @JoinColumn(name = "budget_id")},
             inverseJoinColumns = { @JoinColumn(name = "item_id")})
-    private List<Item> items;
+    private List<Item> items = new ArrayList<>();
+
+    @Transient
+    private Boolean isUpdateItem;
 
     public Boolean isNovo() {
         return this.id == null;
@@ -93,5 +97,13 @@ public class Budget extends BaseEntity implements Serializable {
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    public Boolean getUpdateItem() {
+        return isUpdateItem;
+    }
+
+    public void setUpdateItem(Boolean updateItem) {
+        isUpdateItem = updateItem;
     }
 }

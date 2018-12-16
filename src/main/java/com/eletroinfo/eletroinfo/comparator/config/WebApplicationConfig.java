@@ -1,17 +1,18 @@
 package com.eletroinfo.eletroinfo.comparator.config;
 
+import com.eletroinfo.eletroinfo.comparator.formatter.LocalDateFormatter;
 import com.eletroinfo.eletroinfo.comparator.interceptors.RunTimeInterceptor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -54,6 +55,12 @@ public class WebApplicationConfig implements WebMvcConfigurer, ApplicationContex
         messageSource.setUseCodeAsDefaultMessage(true);
         messageSource.setDefaultEncoding("UTF-8"); // codigos para colocar no arquivos de message properties para nao dar erro de encondig //http://www.utf8-chartable.de/
         return messageSource;
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry formatterRegistry) {
+        LocalDateFormatter localDateFormatter = new LocalDateFormatter();
+        formatterRegistry.addFormatter(localDateFormatter);
     }
 
     /**

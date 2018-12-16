@@ -1,12 +1,12 @@
 package com.eletroinfo.eletroinfo.comparator.cptr.controller;
 
 import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Budget;
+import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Item;
 import com.eletroinfo.eletroinfo.comparator.cptr.filter.BudgetFilter;
+import com.eletroinfo.eletroinfo.comparator.cptr.service.*;
+import com.eletroinfo.eletroinfo.comparator.cptr.validation.ItemValidation;
+import com.eletroinfo.eletroinfo.comparator.enumeration.TypeMessage;
 import com.eletroinfo.eletroinfo.comparator.notification.NotificationHandler;
-import com.eletroinfo.eletroinfo.comparator.cptr.service.BudgetService;
-import com.eletroinfo.eletroinfo.comparator.cptr.service.ProductService;
-import com.eletroinfo.eletroinfo.comparator.cptr.service.ProviderService;
-import com.eletroinfo.eletroinfo.comparator.cptr.service.SellerService;
 import com.eletroinfo.eletroinfo.comparator.util.PageWrapper;
 import com.eletroinfo.eletroinfo.comparator.cptr.validation.BudgetValidation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -51,7 +52,13 @@ public class BudgetController {
     private ProviderService providerService;
 
     @Autowired
+    private ItemService itemService;
+
+    @Autowired
     private BudgetValidation budgetValidation;
+
+    @Autowired
+    private ItemValidation itemValidation;
 
     @GetMapping
     public ModelAndView list(BudgetFilter budgetFilter) {
@@ -72,6 +79,7 @@ public class BudgetController {
     @GetMapping(value = "/novo")
     public ModelAndView newBudget(Budget budget) {
         ModelAndView mv = new ModelAndView("budget/save", "budget", budget);
+        mv.addObject("sizeItems", budget.getItems().size());
         mv.addObject("products", productService.findAll());
         mv.addObject("sellers", sellerService.findAll());
         mv.addObject("providers", providerService.findAll());
@@ -80,6 +88,7 @@ public class BudgetController {
 
     @PostMapping({"/novo", "{\\+d}"})
     public ModelAndView save(@Valid Budget budget, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        budget.getItems().removeIf(item -> item.getId() == null);
         if (budget.getId() == null) {
             this.budgetValidation.save(budget, bindingResult);
         } else {
@@ -101,6 +110,27 @@ public class BudgetController {
         return new ModelAndView("redirect:/orcamento/"+budget.getId());
     }
 
+    @PostMapping(value="/{\\d}", params = {"addItem"})
+    public ModelAndView addItem(@Valid Budget budget, BindingResult bindingResult) {
+        Item item = new Item();
+        item = budget.getItems().stream().filter(item1 -> item1.getId() == null).findFirst().get();
+        itemValidation.save(item, bindingResult);
+        if (bindingResult.hasErrors()) {
+            budget.setUpdateItem(true);
+            ModelAndView mv = newBudget(budget);
+            mv.addObject("sizeFeatures", budget.getItems().size()-1);
+            return mv;
+        }
+        List<Item> items = this.itemService.saveList(budget.getItems());
+        budget.setItems(items);
+        budget = budgetService.save(budget);
+        budget.setUpdateItem(true);
+        notificationHandler.addMessageinternationalized(TypeMessage.message_sucess, "item.adicionado.sucesso");
+        ModelAndView mv = newBudget(budget);
+        mv.addObject(notificationHandler.getType().name(), notificationHandler.getMessages());
+        return mv;
+    }
+
     /**
      *
      * @param id
@@ -109,7 +139,7 @@ public class BudgetController {
      */
     @GetMapping(value = "/{id}")
     public ModelAndView edit(@PathVariable("id") Long id, Budget budget, RedirectAttributes redirectAttributes) {
-        if (budget.getItems() == null && !budget.getItems().isEmpty()) {
+        if (budget.getSeller() == null || budget.getSeller().getId() == null) {
             Optional<Budget> optionalBudget = this.budgetService.findById(id);
             if (!optionalBudget.isPresent()) {
                 notificationHandler.getMessage404NotFound();

@@ -56,25 +56,17 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th class="table-projetos-col-nome" th:text="#{nome.produto}"></th>
                         <th class="table-projetos-col-contato" th:text="#{nome.fornecedor}"></th>
                         <th class="table-projetos-col-contato" th:text="#{nome.vendedor}"></th>
-                        <th class="table-projetos-col-contato" th:text="#{codigo.barras}"></th>
-                        <th class="table-projetos-col-contato" th:text="#{preco}"></th>
-                        <th class="table-projetos-col-contato" th:text="#{desconto}"></th>
-                        <th class="table-projetos-col-contato" th:text="#{quantidade}"></th>
+                        <th class="table-projetos-col-contato" th:text="#{data.expira}"></th>
                         <th class="table-projetos-col-" colspan="2"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="budget : ${pageData.content}">
-                        <td th:text="${budget.product.name}"></td>
                         <td th:text="${budget.provider.name}"></td>
                         <td th:text="${budget.seller.name}"></td>
-                        <td th:text="${budget.barcode}"></td>
-                        <td th:text="${budget.price}"></td>
-                        <td th:text="${budget.rebate}"></td>
-                        <td th:text="${budget.quantity}"></td>
+                        <td th:text="${#temporals.format(budget.dateExpire, 'dd/MM/yyyy HH:mm:ss')}"></td>
                         <td class="text-center">
                             <a class="btn  btn-link  btn-xs js-tooltip" title="Editar" th:href="@{/orcamento/{id}(id=${budget.id})}">
                                 <i class="glyphicon glyphicon-pencil"></i>

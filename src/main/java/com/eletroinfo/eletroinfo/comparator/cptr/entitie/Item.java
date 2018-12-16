@@ -17,11 +17,11 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private int price;
+    private Integer price;
 
-    private int rebate;
+    private Integer rebate;
 
-    private int quantity;
+    private Integer quantity;
 
     private String status;
 
@@ -43,27 +43,27 @@ public class Item extends BaseEntity {
         this.product = product;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public int getRebate() {
+    public Integer getRebate() {
         return rebate;
     }
 
-    public void setRebate(int rebate) {
+    public void setRebate(Integer rebate) {
         this.rebate = rebate;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
