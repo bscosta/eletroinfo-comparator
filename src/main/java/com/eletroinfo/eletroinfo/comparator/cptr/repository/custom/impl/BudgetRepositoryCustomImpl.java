@@ -2,8 +2,12 @@ package com.eletroinfo.eletroinfo.comparator.cptr.repository.custom.impl;
 
 import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Budget;
 import com.eletroinfo.eletroinfo.comparator.cptr.repository.custom.BudgetRepositoryCustom;
+import com.eletroinfo.eletroinfo.comparator.infra.RunTimeSession;
+import com.eletroinfo.eletroinfo.comparator.security.UserLogged;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,8 @@ public class BudgetRepositoryCustomImpl implements BudgetRepositoryCustom {
 
     @Transactional(readOnly = true)
     public PageImpl<Budget> findByParameters(String productName, String providerName, String sellerName, Long barcode, Pageable pageable) {
+
+        UserLogged userLogged = (UserLogged) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         StringBuilder sql = new StringBuilder();
         StringBuilder where = new StringBuilder();
@@ -38,6 +44,9 @@ public class BudgetRepositoryCustomImpl implements BudgetRepositoryCustom {
 
         if (barcode != null && barcode > 0)
         where.append(" AND b.barcode = " + barcode );
+
+        /*if (userLogged.getPermissionDto().getUserDto().getUserType() > 1)
+            where.append(" AND  ")*/
 
         /**
          * Fazendo um count

@@ -16,6 +16,7 @@ CREATE TABLE cptr.brand (
 CREATE TABLE cptr.seller (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
+    user_id BIGINT NULL,
     user_register BIGINT(5),
     date_register timestamp NULL,
     user_last_update BIGINT(5),
@@ -24,7 +25,8 @@ CREATE TABLE cptr.seller (
     zone_last_update VARCHAR(50),
     ip_register VARCHAR(50),
     ip_last_update VARCHAR(50),
-    deleted BOOLEAN DEFAULT false NOT NULL
+    deleted BOOLEAN DEFAULT false NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES auth.user(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE cptr.provider (

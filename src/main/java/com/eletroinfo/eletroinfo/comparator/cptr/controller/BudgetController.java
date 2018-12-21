@@ -1,5 +1,6 @@
 package com.eletroinfo.eletroinfo.comparator.cptr.controller;
 
+import com.eletroinfo.eletroinfo.comparator.cptr.Enumeration.BudgetStatusEnum;
 import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Budget;
 import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Item;
 import com.eletroinfo.eletroinfo.comparator.cptr.filter.BudgetFilter;
@@ -15,15 +16,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -83,6 +82,8 @@ public class BudgetController {
         mv.addObject("products", productService.findAll());
         mv.addObject("sellers", sellerService.findAll());
         mv.addObject("providers", providerService.findAll());
+        mv.addObject("budgetStatus", BudgetStatusEnum.values());
+        mv.addObject("localDateTime", LocalDateTime.now());
         return mv;
     }
 
@@ -92,7 +93,7 @@ public class BudgetController {
         if (budget.getId() == null) {
             this.budgetValidation.save(budget, bindingResult);
         } else {
-            this.budgetValidation.save(budget, bindingResult);
+            this.budgetValidation.update(budget, bindingResult);
         }
         if (bindingResult.hasErrors()) {
             return newBudget(budget);
@@ -126,6 +127,24 @@ public class BudgetController {
         budget = budgetService.save(budget);
         budget.setUpdateItem(true);
         notificationHandler.addMessageinternationalized(TypeMessage.message_sucess, "item.adicionado.sucesso");
+        ModelAndView mv = newBudget(budget);
+        mv.addObject(notificationHandler.getType().name(), notificationHandler.getMessages());
+        return mv;
+    }
+
+    /**
+     *
+     * @param delItem
+     * @param budget
+     * @return
+     */
+    @PostMapping(value="/{\\d}", params={"delItem"})
+    public ModelAndView delItem(@RequestParam("delItem") Long delItem, @Valid Budget budget) {
+        budget.getItems().removeIf(item -> item.getId() == delItem || item.getId() == null);
+        itemService.delete(delItem);
+        budget = this.budgetService.save(budget);
+        budget.setUpdateItem(true);
+        notificationHandler.addMessageinternationalized(TypeMessage.message_sucess, "item.removido.sucesso");
         ModelAndView mv = newBudget(budget);
         mv.addObject(notificationHandler.getType().name(), notificationHandler.getMessages());
         return mv;

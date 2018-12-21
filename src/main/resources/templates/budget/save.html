@@ -69,7 +69,7 @@
                             </div>
                             <div class="col-sm-3 form-group">
                                 <label for="dateExpire" th:text="#{data.expira}"></label>
-                                <input type="datetime-local" class="form-control" th:field="*{dateExpire}"/>
+                                <input type="datetime-local" class="form-control" th:field="*{dateExpire}" th:readonly="${budget.id}"/>
                             </div>
                         </div>
                         <div class="row">
@@ -87,7 +87,7 @@
                         <th:block th:each="items,rowStat : *{#numbers.sequence(items.size() - 1, 0, -1)}">
                             <input th:if="*{items[__${rowStat.index}__].id}" type="hidden" th:field="*{items[__${rowStat.index}__].id}">
                         </th:block>
-                        <div class="row">
+                        <div class="row masked-input">
                             <div class="col-sm-3 form-group">
                                 <label for="product.id" class="control-label">Produto</label>
                                 <div class="bw-field-action">
@@ -102,21 +102,28 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-3 form-group">
+                            <div class="col-sm-2 form-group">
                                 <label th:text="#{preco}"></label>
-                                <input type="text" class="form-control" th:field="*{items[__${sizeItems}__].price}"/>
+                                <input type="text" class="form-control money-real" th:field="*{items[__${sizeItems}__].price}" placeholder="Ex: 1,00"/>
                             </div>
-                            <div class="col-sm-3 form-group">
+                            <div class="col-sm-2 form-group">
                                 <label th:text="#{desconto}"></label>
-                                <input type="text" class="form-control" th:field="*{items[__${sizeItems}__].rebate}"/>
+                                <input type="text" class="form-control dinheiro" th:field="*{items[__${sizeItems}__].rebate}"/>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                <label th:text="#{quantidade}"></label>
+                                <input type="number" class="form-control" th:field="*{items[__${sizeItems}__].quantity}"/>
                             </div>
                             <div class="col-sm-3 form-group">
-                                <label th:text="#{quantidade}"></label>
-                                <input type="text" class="form-control" th:field="*{items[__${sizeItems}__].quantity}"/>
+                                <label for="status" class="control-label" th:text="#{status}"></label>
+                                <select id="status" class="form-control" th:field="*{items[__${sizeItems}__].status}" th:readonly="${budget.dateExpire.isBefore(#temporals.createNow())}">
+                                    <option value="">Selecione</option>
+                                    <option th:each="budgetStatus : ${budgetStatus}" th:value="${budgetStatus}" th:text="${budgetStatus.descricao}"></option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <button class="btn  btn-primary" type="submit" th:text="#{adicionar}" name="addItem"></button>
+                            <button class="btn  btn-primary" type="submit" th:text="#{adicionar}" th:disabled="${budget.dateExpire.isBefore(#temporals.createNow())}" name="addItem"></button>
                             <a th:href="@{/orcamento}" class="btn  btn-default" th:text="#{voltar}"></a>
                         </div>
                         <div class="table-responsive pc-tabela-simples">
@@ -166,6 +173,8 @@
 </section>
 <th:block layout:fragment="javascript-extra">
     <script th:src="@{/javascripts/vendors/bootstrap-toggle.min.js}"></script>
+    <script th:src="@{/vendors/input-mask/inputmask.js}"></script>
+    <script th:src="@{/budget/js/save.js}"></script>
 </th:block>
 </body>
 </html>

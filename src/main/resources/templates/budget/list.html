@@ -59,6 +59,7 @@
                         <th class="table-projetos-col-contato" th:text="#{nome.fornecedor}"></th>
                         <th class="table-projetos-col-contato" th:text="#{nome.vendedor}"></th>
                         <th class="table-projetos-col-contato" th:text="#{data.expira}"></th>
+                        <th class="table-projetos-col-contato" th:text="#{estado}"></th>
                         <th class="table-projetos-col-" colspan="2"></th>
                     </tr>
                 </thead>
@@ -67,6 +68,13 @@
                         <td th:text="${budget.provider.name}"></td>
                         <td th:text="${budget.seller.name}"></td>
                         <td th:text="${#temporals.format(budget.dateExpire, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                        <td>
+                            <div th:switch="${budget.dateExpire.isBefore(#temporals.createNow())}">
+                                <span th:case="true">Expirado</span>
+                                <span th:case="false">No Prazo</span>
+                            </div>
+
+                        </td>
                         <td class="text-center">
                             <a class="btn  btn-link  btn-xs js-tooltip" title="Editar" th:href="@{/orcamento/{id}(id=${budget.id})}">
                                 <i class="glyphicon glyphicon-pencil"></i>
