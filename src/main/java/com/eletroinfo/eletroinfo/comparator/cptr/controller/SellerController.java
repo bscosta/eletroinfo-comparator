@@ -1,8 +1,12 @@
 package com.eletroinfo.eletroinfo.comparator.cptr.controller;
 
+import com.eletroinfo.eletroinfo.comparator.auth.entitie.User;
+import com.eletroinfo.eletroinfo.comparator.auth.service.UserService;
+import com.eletroinfo.eletroinfo.comparator.auth.validation.UserValidation;
 import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Seller;
 import com.eletroinfo.eletroinfo.comparator.enumeration.TypeMessage;
 import com.eletroinfo.eletroinfo.comparator.cptr.filter.SellerFilter;
+import com.eletroinfo.eletroinfo.comparator.enumeration.UserType;
 import com.eletroinfo.eletroinfo.comparator.notification.NotificationHandler;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.ContactService;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.SellerService;
@@ -40,6 +44,12 @@ public class SellerController {
 
     @Autowired
     private SellerValidation sellerValidation;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserValidation userValidation;
 
     @Autowired
     private NotificationHandler notificationHandler;
@@ -97,6 +107,9 @@ public class SellerController {
         sellerValidation.save(seller, bindingResult);
         if (bindingResult.hasErrors()) {
             return newSaller(seller);
+        }
+        if (seller.getUser() != null ) {
+            userService.save(seller.getUser());
         }
         seller = sellerService.save(seller);
         notificationHandler.addMessageSucessSave();

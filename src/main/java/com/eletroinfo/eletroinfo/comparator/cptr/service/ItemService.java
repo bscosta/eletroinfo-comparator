@@ -16,4 +16,10 @@ public interface ItemService {
      * @return
      */
     List<Item> saveList(List<Item> items);
+
+    /**
+     *
+     * @param id
+     */
+    void delete(Long id);
 }

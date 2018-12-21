@@ -1,5 +1,6 @@
 package com.eletroinfo.eletroinfo.comparator.cptr.entitie;
 
+import com.eletroinfo.eletroinfo.comparator.auth.entitie.User;
 import com.eletroinfo.eletroinfo.comparator.entitie.BaseEntity;
 
 import javax.persistence.*;
@@ -23,6 +24,10 @@ public class Seller extends BaseEntity implements Serializable {
     private Long id;
 
     private String name;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "seller_contact", schema = "cptr",
@@ -51,6 +56,14 @@ public class Seller extends BaseEntity implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Contact> getContacts() {

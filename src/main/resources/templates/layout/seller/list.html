@@ -49,6 +49,7 @@
                 <thead>
                 <tr>
                     <th class="table-projetos-col-nome" th:text="#{nome}"></th>
+                    <th class="table-projetos-col-nome" th:text="#{acessa.sistema}"></th>
                     <th class="table-projetos-col-dataInicio" th:text="#{contatos}"></th>
                 </tr>
                 </thead>
@@ -56,6 +57,10 @@
                 <tbody>
                 <tr th:each="seller : ${pageData.content}">
                     <td th:text="${seller.name}"></td>
+                    <td th:switch="${seller.user != null}">
+                        <span th:case="true">Sim</span>
+                        <span th:case="false">Não</span>
+                    </td>
                     <td>
                         <th:block th:each="sellerContact : ${seller.contacts}">
                             <span th:text="${sellerContact.valueContact} + ' - '"></span>

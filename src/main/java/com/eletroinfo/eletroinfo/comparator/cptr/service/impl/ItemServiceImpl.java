@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Bruno Costa
@@ -32,5 +33,14 @@ public class ItemServiceImpl implements ItemService {
         }
 
         return itemsSaved;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Long id) {
+        Optional<Item> item = this.itemRepository.findById(id);
+        if (item.isPresent()) {
+            item.get().setDeleted(true);
+            this.itemRepository.save(item.get());
+        }
     }
 }
