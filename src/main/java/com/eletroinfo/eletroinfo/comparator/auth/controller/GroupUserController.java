@@ -58,7 +58,7 @@ public class GroupUserController {
 
     @GetMapping("/novo")
     public ModelAndView groupUserNew(GroupUser groupUser) {
-        ModelAndView mv = new ModelAndView("/group-user/save", "groupUser", groupUser);
+        ModelAndView mv = new ModelAndView("group-user/save", "groupUser", groupUser);
         mv.addObject("usersGroup", groupUser.getListUsers());
         return mv;
     }
