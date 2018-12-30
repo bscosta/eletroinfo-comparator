@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.Optional;
+
 /**
  * @author Bruno Costa
  */
@@ -60,6 +62,41 @@ public class SellerValidation implements Validator {
         }
     }
 
+    public void update(Seller seller, Errors errors) {
+        Optional<Seller> sellerDb = this.sellerService.findById(seller.getId());
+        if (!sellerDb.isPresent()) {
+            errors.rejectValue("id", "vendedor.nao.encontrado", "Vendedor Não existe!");
+        } else {
+            if (seller.getName() == null || seller.getName().isEmpty()) {
+                errors.rejectValue("name", "name.vendedor.vazio", "Nome do Vendedor vazio!");
+            }
+            if (seller.getUser() != null) {
+                if (sellerDb.get().getUser() != null) {
+
+                    if (!seller.getUser().getEmail().equals(sellerDb.get().getUser().getEmail())) {
+                        validateEmail(seller, errors);
+                    }
+                    if (!seller.getUser().getLogin().equals(sellerDb.get().getUser().getLogin())) {
+                        validateLogin(seller, errors);
+                    }
+                    if (seller.getUser().getPassword() != null && !seller.getUser().getPassword().isEmpty()) {
+                        validatePassword(seller, errors);
+                        if (!errors.hasErrors()) {
+                            seller.getUser().setPassword(PasswordUtils.generateBCrypt(seller.getUser().getPassword()));
+                        }
+                    } else {
+                        seller.getUser().setPassword(sellerDb.get().getUser().getPassword());
+                    }
+                    if (!errors.hasErrors()) {
+                        seller.getUser().setName(seller.getName());
+                        seller.getUser().setUserType(sellerDb.get().getUser().getUserType());
+                        seller.getUser().setListGroupUsers(sellerDb.get().getUser().getListGroupUsers());
+                    }
+                }
+            }
+        }
+    }
+
     public void contact(Seller seller, Errors errors) {
         for (Contact contact : seller.getContacts()) {
             if (contact.getTypeContact() == null || contact.getTypeContact().isEmpty()) {
@@ -76,6 +113,9 @@ public class SellerValidation implements Validator {
             } else if (contact.getId() == null && sellerService.countBySellerIdAndContactValueAndDeletedIsFalse(seller.getId(), contact.getValueContact()) > 0) {
                 errors.rejectValue("contacts", "value.contato.existe", new Object[]{contact.getValueContact()},"");
             }
+        }
+        if (!errors.hasErrors()) {
+
         }
     }
 

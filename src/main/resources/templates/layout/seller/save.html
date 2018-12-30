@@ -57,6 +57,8 @@
                             </div>
                         </div>
                         <div class="row system-access" th:style="!*{user} ? 'display: none'" th:with="isUser=*{user}">
+                            <input type="hidden" th:field="*{user.id}" th:disabled="!${isUser}">
+                            <input type="hidden" th:value="${name}" th:field="*{user.name}" th:disabled="!${isUser}">
                             <div class="col-sm-4">
                                 <label for="email" th:text="#{email}"></label>
                                 <input type="email" class="form-control" th:field="*{user.email}" th:disabled="!${isUser}"/>

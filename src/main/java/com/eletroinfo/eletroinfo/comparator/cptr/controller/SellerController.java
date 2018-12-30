@@ -104,7 +104,11 @@ public class SellerController {
     @PostMapping(value = {"/novo", "{\\+d}"}, params = {"save"})
     public ModelAndView save(@Valid Seller seller, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         seller.getContacts().removeIf(contact -> contact.getId() == null);
-        sellerValidation.save(seller, bindingResult);
+        if (seller.getId() == null) {
+            sellerValidation.save(seller, bindingResult);
+        } else {
+            sellerValidation.update(seller, bindingResult);
+        }
         if (bindingResult.hasErrors()) {
             return newSaller(seller);
         }
