@@ -9,6 +9,8 @@ import com.eletroinfo.eletroinfo.comparator.util.AjaxPagedSearch.SearchAjaxDto;
 import com.eletroinfo.eletroinfo.comparator.util.AjaxPagedSearch.TransferAjaxDto;
 import com.eletroinfo.eletroinfo.comparator.util.PageWrapper;
 import com.eletroinfo.eletroinfo.comparator.auth.validation.UserValidation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -44,6 +46,8 @@ public class UserController {
 
     @Autowired
     private NotificationHandler notificationHandler;
+
+    static Logger log = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping
     public ModelAndView user(UserFilter userFilter) {
