@@ -1,5 +1,6 @@
 package com.eletroinfo.eletroinfo.comparator.cptr.service.impl;
 
+import com.eletroinfo.eletroinfo.comparator.auth.service.UserService;
 import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Contact;
 import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Seller;
 import com.eletroinfo.eletroinfo.comparator.cptr.filter.SellerFilter;
@@ -29,7 +30,10 @@ public class SellerServiceImpl implements SellerService {
     private SellerRepositoryCustom sellerRepositoryCustom;
 
     @Autowired
-    ContactService contactService;
+    private ContactService contactService;
+
+    @Autowired
+    private UserService userService;
 
     public PageImpl<Seller> findByParameters(SellerFilter sellerFilter, Pageable pageable) {
         return sellerRepositoryCustom.findByParameters(sellerFilter.getName(), sellerFilter.getContact(), pageable);
@@ -64,6 +68,9 @@ public class SellerServiceImpl implements SellerService {
                     contact.setDeleted(true);
                     contactService.save(contact);
                 }
+            }
+            if (seller.get().getUser() != null) {
+                userService.delete(seller.get().getUser().getId());
             }
             seller.get().setDeleted(true);
             sellerRepository.save(seller.get());

@@ -40,6 +40,8 @@ public class SellerRepositoryCustomImpl implements SellerRepositoryCustom {
         if (!name.isEmpty())
         where.append(" AND UPPER(s.name) LIKE UPPER(CONCAT('%" + name + "%')) ");
 
+        where.append(" AND s.deleted is false ");
+
         /**
          * Fazendo um count
          */

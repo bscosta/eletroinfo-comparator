@@ -12,6 +12,8 @@
 
         /*<![CDATA[*/
         var context = '[[@{/}]]';
+        var token = $('input[name=_csrf]').val();
+		var header = $('input[name=_csrf_header]').val();
 
         function deleteRegister(id, deleteUrl) {
             swal({
@@ -23,6 +25,11 @@
                 confirmButtonText: "[[#{delete.botao.confirmar}]]",
                 closeOnConfirm: false
             }, function () {
+                    $.ajaxSetup({
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        }
+                    });
                     $.ajax({
                       url: context + deleteUrl + id,
                       type : "DELETE",

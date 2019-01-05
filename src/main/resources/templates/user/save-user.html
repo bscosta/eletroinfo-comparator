@@ -51,7 +51,7 @@
 							<label for="userType" class="control-label" th:text="#{tipo.usuario}"></label>
 							<select id="status" class="form-control" th:field="*{userType}">
 								<option value="">Selecione</option>
-								<option th:each="userType : ${userType}" th:value="${userType}" th:text="${userType}"></option>
+								<option th:each="userType : ${userType}" th:value="${userType}" th:text="#{${userType}}"></option>
 							</select>
 						</div>
 					</div>

@@ -44,14 +44,14 @@ public class UserValidation implements Validator {
     }
 
     public void validateUpdate(User user, Errors errors) {
-        Optional<User> userSaved = this.userService.findById(user.getId());
+        Optional<User> userSaved = this.userService.findByIdForValidation(user.getId());
         if (!userSaved.get().getEmail().equals(user.getEmail())) {
             validateEmail(user, errors);
         }
         if (!userSaved.get().getLogin().equals(user.getLogin())) {
             validateLogin(user, errors);
         }
-        if (user.getPassword() == null) {
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
             user.setPassword(userSaved.get().getPassword());
         } else {
             validatePassword(user, errors);

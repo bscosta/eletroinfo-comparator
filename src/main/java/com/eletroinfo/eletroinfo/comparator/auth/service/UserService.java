@@ -24,6 +24,8 @@ public interface UserService {
 
     Optional<User> findById(Long id);
 
+    Optional<User> findByIdForValidation(Long id);
+
     PageImpl<User> findByParameters(UserFilter userFilter, Pageable pageable);
 
     UserDto convertUserEntityToUserDto(User user);

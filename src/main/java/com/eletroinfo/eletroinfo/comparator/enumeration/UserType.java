@@ -9,12 +9,12 @@ import java.util.List;
 
 public enum UserType {
 
-    DEVELOPER(0),
-    SUPERUSER(1),
-    ADMINISTRATOR(2),
-    OPERATIONAL(3),
-    CLIENT(4),
-    ADMINISTRATIVE(5);
+    desenvolvedor(0),
+    superusuario(1),
+    administrador(2),
+    lojista(3),
+    cliente(4),
+    vendedor(5);
 
     private final int valueUserType;
 

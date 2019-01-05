@@ -39,6 +39,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional(readOnly = true)
+    public Optional<User> findByIdForValidation(Long id) {
+        Optional<User> user = this.userRepository.findById(id);
+        return user;
+    }
+
+    @Transactional(readOnly = true)
     public PageImpl<User> findByParameters(UserFilter userFilter, Pageable pageable) {
         return this.userRepository.findByParameters(userFilter.getName(), userFilter.getEmail(), userFilter.getLogin(), userFilter.getUserType(), pageable);
     }

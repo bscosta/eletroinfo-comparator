@@ -48,7 +48,7 @@ public class SellerValidation implements Validator {
 
         if (!errors.hasErrors() && seller.getUser() != null) {
             seller.getUser().setName(seller.getName());
-            seller.getUser().setUserType(UserType.ADMINISTRATIVE);
+            seller.getUser().setUserType(UserType.vendedor);
             validateLogin(seller, errors);
             validateEmail(seller, errors);
             if (seller.getUser().getPassword() == null || seller.getUser().getPassword().isEmpty()) {

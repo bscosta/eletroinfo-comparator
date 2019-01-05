@@ -54,16 +54,21 @@ public class UserController {
         ModelAndView mv = new ModelAndView("user/list-user");
         mv.addObject("pageData", new PageImpl(new ArrayList()));
         mv.addObject("userType", UserType.values());
+
+        log.info(" Renderizando página de lista de usuários ");
         return mv;
     }
 
     @GetMapping(value = "/buscar")
     public ModelAndView findUser(UserFilter userFilter, @PageableDefault(size = 7) Pageable pageable, HttpServletRequest httpServletRequest) {
+        log.info(" Iniciando busca paginada de usuários. Página {} ", pageable.getPageNumber());
         PageWrapper<User> userPage = new PageWrapper<>(userService.findByParameters(userFilter, pageable), httpServletRequest);
+        log.info(" Finalizando busca paginada de usuários. Página: {}; total de elementos: {} ", pageable.getPageNumber(), pageable.getPageSize()-1);
         ModelAndView mv = new ModelAndView("user/list-user");
         mv.addObject("pageData", userPage);
         mv.addObject("request", httpServletRequest);
         mv.addObject("userType", UserType.values());
+        log.info(" Renderizando página de lista de usuários ");
         return mv;
     }
 
@@ -74,18 +79,24 @@ public class UserController {
         }
         ModelAndView mv = new ModelAndView("user/save-user", "user", user);
         mv.addObject("userType", UserType.values());
+        log.info(" Renderizando página de cadastro de usuários ");
         return mv;
     }
 
     @PostMapping({"/novo", "{\\+d}"})
     public ModelAndView salvar(@Valid User user, BindingResult result, RedirectAttributes attributes) {
         if (user.getId() == null) {
+            log.info(" Iniciando validação de cadastro de novo usuário ");
             this.userValidation.validateSave(user, result);
+            log.info(" Finalizando validação de cadastro de novo usuário ");
         } else {
+            log.info(" Iniciando validação de edição de usuário ");
             this.userValidation.validateUpdate(user, result);
+            log.info(" Finalizando validação de edição de usuário ");
         }
 
         if (result.hasErrors()) {
+            log.info(" Erro encontrado na validação de usuário, retornado para página de cadastro ");
             return userNew(user);
         }
 
@@ -94,28 +105,35 @@ public class UserController {
         } else {
             notificationHandler.addMessageSucessEdit();
         }
-
+        log.info(" Iniciando salvamento de usuário ");
         user = this.userService.save(user);
+        log.info(" Finalizando salvamento de usuário ");
 
         attributes.addFlashAttribute(notificationHandler.getType().name(), notificationHandler.getMessages());
         attributes.addFlashAttribute(user);
+        log.info(" Renderizando página de cadastro com dados do usuário ");
         return new ModelAndView("redirect:/usuario/"+user.getId());
     }
 
     @GetMapping("/{id}")
     public ModelAndView editar(@PathVariable Long id, User user) {
         if (user.getLogin() == null) {
+            log.info(" Iniciando busca de dados do usuário com id {} ", id);
             user = this.userService.findById(id).get();
+            log.info(" Finalizando busca de dados do usuário com id {} ", id);
         }
 
         ModelAndView mv = userNew(user);
+        log.info(" Renderizando página de cadastro com dados do usuário id {} ", id);
         return mv;
     }
 
     @DeleteMapping("/{id}")
     public @ResponseBody
     ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        log.info(" Iniciando delete do usuário id {} ", id);
         this.userService.delete(id);
+        log.info(" Finalizando delete do usuário id {} ", id);
         return ResponseEntity.ok().build();
     }
 

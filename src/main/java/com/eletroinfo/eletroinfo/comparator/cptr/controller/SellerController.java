@@ -113,6 +113,9 @@ public class SellerController {
             return newSaller(seller);
         }
         if (seller.getUser() != null ) {
+            if (seller.getId() == null) {
+                seller.getUser().setActivated(true);
+            }
             userService.save(seller.getUser());
         }
         seller = sellerService.save(seller);
