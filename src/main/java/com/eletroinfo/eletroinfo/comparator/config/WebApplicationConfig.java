@@ -1,5 +1,6 @@
 package com.eletroinfo.eletroinfo.comparator.config;
 
+import com.eletroinfo.eletroinfo.comparator.formatter.BigDecimalFormatter;
 import com.eletroinfo.eletroinfo.comparator.formatter.LocalDateFormatter;
 import com.eletroinfo.eletroinfo.comparator.interceptors.RunTimeInterceptor;
 import org.springframework.beans.BeansException;
@@ -11,14 +12,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.format.support.DefaultFormattingConversionService;
-import org.springframework.format.support.FormattingConversionService;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+
+import java.math.BigDecimal;
 
 /**
  * @author Bruno Costa
@@ -61,6 +62,9 @@ public class WebApplicationConfig implements WebMvcConfigurer, ApplicationContex
     public void addFormatters(FormatterRegistry formatterRegistry) {
         LocalDateFormatter localDateFormatter = new LocalDateFormatter();
         formatterRegistry.addFormatter(localDateFormatter);
+
+        BigDecimalFormatter bigDecimalFormatter = new BigDecimalFormatter("#,##0.00");
+        formatterRegistry.addFormatterForFieldType(BigDecimal.class, bigDecimalFormatter);
     }
 
     /**

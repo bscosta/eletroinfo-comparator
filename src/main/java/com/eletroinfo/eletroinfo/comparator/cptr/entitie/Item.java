@@ -1,8 +1,13 @@
 package com.eletroinfo.eletroinfo.comparator.cptr.entitie;
 
 import com.eletroinfo.eletroinfo.comparator.entitie.BaseEntity;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "item", schema = "cptr")
@@ -16,12 +21,12 @@ public class Item extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+    
+    private BigDecimal price;
 
-    private Integer price;
+    private BigDecimal rebate;
 
-    private Integer rebate;
-
-    private Integer quantity;
+    private BigDecimal quantity;
 
     private String status;
 
@@ -43,27 +48,27 @@ public class Item extends BaseEntity {
         this.product = product;
     }
 
-    public Integer getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public Integer getRebate() {
+    public BigDecimal getRebate() {
         return rebate;
     }
 
-    public void setRebate(Integer rebate) {
+    public void setRebate(BigDecimal rebate) {
         this.rebate = rebate;
     }
 
-    public Integer getQuantity() {
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 

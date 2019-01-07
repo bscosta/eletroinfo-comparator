@@ -57,7 +57,8 @@ public class SellerServiceImpl implements SellerService {
     }
 
     public List<Seller> findAll() {
-        return this.sellerRepository.findAll();
+        //return this.sellerRepository.findAll();
+        return this.sellerRepositoryCustom.findSellers();
     }
 
     public void delete(Long id) {

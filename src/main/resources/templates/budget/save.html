@@ -56,8 +56,8 @@
                             <div class="col-sm-3 form-group">
                                 <label for="seller.id" class="control-label">Vendedor</label>
                                 <div class="bw-field-action">
-                                    <select class="form-control" id="seller" th:field="*{seller.id}">
-                                        <option value="">Selecione</option>
+                                    <select class="form-control" id="seller" th:field="*{seller.id}" th:readonly="${#authentication.principal.permissionDto.userDto.userType == 5}">
+                                        <option th:if="${#authentication.principal.permissionDto.userDto.userType != 5}" value="">Selecione</option>
                                         <option th:if="${sellers}" th:each="seller : ${sellers}" th:value="${seller.id}" th:text="${seller.name}"></option>
                                     </select>
                                     <div class="bw-field-action__icon">
@@ -104,11 +104,17 @@
                             </div>
                             <div class="col-sm-2 form-group">
                                 <label th:text="#{preco}"></label>
-                                <input type="text" class="form-control money-real" th:field="*{items[__${sizeItems}__].price}" placeholder="Ex: 1,00"/>
+                                <div class="input-group">
+                                    <div class="input-group-addon">R$</div>
+                                    <input type="text" class="form-control js-decimal" th:field="*{items[__${sizeItems}__].price}" placeholder="Ex: 1,00"/>
+                                </div>
                             </div>
                             <div class="col-sm-2 form-group">
                                 <label th:text="#{desconto}"></label>
-                                <input type="text" class="form-control dinheiro" th:field="*{items[__${sizeItems}__].rebate}"/>
+                                <div class="input-group">
+                                    <div class="input-group-addon">R$</div>
+                                    <input type="text" class="form-control js-decimal" th:field="*{items[__${sizeItems}__].rebate}"/>
+                                </div>
                             </div>
                             <div class="col-sm-2 form-group">
                                 <label th:text="#{quantidade}"></label>
@@ -116,14 +122,14 @@
                             </div>
                             <div class="col-sm-3 form-group">
                                 <label for="status" class="control-label" th:text="#{status}"></label>
-                                <select id="status" class="form-control" th:field="*{items[__${sizeItems}__].status}" th:readonly="${budget.dateExpire.isBefore(#temporals.createNow())}">
+                                <select id="status" class="form-control" th:field="*{items[__${sizeItems}__].status}" th:readonly="${budget.dateExpire} and ${budget.dateExpire.isBefore(#temporals.createNow())}">
                                     <option value="">Selecione</option>
                                     <option th:each="budgetStatus : ${budgetStatus}" th:value="${budgetStatus}" th:text="${budgetStatus.descricao}"></option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <button class="btn  btn-primary" type="submit" th:text="#{adicionar}" th:disabled="${budget.dateExpire.isBefore(#temporals.createNow())}" name="addItem"></button>
+                            <button class="btn  btn-primary" type="submit" th:text="#{adicionar}" th:disabled="${budget.dateExpire} and ${budget.dateExpire.isBefore(#temporals.createNow())}" name="addItem"></button>
                             <a th:href="@{/orcamento}" class="btn  btn-default" th:text="#{voltar}"></a>
                         </div>
                         <div class="table-responsive pc-tabela-simples">
@@ -174,6 +180,7 @@
 <th:block layout:fragment="javascript-extra">
     <script th:src="@{/javascripts/vendors/bootstrap-toggle.min.js}"></script>
     <script th:src="@{/vendors/input-mask/inputmask.js}"></script>
+    <script th:src="@{/vendors/jquery-maskMoney/jquery.maskMoney.min.js}"></script>
     <script th:src="@{/budget/js/save.js}"></script>
 </th:block>
 </body>

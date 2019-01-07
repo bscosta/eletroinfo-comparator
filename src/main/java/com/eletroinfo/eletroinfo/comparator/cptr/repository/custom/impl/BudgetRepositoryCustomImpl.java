@@ -45,8 +45,8 @@ public class BudgetRepositoryCustomImpl implements BudgetRepositoryCustom {
         if (barcode != null && barcode > 0)
         where.append(" AND b.barcode = " + barcode );
 
-        /*if (userLogged.getPermissionDto().getUserDto().getUserType() > 1)
-            where.append(" AND  ")*/
+        if (userLogged.getPermissionDto().getUserDto().getUserType() > 3)
+            where.append(" AND  b.seller.user.id = " + userLogged.getPermissionDto().getUserDto().getId());
 
         /**
          * Fazendo um count

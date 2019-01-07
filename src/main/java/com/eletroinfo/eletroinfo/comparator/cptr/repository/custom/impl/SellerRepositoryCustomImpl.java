@@ -2,14 +2,18 @@ package com.eletroinfo.eletroinfo.comparator.cptr.repository.custom.impl;
 
 import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Seller;
 import com.eletroinfo.eletroinfo.comparator.cptr.repository.custom.SellerRepositoryCustom;
+import com.eletroinfo.eletroinfo.comparator.security.UserLogged;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Bruno Costa
@@ -22,6 +26,7 @@ public class SellerRepositoryCustomImpl implements SellerRepositoryCustom {
     EntityManager entityManager;
 
     @Transactional(readOnly = true)
+    @Override
     public PageImpl<Seller> findByParameters(String name, String contact, Pageable pageable) {
         StringBuilder sql = new StringBuilder();
         StringBuilder where = new StringBuilder();
@@ -65,5 +70,22 @@ public class SellerRepositoryCustomImpl implements SellerRepositoryCustom {
 
         return new PageImpl<Seller>(query.getResultList(), pageable, (Long) total);
 
+    }
+
+    @Override
+    public List<Seller> findSellers() {
+        UserLogged userLogged = (UserLogged) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("SELECT s FROM Seller s ");
+
+        sql.append(" WHERE s.deleted is false ");
+
+        if (userLogged.getPermissionDto().getUserDto().getUserType() > 3)
+            sql.append(" AND s.user.id = " + userLogged.getPermissionDto().getUserDto().getId());
+
+        Query query = entityManager.createQuery(sql.toString(), Seller.class);
+
+        return new ArrayList<Seller>(query.getResultList());
     }
 }

@@ -72,7 +72,7 @@
                             <td th:text="${user.name}"></td>
                             <td th:text="${user.email}"></td>
                             <td th:text="${user.login}"></td>
-                            <td th:text="${user.userType}"></td>
+                            <td th:text="#{${user.userType}}"></td>
                             <td th:text="${user.activated} ? #{ativo} : #{Desativado}"></td>
                             <td class="text-center">
                                 <a class="btn  btn-link  btn-xs js-tooltip" th:title="#{editar}" th:href="@{/usuario/{id}(id=${user.id})}">
