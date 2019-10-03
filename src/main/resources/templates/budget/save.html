@@ -31,13 +31,13 @@
             <input type="hidden" th:field="*{id}" />
             <div class="tabs-x tabs-above">
                 <ul id="tab-orcamento" class="nav nav-tabs" role="tablist">
-                    <li class="active"><a href="#dados-orcamento" role="tab" data-toggle="tab"><i
+                    <li th:classappend="!${budget.updateItem} ? active"><a href="#dados-orcamento" role="tab" data-toggle="tab"><i
                             class="glyphicon glyphicon-th-list"></i><span th:text="' ' + #{dados.orcamento}"></span></a></li>
-                    <li><a href="#items" role="tab-kv" data-toggle="tab"><i class="glyphicon glyphicon-list-alt"></i>
+                    <li th:classappend="${budget.updateItem} ? active" th:unless="${budget.novo}"><a href="#items" role="tab-kv" data-toggle="tab"><i class="glyphicon glyphicon-list-alt"></i>
                         <span th:text="' ' + #{items}"></span></a></li>
                 </ul>
                 <div id="tab-orcamento-content" class="tab-content">
-                    <div class="tab-pane fade in active" id="dados-orcamento">
+                    <div class="tab-pane fade in" th:classappend="!${budget.updateItem} ? active" id="dados-orcamento">
                         <div class="row">
                             <div class="col-sm-3 form-group">
                                 <label for="provider.id" class="control-label">Fornecedor</label>
@@ -47,7 +47,7 @@
                                         <option th:if="${providers}" th:each="provider : ${providers}" th:value="${provider.id}" th:text="${provider.name}"></option>
                                     </select>
                                     <div class="bw-field-action__icon">
-                                        <a href="#" data-toggle="modal" data-target="#modalQuickRegisterBrand" th:title="#{cadastrar.fornecedor}">
+                                        <a sec:authorize="hasAuthority('cadastrar.fornecedor')" href="#" data-toggle="modal" data-target="#modalQuickRegisterProvider" th:title="#{cadastrar.fornecedor}">
                                             <i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
                                         </a>
                                     </div>
@@ -83,7 +83,7 @@
                             <a th:href="@{/orcamento}" class="btn  btn-default" th:text="#{voltar}"></a>
                         </div>
                     </div>
-                    <div class="tab-pane fade in" id="items">
+                    <div th:unless="${budget.novo}" class="tab-pane fade in" id="items" th:classappend="${budget.updateItem} ? active">
                         <th:block th:each="items,rowStat : *{#numbers.sequence(items.size() - 1, 0, -1)}">
                             <input th:if="*{items[__${rowStat.index}__].id}" type="hidden" th:field="*{items[__${rowStat.index}__].id}">
                         </th:block>
@@ -149,8 +149,8 @@
                                 <tr th:if="${item.product}" th:each="item : ${budget.items}">
                                     <td th:text="${item.product.name}"></td>
                                     <td th:text="${item.product.brand.name}"></td>
-                                    <td th:text="${item.price}"></td>
-                                    <td th:text="${item.rebate}"></td>
+                                    <td th:text="'R$ ' + ${item.price}"></td>
+                                    <td th:text="'R$ ' + ${item.rebate}"></td>
                                     <td th:text="${item.quantity}"></td>
                                     <td th:text="${item.status}"></td>
                                     <td class="text-center">
@@ -175,13 +175,14 @@
             </div>
         </form>
     </div>
-
+    <div th:replace="provider/quick-register :: modal"></div>
 </section>
 <th:block layout:fragment="javascript-extra">
     <script th:src="@{/javascripts/vendors/bootstrap-toggle.min.js}"></script>
     <script th:src="@{/vendors/input-mask/inputmask.js}"></script>
     <script th:src="@{/vendors/jquery-maskMoney/jquery.maskMoney.min.js}"></script>
     <script th:src="@{/budget/js/save.js}"></script>
+    <script th:src="@{/provider/js/quick-register.js}"></script>
 </th:block>
 </body>
 </html>

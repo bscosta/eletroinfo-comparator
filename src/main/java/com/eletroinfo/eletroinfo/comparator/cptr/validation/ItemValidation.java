@@ -23,15 +23,15 @@ public class ItemValidation implements Validator {
 
     public void save(Item item, Errors errors) {
         if (item.getProduct() == null || item.getProduct().getId() == null) {
-            errors.rejectValue("product", "produto.vazio");
+            errors.rejectValue("items", "produto.vazio");
         }
 
         if (item.getPrice() == null) {
-            errors.rejectValue("price", "preco.vazio");
+            errors.rejectValue("items", "preco.vazio");
         }
 
         if (item.getQuantity() == null) {
-            errors.rejectValue("quantity", "quantidade.vazia");
+            errors.rejectValue("items", "quantidade.vazia");
         }
     }
 }

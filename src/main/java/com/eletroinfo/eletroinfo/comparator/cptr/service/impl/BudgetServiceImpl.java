@@ -36,4 +36,16 @@ public class BudgetServiceImpl implements BudgetService {
     public Optional<Budget> findById(Long id) {
         return budgetRepository.findById(id);
     }
+
+    public boolean delete(Long id) {
+        Optional<Budget> budget = this.budgetRepository.findById(id);
+        if (!budget.isPresent()) {
+            return false;
+        } else {
+            budget.get().setDeleted(true);
+            this.budgetRepository.save(budget.get());
+        }
+
+        return true;
+    }
 }

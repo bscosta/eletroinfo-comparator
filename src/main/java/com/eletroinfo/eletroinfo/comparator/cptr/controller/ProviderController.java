@@ -14,10 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -177,5 +179,25 @@ public class ProviderController {
         ModelAndView mv = newProvider(provider);
         mv.addObject(notificationHandler.getType().name(), notificationHandler.getMessages());
         return mv;
+    }
+
+    /**
+     *
+     * @param provider
+     * @param bindingResult
+     * @return
+     */
+    @PostMapping(value = "/cadastroRapido", consumes = { MediaType.APPLICATION_JSON_VALUE })
+    public @ResponseBody ResponseEntity<?> quiskSave(@RequestBody @Valid Provider provider, BindingResult bindingResult) {
+        this.providerValidation.save(provider, bindingResult);
+        if (bindingResult.hasErrors()) {
+            for (ObjectError message : bindingResult.getAllErrors()) {
+                notificationHandler.addMessageinternationalized(TypeMessage.message_error, message.getCode());
+            }
+            return ResponseEntity.badRequest().body(notificationHandler.getMessages());
+        }
+
+        provider = providerService.save(provider);
+        return ResponseEntity.ok(provider);
     }
 }

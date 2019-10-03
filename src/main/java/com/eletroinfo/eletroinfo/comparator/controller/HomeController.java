@@ -17,11 +17,9 @@ public class HomeController {
     static Logger log = LoggerFactory.getLogger(HomeController.class);
 
     @GetMapping(value = "/")
-    public ModelAndView home(UserFilter userFilter){
+    public ModelAndView home(){
         log.info("Iniciando renderização da página inicial do sistema");
-        ModelAndView mv = new ModelAndView("user/list-user");
-        mv.addObject("pageData", new PageImpl(new ArrayList()));
-        mv.addObject("userType", UserType.values());
+        ModelAndView mv = new ModelAndView("dashboard/dashboard");
         log.info("Finalizando renderização da página inicial do sistema");
         return mv;
     }

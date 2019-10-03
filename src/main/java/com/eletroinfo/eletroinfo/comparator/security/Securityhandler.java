@@ -23,6 +23,6 @@ public class Securityhandler implements AuthenticationSuccessHandler {
         userLogged.setIpAddr(request.getRemoteAddr());
         userLogged.setZoneId(Calendar.getInstance(request.getLocale()).getTimeZone().toZoneId());
 
-        response.sendRedirect("/usuario");
+        response.sendRedirect("/");
     }
 }

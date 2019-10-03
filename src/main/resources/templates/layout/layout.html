@@ -11,16 +11,16 @@
         <th:block layout:fragment="head-init"></th:block>
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors.min.css}"/>
-        <link rel="stylesheet" type="text/css" th:href="@{/stylesheets/algaworks.min.css}"/>
-        <link rel="stylesheet" type="text/css" th:href="@{/stylesheets/application.css}"/>
-        <link rel="stylesheet" type="text/css" th:href="@{/stylesheets/comparator/comparator.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{https://cache.eletroinfo.online/templates/atacama/assets/stylesheets/vendors.min.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{https://cache.eletroinfo.online/templates/atacama/assets/stylesheets/algaworks.min.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{https://cache.eletroinfo.online/templates/atacama/assets/stylesheets/application.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{https://cache.eletroinfo.online/templates/atacama/assets/comparator/comparator.css}"/>
 
         <!-- Bootstrap toggle switch -->
         <link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-toggle.min.css}"/>
 
         <!-- Bootstrap SwetAlert -->
-        <link rel="stylesheet" type="text/css" th:href="@{/vendors/sweetalert/sweetalert.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{https://cache.eletroinfo.online/templates/atacama/assets/vendors/sweetalert/sweetalert.css}"/>
 
         <th:block layout:fragment="head-end"></th:block>
 
@@ -45,7 +45,7 @@
                 <div class="container-fluid">
 
                     <div class="navbar-header">
-                        <a class="navbar-brand  hidden-xs" href="#">
+                        <a class="navbar-brand  hidden-xs" th:href="@{/}">
                             <img alt="Comparator" th:src="@{/images/logo.png}"/>
                         </a>
 
@@ -171,9 +171,9 @@
             </div>
         </div>
 
-        <script th:src="@{/javascripts/vendors.min.js}"></script>
-        <script th:src="@{/javascripts/algaworks.min.js}"></script>
-        <script th:src="@{/vendors/sweetalert/sweetalert-dev.js}"></script>
+        <script th:src="@{https://cache.eletroinfo.online/templates/atacama/assets/javascripts/vendors.min.js}"></script>
+        <script th:src="@{https://cache.eletroinfo.online/templates/atacama/assets/javascripts/algaworks.min.js}"></script>
+        <script th:src="@{https://cache.eletroinfo.online/templates/atacama/assets/vendors/sweetalert/sweetalert-dev.min.js}"></script>
 
         <body th:replace="layout/fragments/dialog-delete :: dialog-delete"></body>
         <th:block layout:fragment="javascript-extra"></th:block>

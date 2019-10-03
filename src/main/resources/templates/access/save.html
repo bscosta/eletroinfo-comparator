@@ -5,7 +5,7 @@
       layout:decorate="~{layout/layout}">
 <head th:include="~{layout/layout :: header (title='Grupo de Usuários')}">
     <th:block layout:fragment="head-end">
-        <link th:href="@{/stylesheets/lou-multi-select/css/multi-select.css}" rel="stylesheet" />
+        <link th:href="@{https://cache.eletroinfo.online/templates/atacama/assets/vendors/lou-multi-select/css/multi-select.css}" rel="stylesheet" />
     </th:block>
 </head>
 <body>
@@ -55,7 +55,7 @@
 </section>
 <th:block layout:fragment="javascript-extra">
     <script th:src="@{/javascripts/vendors/bootstrap-toggle.min.js}"></script>
-    <script th:src="@{/vendors/lou-multi-select/jquery.multi-select.js}"></script>
+    <script th:src="@{https://cache.eletroinfo.online/templates/atacama/assets/vendors/lou-multi-select/js/jquery.multi-select.js}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.quicksearch/2.4.0/jquery.quicksearch.min.js"></script>
     <!--<script th:src="@{/vendors/quick-search/jquery.quicksearch.js}"></script>-->
     <script th:src="@{/access/save.js}"></script>

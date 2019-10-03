@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -171,5 +172,15 @@ public class BudgetController {
         }
 
         return newBudget(budget);
+    }
+
+    @DeleteMapping("/{id}")
+    public @ResponseBody
+    ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        boolean deleted = this.budgetService.delete(id);
+        if (deleted == false) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
     }
 }

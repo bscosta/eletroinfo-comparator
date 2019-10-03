@@ -19,16 +19,16 @@ Comparator.SaveAccess = (function() {
         if(this.userLang == 'pt-BR') {
             this.available = 'Disponíveis';
             this.of = 'de';
-            this.users = 'usuários';
-            this.searchSelectionUsers = 'Pesquisar usuários disponíveis';
-            this.searchSelectedUsers = 'Pesquisar usuários selecionados';
+            this.users = 'acessos';
+            this.searchSelectionUsers = 'Pesquisar acessos disponíveis';
+            this.searchSelectedUsers = 'Pesquisar acessos selecionados';
         }
         if(this.userLang == 'en-US') {
             this.available = 'Available';
             this.of = 'of';
             this.users = 'users';
-            this.searchSelectionUsers = 'Search for available users';
-            this.searchSelectedUsers = 'Search for selected users';
+            this.searchSelectionUsers = 'Search for available accesses';
+            this.searchSelectedUsers = 'Search for selected accesses';
         }
     };
 

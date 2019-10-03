@@ -6,6 +6,7 @@ import com.eletroinfo.eletroinfo.comparator.notification.NotificationHandler;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.BrandService;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.ProductService;
 import com.eletroinfo.eletroinfo.comparator.cptr.validation.ProductValidation;
+import com.eletroinfo.eletroinfo.comparator.util.PageWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -57,7 +58,7 @@ public class ProductController {
 
     @GetMapping(value = "/buscar")
     public ModelAndView find(ProductFilter productFilter, @PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
-        PageImpl<Product> productPage = this.productService.findByParameters(productFilter, pageable);
+        PageWrapper<Product> productPage = new PageWrapper<>(this.productService.findByParameters(productFilter, pageable), httpServletRequest);
         ModelAndView mv = new ModelAndView("product/list");
         mv.addObject("pageData", productPage);
         mv.addObject("request", httpServletRequest);

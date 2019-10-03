@@ -18,4 +18,6 @@ public interface BudgetService {
     Budget save(Budget budget);
 
     Optional<Budget> findById(Long id);
+
+    boolean delete(Long id);
 }

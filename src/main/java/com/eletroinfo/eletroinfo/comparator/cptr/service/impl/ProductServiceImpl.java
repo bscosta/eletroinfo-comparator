@@ -3,6 +3,7 @@ package com.eletroinfo.eletroinfo.comparator.cptr.service.impl;
 import com.eletroinfo.eletroinfo.comparator.cptr.entitie.Product;
 import com.eletroinfo.eletroinfo.comparator.cptr.filter.ProductFilter;
 import com.eletroinfo.eletroinfo.comparator.cptr.repository.ProductRepository;
+import com.eletroinfo.eletroinfo.comparator.cptr.repository.custom.ProductRepositoryCustom;
 import com.eletroinfo.eletroinfo.comparator.cptr.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
@@ -19,8 +20,11 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductRepositoryCustom productRepositoryCustom;
+
     public PageImpl<Product> findByParameters(ProductFilter productFilter, Pageable pageable) {
-        return this.productRepository.findByParameters(productFilter.getName(), pageable);
+        return this.productRepositoryCustom.findByParameters(productFilter.getName(), productFilter.getBarcode(), pageable);
     }
 
     public boolean existsByNameAndDeletedFalse(String name) {

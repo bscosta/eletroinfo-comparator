@@ -11,8 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query("SELECT p FROM Product p WHERE UPPER(p.name) LIKE UPPER(CONCAT('%',:name,'%')) ")
-    PageImpl<Product> findByParameters(@Param("name") String name, Pageable pageable);
+
+    @Query(value = "SELECT * FROM cptr.product p where UPPER(p.name) LIKE UPPER(CONCAT('%',:name,'%')) AND IFNULL(p.barcode, '[0-9]' REGEXP :barcode) ORDER BY ?#{#pageable}",
+            countQuery = "SELECT count(*) FROM cptr.product p WHERE UPPER(p.name) LIKE UPPER(CONCAT('%',:name,'%')) AND p.barcode REGEXP CONCAT('[',:barcode,']')",
+            nativeQuery = true)
+    PageImpl<Product> findByParameters(@Param("name") String name, @Param("barcode") String barcode, Pageable pageable);
 
     @Transactional(readOnly = true)
     boolean existsByNameAndDeletedFalse(String name);
